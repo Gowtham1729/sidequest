@@ -35,13 +35,24 @@ function renderGame(direction='next'){
  $('game-title').textContent=meta.title;$('category').textContent=meta.category.toUpperCase();$('game-instruction').textContent=meta.hint;$('score-label').textContent=meta.scoreLabel;
  $('feed-count').textContent=`${String(feed.current+1).padStart(2,'0')} / ${String(games.length).padStart(2,'0')}`;
  $('feed-dots').replaceChildren(...games.map((_,i)=>{const dot=document.createElement('span');dot.classList.toggle('active',i===feed.current);return dot;}));
- game=meta.create(mount,{score:showScore,finish});showScore(0);setState();
+ game=meta.create(mount,{score:showScore,finish});showScore(0);setState();updateHelpSheet();
  document.querySelectorAll('[data-game]').forEach(button=>{const active=Number(button.dataset.game)===feed.current;button.classList.toggle('active',active);if(active)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current');});
  scene.classList.remove('enter-next','enter-prev','settle');scene.style.transform='';scene.style.opacity='';void scene.offsetWidth;scene.classList.add(direction==='prev'?'enter-prev':'enter-next');
  announce(`${meta.title}. ${meta.hint} Tap to start.`);
 }
 function navigate(direction){if(modalOpen())return;clearTimeout(tapTimer);lastNav=performance.now();if(direction==='prev'){if(feed.cursor===0)return;feed.previous();}else feed.next();renderGame(direction);}
-function openSheet(id){pause();$(id).showModal();}
+function updateHelpSheet(){
+  const meta=current();if(!meta)return;
+  $('help-glyph').textContent=meta.glyph;
+  $('help-glyph').style.setProperty('--tile-bg',meta.tint);
+  $('help-glyph').style.setProperty('--tile-ink',meta.ink);
+  $('help-game-title').textContent=meta.title;
+  $('help-game-category').textContent=meta.category.toUpperCase();
+  $('help-game-desc').textContent=meta.description;
+  $('help-game-instructions').textContent=meta.instructions;
+  $('help-game-chips').replaceChildren(...(meta.chips||[]).map(c=>{const s=document.createElement('span');s.className='help-chip';s.textContent=c;return s;}));
+ }
+function openSheet(id){pause();if(id==='help-dialog')updateHelpSheet();$(id).showModal();}
 function restart(){renderGame();start();}
 function tap(){if(phase==='paused'){const now=performance.now();if(now-lastTap<280){clearTimeout(tapTimer);lastTap=0;restart();}else{lastTap=now;tapTimer=setTimeout(()=>{if(phase==='paused'&&!gesture&&!modalOpen())resume();},280);}}else start();}
 function clearHold(){clearTimeout(holdTimer);$('hold-feedback').classList.remove('visible');}
