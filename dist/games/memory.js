@@ -1,0 +1,9 @@
+import {shuffled} from './shared.js';
+export function createMemory(mount,api){
+  const symbols=['✳','◈','✚','●','▲','〰'];let cards=[],open=[],matches=0,moves=0,running=false,delay=0,buttons=[];
+  const grid=document.createElement('div');grid.className='memory-grid';grid.setAttribute('role','group');grid.setAttribute('aria-label','Match the six pairs of symbols');mount.replaceChildren(grid);
+  function update(){buttons.forEach((b,i)=>{const revealed=cards[i].matched||open.includes(i)||!running&&moves===0;b.textContent=revealed?cards[i].symbol:'+';b.className=`memory-tile${revealed?' flipped':''}${cards[i].matched?' matched':''}`;b.disabled=cards[i].matched||!running;b.setAttribute('aria-label',cards[i].matched?`Card ${i+1}, matched ${cards[i].symbol}`:revealed?`Card ${i+1}, ${cards[i].symbol}`:`Card ${i+1}, face down`);});}
+  function choose(i){if(!running||delay>0||open.includes(i)||cards[i].matched)return;open.push(i);if(open.length===2){moves++;api.score(moves);if(cards[open[0]].symbol===cards[open[1]].symbol){open.forEach(j=>cards[j].matched=true);matches++;open=[];if(matches===6){running=false;api.finish('A perfect match.',`All 6 pairs found in ${moves} moves.`,moves)}}else delay=.75;}update();}
+  function reset(preview=false){cards=shuffled([...symbols,...symbols]).map(symbol=>({symbol,matched:false}));open=[];matches=0;moves=0;delay=0;running=!preview;grid.className=`memory-grid${preview?' preview':''}`;grid.replaceChildren();buttons=cards.map((_,i)=>{const button=document.createElement('button');button.type='button';button.addEventListener('click',()=>choose(i));grid.append(button);return button;});update();}
+  reset(true);return {start(){reset();api.score(0)},tick(dt){if(delay>0){delay-=dt;if(delay<=0){open=[];update()}}},destroy(){running=false;grid.remove()}};
+}
