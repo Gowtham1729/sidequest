@@ -1,20 +1,12 @@
-import {surface, clear, rect, text, DIRECTIONS, swipeDirection} from './shared.js';
+import {surface,clear,rect,DIRECTIONS,swipeDirection} from './shared.js';
 export function canTurn(from,to){return from.x+to.x!==0||from.y+to.y!==0;}
-export function snakeCollision(body, next, eating, size=16){return next.x<0||next.y<0||next.x>=size||next.y>=size||body.slice(0,eating?body.length:-1).some(p=>p.x===next.x&&p.y===next.y);}
+export function snakeCollision(body,next,eating,cols=16,rows=cols){return next.x<0||next.y<0||next.x>=cols||next.y>=rows||body.slice(0,eating?body.length:-1).some(p=>p.x===next.x&&p.y===next.y);}
 export function createSnake(mount,api){
-  const {ctx}=surface(mount);let body=[],food,dir,nextDir,elapsed=0,points=0,running=false,startPoint,changed=false;
-  function foodAt(){const empty=[];for(let y=0;y<16;y++)for(let x=0;x<16;x++)if(!body.some(p=>p.x===x&&p.y===y))empty.push({x,y});return empty[Math.floor(Math.random()*empty.length)];}
-  function reset(preview=false){body=preview?[{x:10,y:5},{x:9,y:5},{x:8,y:5},{x:7,y:5},{x:6,y:5},{x:6,y:6},{x:6,y:7},{x:6,y:8},{x:5,y:8},{x:4,y:8}]:[{x:7,y:8},{x:6,y:8},{x:5,y:8}];dir={x:1,y:0};nextDir=dir;food=preview?{x:12,y:5}:foodAt();elapsed=0;points=0;changed=false;running=!preview;draw();}
-  function turn(name){const d=DIRECTIONS[name];if(running&&d&&!changed&&canTurn(dir,d)){nextDir=d;changed=true;}}
-  function draw(){clear(ctx);rect(ctx,21,19,358,358,'#213528',12);for(let y=0;y<16;y++)for(let x=0;x<16;x++)rect(ctx,24+x*22,22+y*22,20,20,(x+y)%2?'#203326':'#23382a',2);
-    if(food){rect(ctx,27+food.x*22,25+food.y*22,14,14,'#ff997e',5);}
-    [...body].reverse().forEach((p,i)=>rect(ctx,25+p.x*22,23+p.y*22,18,18,i===body.length-1?'#c9f86a':'#78b968',4));
-    const h=body[0];if(h){ctx.fillStyle='#25432b';const x=25+h.x*22,y=23+h.y*22;if(dir.x){ctx.fillRect(x+(dir.x>0?12:3),y+4,3,3);ctx.fillRect(x+(dir.x>0?12:3),y+11,3,3)}else{ctx.fillRect(x+4,y+(dir.y>0?12:3),3,3);ctx.fillRect(x+11,y+(dir.y>0?12:3),3,3)}}
-  }
-  function step(){dir=nextDir;changed=false;const h={x:body[0].x+dir.x,y:body[0].y+dir.y},eating=!!food&&h.x===food.x&&h.y===food.y;
-    if(snakeCollision(body,h,eating)){running=false;api.finish('That’s a wrap.',`${points} snacks collected. Find your flow again.`);return;}
-    body.unshift(h);if(eating){points++;api.score(points);food=foodAt();if(!food){running=false;api.finish('The whole board is yours!',`All ${points} snacks collected. A perfect run.`)}}else body.pop();
-  }
-  reset(true);
-  return {start(){reset();api.score(0)},direction:turn,pointerDown(p){startPoint=p},pointerUp(p){const d=swipeDirection(startPoint,p);if(d)turn(d);startPoint=null},tick(dt){if(running){elapsed+=dt;const period=Math.max(.075,.17-points*.004);if(elapsed>=period){elapsed%=period;step()}}draw()},destroy(){running=false}};
+ const s=surface(mount),{ctx,view}=s;let body=[],food,dir,nextDir,elapsed=0,points=0,running=false,startPoint,changed=false,cols=16,rows=24;
+ function foodAt(){const empty=[];for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)if(!body.some(p=>p.x===x&&p.y===y))empty.push({x,y});return empty[Math.floor(Math.random()*empty.length)];}
+ function reset(preview=false){cols=Math.max(12,Math.min(48,Math.round(view.field.w/24)));rows=Math.max(8,Math.min(40,Math.round(view.field.h/24)));const x=Math.floor(cols*.48),y=Math.floor(rows*.62);body=preview?[{x:x+3,y},{x:x+2,y},{x:x+1,y},{x,y},{x:x-1,y},{x:x-2,y},{x:x-2,y:y+1},{x:x-2,y:y+2},{x:x-3,y:y+2},{x:x-4,y:y+2}]:[{x,y},{x:x-1,y},{x:x-2,y}];dir={x:1,y:0};nextDir=dir;food=preview?{x:Math.min(cols-2,x+5),y}:foodAt();elapsed=0;points=0;changed=false;running=!preview;draw();}
+ function turn(name){const d=DIRECTIONS[name];if(running&&d&&!changed&&canTurn(dir,d)){nextDir=d;changed=true;}}
+ function draw(){clear(ctx);const f=view.field,cw=f.w/cols,ch=f.h/rows;ctx.strokeStyle='#9ddd7a24';ctx.lineWidth=1;ctx.strokeRect(f.x,f.y,f.w,f.h);for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)rect(ctx,f.x+x*cw+.6,f.y+y*ch+.6,cw-1.2,ch-1.2,(x+y)%2?'#1a3023':'#1c3425',2);if(food)rect(ctx,f.x+food.x*cw+cw*.18,f.y+food.y*ch+ch*.18,cw*.64,ch*.64,'#ff997e',5);[...body].reverse().forEach((p,i)=>rect(ctx,f.x+p.x*cw+1.8,f.y+p.y*ch+1.8,cw-3.6,ch-3.6,i===body.length-1?'#d0fc85':'#78b968',Math.min(cw,ch)*.18));const h=body[0];ctx.fillStyle='#264129';const x=f.x+h.x*cw,y=f.y+h.y*ch,e=Math.min(cw,ch)*.12;if(dir.x){ctx.fillRect(x+cw*(dir.x>0?.68:.21),y+ch*.25,e,e);ctx.fillRect(x+cw*(dir.x>0?.68:.21),y+ch*.63,e,e)}else{ctx.fillRect(x+cw*.25,y+ch*(dir.y>0?.68:.21),e,e);ctx.fillRect(x+cw*.63,y+ch*(dir.y>0?.68:.21),e,e)}}
+ function step(){dir=nextDir;changed=false;const h={x:body[0].x+dir.x,y:body[0].y+dir.y},eating=!!food&&h.x===food.x&&h.y===food.y;if(snakeCollision(body,h,eating,cols,rows)){running=false;api.finish('That’s a wrap.',`${points} snacks collected. Find your flow again.`);return;}body.unshift(h);if(eating){points++;api.score(points);food=foodAt();if(!food){running=false;api.finish('All yours.',`Every snack collected. A perfect run.`)}}else body.pop();}
+ reset(true);return {start(){reset();api.score(0)},direction:turn,pointerDown(p){startPoint=p},pointerUp(p){const d=swipeDirection(startPoint,p);if(d)turn(d);startPoint=null},cancel(){startPoint=null},tick(dt){if(running){elapsed+=dt;const period=Math.max(.08,.175-points*.004);if(elapsed>=period){elapsed%=period;step()}}draw()},destroy(){running=false;s.destroy()}};
 }

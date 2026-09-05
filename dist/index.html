@@ -3,61 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#f5f6f3" />
-  <meta name="description" content="A little arcade with an endless play feed. Swipe into five quick games: Stack, Snake, 2048, Rally, and Memory Match." />
-  <title>Sidequest — your next game awaits</title>
+  <meta name="theme-color" content="#101c16" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="Five games. An endless full-screen arcade. Tap to play, swipe to discover your next Sidequest." />
+  <title>Sidequest — swipe into a game</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-  <aside class="sidebar" aria-label="Game navigation">
-    <a class="brand" href="/" aria-label="Sidequest home"><span class="brand-mark" aria-hidden="true">↗</span>sidequest<span class="brand-dot">.</span></a>
-    <div class="sidebar-body">
-      <div class="feed-label"><span aria-hidden="true">▦</span> Play feed <span class="live-pill">LIVE</span></div>
-      <div class="section-label">THE LINEUP <span id="lineup-count">05</span></div>
-      <nav id="game-list" class="game-list" aria-label="Choose a game"></nav>
-    </div>
-    <div class="sidebar-bottom"><span class="mini-mark" aria-hidden="true">✳</span><p>A small break.<br>A good game.</p><span class="edition">THE POCKET ARCADE · VOL. 01</span></div>
-  </aside>
-  <main id="feed">
-    <header class="topbar">
-      <a class="brand mobile-brand" href="/"><span class="brand-mark" aria-hidden="true">↗</span>sidequest.</a>
-      <div class="breadcrumb">ARCADE <span>/</span> PLAY FEED</div>
-      <button class="plain-button" id="help-button" aria-label="How to navigate"><span class="help-icon" aria-hidden="true">?</span><span class="desktop-label">How it works</span></button>
-    </header>
-    <div class="workspace">
-      <div class="page-heading"><div><p class="eyebrow">LESS SCROLLING. MORE PLAYING.</p><h1>The play feed<span>.</span></h1></div><span class="mix-badge"><span aria-hidden="true">⤨</span> Random mix</span></div>
-      <div class="play-layout">
-        <section class="player-column" aria-label="Current game">
-          <div class="game-card" id="game-card">
-            <div class="game-topline"><div class="game-status"><span class="status-dot"></span><span id="status-label">READY WHEN YOU ARE</span></div><div class="player-actions"><button id="pause-button" class="icon-button" aria-label="Pause game" disabled>Ⅱ</button><button id="restart-button" class="icon-button" aria-label="Restart game">↻</button></div></div>
-            <div class="scorebar"><div><span class="score-label" id="score-label">HEIGHT</span><strong id="score">00</strong></div><div class="best-score"><span class="score-label">SESSION BEST</span><strong id="best">—</strong></div></div>
-            <div id="arena" class="arena" tabindex="0" role="group" aria-label="Game area. Press Space to start."><div id="game-mount"></div><div class="game-overlay" id="game-overlay"><div class="overlay-copy" id="overlay-copy" hidden><h2 id="overlay-title"></h2><p id="overlay-subtitle"></p></div><button id="play-button" class="play-button"><span aria-hidden="true">▶</span><span id="play-label">Play Stack</span></button><span class="start-hint" id="start-hint">Tap to play · Space on keyboard</span></div></div>
-            <div class="game-controls" id="game-controls"><div class="control-hint" id="control-hint"></div><div id="dpad" class="dpad" hidden><button data-dir="left" aria-label="Move left">←</button><button data-dir="up" aria-label="Move up">↑</button><button data-dir="down" aria-label="Move down">↓</button><button data-dir="right" aria-label="Move right">→</button></div></div>
-          </div>
-          <div class="feed-controls" id="swipe-zone" aria-label="Swipe up here for the next game, or down for the previous game">
-            <button class="round-button" id="previous-button" aria-label="Previous game" disabled>↑</button>
-            <div class="swipe-caption"><span class="swipe-handle"></span><strong>Swipe here for your next game</strong><span>Gameplay stays in the game</span></div>
-            <button class="round-button next-round" id="next-button" aria-label="Next random game">↓</button>
-          </div>
-        </section>
-        <aside class="game-details" aria-label="Game details">
-          <div class="game-number"><span id="game-number">01</span><span class="number-line"></span><span id="game-total">/ 05</span></div>
-          <div class="game-tags"><span id="game-category">TIMING</span><span class="dot-separator">·</span><span id="game-length">QUICK PLAY</span></div>
-          <h2 id="game-title">Stack</h2><p id="game-description" class="game-description">One tap. One block.<br>How high can you go?</p>
-          <div class="instructions"><span class="section-label">HOW TO PLAY</span><p id="game-instructions">Tap to drop the moving block. Line it up with the one below. Miss the edge and your tower gets smaller.</p><div class="input-chips" id="input-chips"></div></div>
-          <div class="up-next"><span class="section-label">ON DECK</span><button class="next-preview" id="next-preview"><span id="next-glyph" class="game-glyph"></span><span class="next-preview-copy"><strong id="next-title"></strong><span id="next-category"></span></span><span aria-hidden="true">↗</span></button></div>
-          <button class="mobile-lineup" id="lineup-button"><span aria-hidden="true">▦</span> All 5 games</button>
-          <div class="keyboard-note"><kbd>N</kbd> next game <span>·</span> <kbd>P</kbd> pause</div>
-        </aside>
+  <main id="arcade" class="arcade" data-phase="ready" aria-label="Sidequest game feed">
+    <div id="scene" class="scene">
+      <div id="arena" class="arena" tabindex="0" role="group" aria-label="Tap anywhere or press Space to start the game"><div id="game-mount"></div></div>
+      <header id="top-hud" class="top-hud" data-feed-zone>
+        <div class="brand">sidequest<span>.</span></div>
+        <div class="score-block"><span id="score-label">HEIGHT</span><strong id="score">00</strong></div>
+        <div class="best-block"><span>VISIT BEST</span><strong id="best">—</strong></div>
+      </header>
+      <div id="game-overlay" class="game-overlay" aria-hidden="true">
+        <span id="overlay-eyebrow" class="eyebrow">ONE TAP. ONE MORE BLOCK.</span>
+        <h1 id="overlay-title">Stack<span>.</span></h1>
+        <p id="overlay-subtitle">Find your balance.</p>
+        <div class="tap-cue"><span class="tap-ring"></span><span id="tap-label">Tap anywhere to play</span></div>
+        <span id="browse-hint" class="browse-hint">Swipe up for the next game</span>
       </div>
-      <footer class="page-footer"><span>NO DOWNLOADS. JUST ONE MORE ROUND.</span><span><span id="footer-count">5 games & counting</span> <span aria-hidden="true">✳</span></span></footer>
+      <footer id="bottom-hud" class="bottom-hud" data-feed-zone>
+        <div class="game-meta"><div class="title-line"><h2 id="game-title">Stack</h2><span id="category">TIMING</span></div><p id="game-instruction">Tap to drop a block</p></div>
+        <div class="feed-position"><span id="feed-count">01 / 05</span><div id="feed-dots" class="feed-dots" aria-hidden="true"></div></div>
+        <p id="gesture-hint" class="gesture-hint">Swipe up to explore <span>·</span> Swipe right for all games</p>
+      </footer>
+      <div class="edge-rail" id="edge-rail" data-feed-zone aria-hidden="true"><span></span></div>
+    </div>
+    <div id="nav-feedback" class="nav-feedback" aria-hidden="true"><span id="nav-arrow">↑</span><strong id="nav-title"></strong><span id="nav-detail">Release for next game</span></div>
+    <div id="hold-feedback" class="hold-feedback" aria-hidden="true"></div>
+    <div class="accessible-controls" aria-label="Keyboard and assistive controls">
+      <button id="accessible-play">Start or resume game</button><button id="accessible-pause">Pause game</button><button id="accessible-restart">Restart game</button><button id="accessible-next">Next game</button><button id="accessible-previous">Previous game</button><button id="accessible-lineup">Choose a game</button><button id="accessible-help">Gesture help</button>
     </div>
   </main>
-  <dialog id="help-dialog"><div class="dialog-heading"><h2>A feed made for playing.</h2><button class="dialog-close icon-button" aria-label="Close instructions">×</button></div><p>Every new swipe deals you a game. Play all five before the mix repeats.</p><div class="help-row"><span>01</span><div><strong>Play in the game area</strong><p>Taps, swipes, and drags here only control your game. They never move the feed.</p></div></div><div class="help-row"><span>02</span><div><strong>Swipe below to switch</strong><p>Swipe up on the strip below the game, or use the arrows. On a computer, scroll outside the game while it is idle.</p></div></div><div class="help-row"><span>03</span><div><strong>Take a breather</strong><p>Press P or the pause button. Switching games starts a new round; session bests stay until you reload.</p></div></div><div class="shortcut-list"><span><kbd>Space</kbd> start / action</span><span><kbd>N</kbd> next game</span><span><kbd>P</kbd> pause / resume</span></div><button class="dialog-done">Let's play</button></dialog>
-  <dialog id="lineup-dialog"><div class="dialog-heading"><h2>Pick your next game.</h2><button class="dialog-close icon-button" aria-label="Close game picker">×</button></div><nav id="mobile-game-list" class="game-list" aria-label="All games"></nav></dialog>
+  <dialog id="lineup-dialog" class="sheet" aria-labelledby="lineup-title">
+    <div class="sheet-grip" data-sheet-drag><span></span></div>
+    <p class="eyebrow">FIND YOUR NEXT SIDEQUEST</p><h2 id="lineup-title">Pick a game<span>.</span></h2>
+    <nav id="game-list" class="game-list" aria-label="Choose a game"></nav>
+    <p class="sheet-hint">Swipe down on the handle to return</p><button class="sr-only focusable dialog-close">Close game picker</button>
+  </dialog>
+  <dialog id="help-dialog" class="sheet" aria-labelledby="help-title">
+    <div class="sheet-grip" data-sheet-drag><span></span></div><p class="eyebrow">A FEW SIMPLE GESTURES</p><h2 id="help-title">Go with the flow<span>.</span></h2>
+    <dl class="gesture-guide"><div><dt>Tap</dt><dd>Start, play again, or resume.</dd></div><div><dt>Hold still</dt><dd>Pause your game. Double-tap the paused screen to restart.</dd></div><div><dt>Swipe up / down</dt><dd>Next / previous game between rounds.</dd></div><div><dt>Swipe at the right edge</dt><dd>Switch games during play. You can also swipe with two fingers anywhere.</dd></div><div><dt>Swipe right</dt><dd>Open all games between rounds, or on the bottom title area during play.</dd></div></dl>
+    <p class="sheet-hint">Keyboard: Space to play · P to pause · N / B to browse<br>R to restart · G for games · ? for help<br>Swipe down on the handle to return</p><button class="sr-only focusable dialog-close">Close gesture help</button>
+  </dialog>
   <div class="sr-only" id="announcement" role="status" aria-live="polite"></div>
-  <noscript><p class="noscript">Enable JavaScript to play the Sidequest arcade.</p></noscript>
+  <noscript><p class="noscript">Enable JavaScript to play Sidequest.</p></noscript>
   <script type="module" src="/app.js"></script>
 </body>
 </html>

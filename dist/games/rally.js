@@ -1,19 +1,10 @@
 import {surface,clear,rect,text} from './shared.js';
 export function createRally(mount,api){
-  const {ctx}=surface(mount);let x,y,vx,vy,paddle,target,points=0,running=false,trail=[],pressed=new Set(),launch=0;
-  function reset(preview=false){x=preview?263:200;y=preview?156:190;vx=125*(Math.random()<.5?-1:1);vy=145;paddle=200;target=200;points=0;running=!preview;trail=[];pressed.clear();launch=preview?0:.65;draw();}
-  function draw(){clear(ctx);ctx.strokeStyle='#7585ac35';ctx.lineWidth=1;ctx.setLineDash([5,8]);ctx.beginPath();ctx.moveTo(27,200);ctx.lineTo(373,200);ctx.stroke();ctx.setLineDash([]);rect(ctx,22,23,4,346,'#677dac55',2);rect(ctx,374,23,4,346,'#677dac55',2);rect(ctx,22,23,356,4,'#677dac55',2);
-    trail.forEach((p,i)=>{ctx.globalAlpha=i/trail.length*.22;rect(ctx,p.x-7,p.y-7,14,14,'#b9c7ff',7)});ctx.globalAlpha=1;
-    rect(ctx,x-8,y-8,16,16,'#dae1ff',8);rect(ctx,paddle-44,341,88,11,'#b9c7ff',5);rect(ctx,paddle-34,355,68,3,'#b9c7ff1c',2);
-    if(launch>0)text(ctx,'GET READY',200,105,16,'#bdc9f8',700);
-  }
-  function tick(dt){if(running){if(pressed.has('left'))target-=330*dt;if(pressed.has('right'))target+=330*dt;target=Math.max(71,Math.min(329,target));paddle+=(target-paddle)*Math.min(1,dt*25);
-    if(launch>0){launch-=dt;draw();return;}
-    const oldY=y;x+=vx*dt;y+=vy*dt;
-    if(x<35){x=35;vx=Math.abs(vx)}if(x>365){x=365;vx=-Math.abs(vx)}if(y<36){y=36;vy=Math.abs(vy)}
-    if(vy>0&&oldY+8<=341&&y+8>=341&&x>=paddle-51&&x<=paddle+51){y=332;points++;api.score(points);const speed=Math.min(440,225+points*14),angle=(x-paddle)/52*1.05;vx=Math.sin(angle)*speed;vy=-Math.cos(angle)*speed;}
-    if(y>395){running=false;api.finish('Good rally.',`${points} returns. Keep the next one going.`)}
-    trail.push({x,y});if(trail.length>9)trail.shift();
-  }draw();}
-  reset(true);return {start(){reset();api.score(0)},tick,pointerDown(p){target=p.x},pointerMove(p){target=p.x},direction(d){target+=d==='left'?-45:d==='right'?45:0},keyDown(d){pressed.add(d)},keyUp(d){pressed.delete(d)},pause(){pressed.clear()},destroy(){running=false}};
+ const s=surface(mount),{ctx,view}=s;let x,y,vx,vy,paddle,target,points=0,running=false,trail=[],pressed=new Set(),launch=0,oldField;
+ const paddleWidth=()=>Math.max(78,view.field.w*.19);
+ function reset(preview=false){const f=view.field;x=f.x+f.w*(preview?.65:.5);y=f.y+f.h*.35;vx=125*(Math.random()<.5?-1:1);vy=185;paddle=f.x+f.w/2;target=paddle;points=0;running=!preview;trail=[];pressed.clear();launch=preview?0:.65;oldField={...f};draw();}
+ function resizeState(){const f=view.field;if(oldField&&(f.w!==oldField.w||f.h!==oldField.h||f.y!==oldField.y)){x=f.x+(x-oldField.x)/oldField.w*f.w;y=f.y+(y-oldField.y)/oldField.h*f.h;paddle=f.x+(paddle-oldField.x)/oldField.w*f.w;target=paddle;oldField={...f};trail=[];}}
+ function draw(){resizeState();const f=view.field;clear(ctx);ctx.strokeStyle='#7585ac35';ctx.lineWidth=1;ctx.setLineDash([5,9]);ctx.beginPath();ctx.moveTo(f.x,f.y+f.h/2);ctx.lineTo(f.x+f.w,f.y+f.h/2);ctx.stroke();ctx.setLineDash([]);rect(ctx,f.x,f.y,2,f.h,'#677dac55',1);rect(ctx,f.x+f.w-2,f.y,2,f.h,'#677dac55',1);rect(ctx,f.x,f.y,f.w,2,'#677dac55',1);trail.forEach((p,i)=>{ctx.globalAlpha=i/trail.length*.2;rect(ctx,p.x-8,p.y-8,16,16,'#b9c7ff',8)});ctx.globalAlpha=1;rect(ctx,x-8,y-8,16,16,'#e0e6ff',8);const pw=paddleWidth();rect(ctx,paddle-pw/2,f.y+f.h-26,pw,11,'#b9c7ff',5);rect(ctx,paddle-pw*.36,f.y+f.h-10,pw*.72,3,'#b9c7ff15',1);if(launch>0)text(ctx,'GET READY',f.x+f.w/2,f.y+f.h*.25,18,'#bdc9f8',700);}
+ function tick(dt){resizeState();const f=view.field,pw=paddleWidth(),py=f.y+f.h-26;if(running&&dt>0){if(pressed.has('left'))target-=480*dt;if(pressed.has('right'))target+=480*dt;target=Math.max(f.x+pw/2+5,Math.min(f.x+f.w-pw/2-5,target));paddle+=(target-paddle)*Math.min(1,dt*28);if(launch>0){launch-=dt;draw();return;}const previousY=y;x+=vx*dt;y+=vy*dt;if(x<f.x+11){x=f.x+11;vx=Math.abs(vx)}if(x>f.x+f.w-11){x=f.x+f.w-11;vx=-Math.abs(vx)}if(y<f.y+11){y=f.y+11;vy=Math.abs(vy)}if(vy>0&&previousY+8<=py&&y+8>=py&&Math.abs(x-paddle)<=pw/2+8){y=py-9;points++;api.score(points);const speed=Math.min(570,260+points*18),angle=(x-paddle)/(pw/2+8)*1.05;vx=Math.sin(angle)*speed;vy=-Math.cos(angle)*speed;}if(y>f.y+f.h+10){running=false;api.finish('Good rally.',`${points} returns. Keep the next one going.`)}trail.push({x,y});if(trail.length>12)trail.shift();}draw();}
+ reset(true);return {start(){reset();api.score(0)},tick,pointerDown(p){target=p.x},pointerMove(p){target=p.x},direction(d){target+=d==='left'?-45:d==='right'?45:0},keyDown(d){pressed.add(d)},keyUp(d){pressed.delete(d)},pause(){pressed.clear()},destroy(){running=false;s.destroy()}};
 }

@@ -1,20 +1,22 @@
 # Sidequest
 
-A self-contained, touch-first game feed. No build step or external runtime dependencies.
+A full-viewport, mobile-first arcade with five games and an endless randomized feed. Static files; no runtime dependencies or build step.
+
+## Interaction
+
+- Tap anywhere between rounds to start or replay.
+- Hold still for 550 ms to pause; tap the paused screen to resume, or double-tap to restart.
+- Swipe up/down between rounds for next/previous games.
+- During gameplay, swipe at the right edge or use two fingers anywhere to navigate. The bottom HUD is also a feed gesture region. Ordinary one-finger gestures inside the playfield always belong to the current game, regardless of swipe distance.
+- Swipe right between rounds (or on the bottom HUD while playing) for the game picker. Swipe left for gesture help. Swipe down from a sheet's handle to dismiss it.
+- Keyboard: Space for start/action; arrows or WASD for gameplay; P/Escape to pause; N/B to browse; R to restart; G for the picker; ? for help. Focusable assistive controls remain available without occupying the normal screen.
+
+The canvas matches the viewport at up to 2× device resolution with uniform coordinates. Snake generates a grid for the available aspect ratio, Rally uses the whole court, and 2048 and Memory Match stretch their tile layouts across the usable field. ResizeObserver owns canvas sizing and is released on every game change. Game state and visit bests are in memory only.
 
 ## Add a game
 
-Create a module in `dist/games/` and register it in `dist/registry.js`. The feed chooses games from the registry in shuffled rounds, with no immediate repeats. A game factory receives a mount element and `{ score(value), finish(title, subtitle, finalScore?) }` callbacks. Return:
+Create `dist/games/<name>.js` and register it in `dist/registry.js`. All selection controls and counts derive from the registry. A factory receives a mount and `{score(value),finish(title,subtitle,finalScore?)}`. Return `start()`, `tick(dt)`, `destroy()`, and optional `tap(point,target)`, `action()`, `direction(name)`, `pointerDown(point)`, `pointerMove(point)`, `pointerUp(point)`, `cancel()`, `keyDown(direction)`, `keyUp(direction)`, `pause()`.
 
-- `start()`, `tick(dt)`, and `destroy()`.
-- Optional `action()`, `direction(name)`, `pointerDown(point)`, `pointerMove(point)`, `pointerUp(point)`, `keyDown(direction)`, `keyUp(direction)`, and `pause()`.
+Use `surface()` for a live viewport and canvas, and call its `destroy()` on teardown. `tick(0)` redraws a paused or resized game without advancing simulation. Keep mutations in game state; do not use independent timers. Destructive tap actions belong in `tap()`, not `pointerDown()`, so holds and navigation gestures cannot trigger them.
 
-Canvas game coordinates are 400 × 400; the shared surface draws at 2× resolution. Use the supplied frame delta instead of independent timers so pause and background-tab behavior stay consistent. Destroy must release any resources a game owns. Memory Match demonstrates an accessible HTML game using the same lifecycle.
-
-The app owns input, score display, game selection, pause, and results. Game gestures stay inside the arena. The separate swipe strip navigates the feed, and wheel navigation is only available when idle and when the page fits the viewport. Session bests are held in memory and reset when the page is reloaded. Lower-is-better scores are recorded only on a completed game.
-
-Game counts update from the registry. Add new colors and instructions there, and update the introductory help copy when expanding beyond the initial five games.
-
-## Publish
-
-The Sites identity is in `.openai/hosting.json`. Static entrypoint: `dist/index.html`. All authored assets in `dist/` are source files and must be tracked. Use the Sites hosting workflow to save and deploy this same project.
+The gesture routing rules live in `dist/gestures.js` and are independent of game modules. The Site identity stays in `.openai/hosting.json`; publish the static `dist/` directory through the existing Sites project.
