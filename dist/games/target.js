@@ -92,6 +92,7 @@ export function createTarget(mount, api) {
     if (arrowsLeft <= 0) return;
 
     arrowsLeft--;
+    api.audio?.play('shoot');
 
     const speed = 400 + aimPower * 420;
     flyingArrows.push({
@@ -108,7 +109,7 @@ export function createTarget(mount, api) {
 
   function die() {
     running = false;
-    api.finish('Out of Arrows!', `Scored ${score} points with ${combo} max streak. Tap to shoot again!`, score);
+    api.finish('Out of Arrows!', `Scored ${score} points with ${combo} max streak. Tap to shoot again!`, score, 'miss');
   }
 
   function update(dt) {
@@ -159,13 +160,16 @@ export function createTarget(mount, api) {
             color = '#ffd700';
             combo++;
             arrowsLeft++; // Bonus arrow for bullseye!
+            api.audio?.play('bullseye');
           } else if (dist <= t.r * 0.65) {
             pts = 5;
             label = 'GREAT! +5';
             color = '#ff5252';
             combo++;
+            api.audio?.play('hit', {pitch: combo > 1 ? Math.min(6, combo) : 0});
           } else {
             combo = 0;
+            api.audio?.play('hit');
           }
 
           score += pts;

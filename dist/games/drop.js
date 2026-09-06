@@ -107,7 +107,7 @@ export function createDrop(mount, api) {
         maxLife: 0.45
       });
     }
-    api.finish('Crushed by Spikes!', `Dropped through ${score} floors. Tap to drop again!`, score);
+    api.finish('Crushed by Spikes!', `Dropped through ${score} floors. Tap to drop again!`, score, 'crash');
   }
 
   function update(dt) {
@@ -195,6 +195,7 @@ export function createDrop(mount, api) {
         p.passed = true;
         score++;
         api.score(score);
+        api.audio?.play('drop',{pitch:Math.min(8,Math.floor(score/4))});
       }
     }
 
@@ -208,6 +209,7 @@ export function createDrop(mount, api) {
         g.collected = true;
         score += 3;
         api.score(score);
+        api.audio?.play('gem');
         for (let i = 0; i < 8; i++) {
           const a = Math.random() * Math.PI * 2;
           particles.push({

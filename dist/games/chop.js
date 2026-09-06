@@ -57,6 +57,7 @@ export function createChop(mount,api){
     spawnBranch();
     score++;
     api.score(score);
+    api.audio?.play('chop',{pitch:Math.min(8,Math.floor(score/6))});
 
     // Add time back
     timeLeft=Math.min(maxTime,timeLeft+0.22);
@@ -87,7 +88,7 @@ export function createChop(mount,api){
 
   function die(reason){
     running=false;
-    api.finish(reason,`${score} chops delivered. Tap to chop again!`,score);
+    api.finish(reason,`${score} chops delivered. Tap to chop again!`,score,'crash');
   }
 
   function resizeState(){

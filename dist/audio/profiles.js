@@ -26,8 +26,8 @@ export const audioProfiles = {
       start: [{ note: 60, at: 0, duration: 0.16, gain: 0.22, wave: 'sine' }, { note: 64, at: 0.1, duration: 0.2, gain: 0.18, wave: 'sine' }],
       finish: [{ note: 67, at: 0, duration: 0.18, gain: 0.24, wave: 'triangle' }, { note: 72, at: 0.12, duration: 0.3, gain: 0.25, wave: 'triangle' }],
       win: [{ note: 72, at: 0, duration: 0.16, gain: 0.26, wave: 'sine' }, { note: 76, at: 0.12, duration: 0.16, gain: 0.25, wave: 'sine' }, { note: 79, at: 0.24, duration: 0.4, gain: 0.3, wave: 'triangle' }],
-      place: [{ note: 67, at: 0, duration: 0.12, gain: 0.2, wave: 'sine' }],
-      perfect: [{ note: 72, at: 0, duration: 0.14, gain: 0.25, wave: 'triangle' }, { note: 79, at: 0.1, duration: 0.28, gain: 0.24, wave: 'sine' }],
+      place: [{ note: 67, at: 0, duration: 0.1, gain: 0.22, wave: 'sine', endNote: 71 }],
+      perfect: [{ note: 72, at: 0, duration: 0.12, gain: 0.26, wave: 'triangle' }, { note: 79, at: 0.08, duration: 0.25, gain: 0.26, wave: 'sine' }],
       miss: [{ note: 55, at: 0, duration: 0.16, gain: 0.16, wave: 'triangle', endNote: 49 }],
     },
   },
@@ -55,9 +55,9 @@ export const audioProfiles = {
       start: [{ note: 57, at: 0, duration: 0.14, gain: 0.22, wave: 'sine' }, { note: 64, at: 0.1, duration: 0.2, gain: 0.18, wave: 'triangle' }],
       finish: [{ note: 64, at: 0, duration: 0.18, gain: 0.24, wave: 'triangle' }, { note: 69, at: 0.13, duration: 0.3, gain: 0.25, wave: 'sine' }],
       win: [{ note: 69, at: 0, duration: 0.14, gain: 0.25, wave: 'sine' }, { note: 72, at: 0.1, duration: 0.14, gain: 0.26, wave: 'triangle' }, { note: 76, at: 0.21, duration: 0.38, gain: 0.3, wave: 'sine' }],
-      turn: [{ note: 62, at: 0, duration: 0.08, gain: 0.13, wave: 'square' }],
-      eat: [{ note: 72, at: 0, duration: 0.11, gain: 0.22, wave: 'sine' }, { note: 76, at: 0.07, duration: 0.16, gain: 0.2, wave: 'triangle' }],
-      crash: [{ note: 52, at: 0, duration: 0.15, gain: 0.2, wave: 'square', endNote: 44 }],
+      turn: [{ note: 65, at: 0, duration: 0.05, gain: 0.12, wave: 'sine' }],
+      eat: [{ note: 72, at: 0, duration: 0.1, gain: 0.22, wave: 'sine' }, { note: 79, at: 0.06, duration: 0.18, gain: 0.22, wave: 'triangle' }],
+      crash: [{ note: 50, at: 0, duration: 0.15, gain: 0.2, wave: 'triangle', endNote: 42 }],
     },
   },
 
@@ -84,9 +84,9 @@ export const audioProfiles = {
       start: [{ note: 60, at: 0, duration: 0.2, gain: 0.21, wave: 'sine' }, { note: 67, at: 0.16, duration: 0.24, gain: 0.18, wave: 'triangle' }],
       finish: [{ note: 65, at: 0, duration: 0.18, gain: 0.24, wave: 'sine' }, { note: 72, at: 0.14, duration: 0.32, gain: 0.25, wave: 'triangle' }],
       win: [{ note: 69, at: 0, duration: 0.15, gain: 0.25, wave: 'sine' }, { note: 74, at: 0.12, duration: 0.15, gain: 0.26, wave: 'sine' }, { note: 77, at: 0.24, duration: 0.42, gain: 0.3, wave: 'triangle' }],
-      slide: [{ note: 62, at: 0, duration: 0.12, gain: 0.16, wave: 'sine', endNote: 65 }],
-      merge: [{ note: 65, at: 0, duration: 0.12, gain: 0.21, wave: 'sine' }, { note: 72, at: 0.09, duration: 0.24, gain: 0.24, wave: 'triangle' }],
-      blocked: [{ note: 53, at: 0, duration: 0.14, gain: 0.16, wave: 'sine', endNote: 50 }],
+      slide: [{ note: 62, at: 0, duration: 0.08, gain: 0.15, wave: 'sine', endNote: 67 }],
+      merge: [{ note: 67, at: 0, duration: 0.11, gain: 0.24, wave: 'sine' }, { note: 74, at: 0.07, duration: 0.2, gain: 0.24, wave: 'triangle' }],
+      blocked: [{ note: 53, at: 0, duration: 0.12, gain: 0.16, wave: 'sine', endNote: 50 }],
     },
   },
 
@@ -178,11 +178,13 @@ export const extendedProfiles = {
       finish: [{ note: 67, at: 0, duration: 0.18, gain: 0.24, wave: 'triangle' }, { note: 64, at: 0.12, duration: 0.3, gain: 0.25, wave: 'sine' }],
       win: [{ note: 64, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 71, at: 0.1, duration: 0.16, gain: 0.25, wave: 'triangle' }, { note: 76, at: 0.22, duration: 0.38, gain: 0.3, wave: 'sine' }],
       score: [{ note: 71, duration: 0.08, gain: 0.18, wave: 'sine' }],
+      hit: [{ note: 67, at: 0, duration: 0.07, gain: 0.22, wave: 'sine' }],
+      wall: [{ note: 60, at: 0, duration: 0.05, gain: 0.16, wave: 'sine' }],
+      miss: [{ note: 52, at: 0, duration: 0.15, gain: 0.2, wave: 'triangle', endNote: 45 }],
     },
   },
 
   breaker: {
-    autoScore: true,
     music: {
       bpm: 124,
       steps: 32,
@@ -206,11 +208,14 @@ export const extendedProfiles = {
       finish: [{ note: 72, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 69, at: 0.12, duration: 0.3, gain: 0.25, wave: 'sine' }],
       win: [{ note: 69, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 74, at: 0.1, duration: 0.16, gain: 0.26, wave: 'triangle' }, { note: 81, at: 0.22, duration: 0.38, gain: 0.3, wave: 'sine' }],
       score: [{ note: 76, duration: 0.07, gain: 0.18, wave: 'triangle' }],
+      hit: [{ note: 64, at: 0, duration: 0.07, gain: 0.2, wave: 'triangle' }],
+      wall: [{ note: 59, at: 0, duration: 0.05, gain: 0.16, wave: 'sine' }],
+      break: [{ note: 72, at: 0, duration: 0.08, gain: 0.24, wave: 'triangle' }, { note: 77, at: 0.04, duration: 0.12, gain: 0.18, wave: 'sine' }],
+      miss: [{ note: 52, at: 0, duration: 0.15, gain: 0.18, wave: 'triangle', endNote: 45 }],
     },
   },
 
   flap: {
-    autoScore: true,
     music: {
       bpm: 116,
       steps: 32,
@@ -234,11 +239,13 @@ export const extendedProfiles = {
       finish: [{ note: 69, at: 0, duration: 0.18, gain: 0.22, wave: 'triangle' }, { note: 65, at: 0.12, duration: 0.3, gain: 0.24, wave: 'sine' }],
       win: [{ note: 65, at: 0, duration: 0.15, gain: 0.25, wave: 'sine' }, { note: 72, at: 0.1, duration: 0.15, gain: 0.25, wave: 'sine' }, { note: 77, at: 0.22, duration: 0.4, gain: 0.3, wave: 'triangle' }],
       score: [{ note: 77, duration: 0.08, gain: 0.18, wave: 'sine' }],
+      flap: [{ note: 60, at: 0, duration: 0.07, gain: 0.2, wave: 'sine', endNote: 69 }],
+      pass: [{ note: 72, at: 0, duration: 0.1, gain: 0.22, wave: 'sine' }, { note: 77, at: 0.06, duration: 0.16, gain: 0.2, wave: 'triangle' }],
+      crash: [{ note: 53, at: 0, duration: 0.16, gain: 0.2, wave: 'triangle', endNote: 44 }],
     },
   },
 
   pin: {
-    autoScore: true,
     music: {
       bpm: 108,
       steps: 32,
@@ -262,11 +269,13 @@ export const extendedProfiles = {
       finish: [{ note: 71, at: 0, duration: 0.16, gain: 0.24, wave: 'triangle' }, { note: 67, at: 0.12, duration: 0.28, gain: 0.22, wave: 'sine' }],
       win: [{ note: 71, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 74, at: 0.1, duration: 0.14, gain: 0.25, wave: 'sine' }, { note: 78, at: 0.22, duration: 0.38, gain: 0.3, wave: 'triangle' }],
       score: [{ note: 74, duration: 0.07, gain: 0.18, wave: 'sine' }],
+      shoot: [{ note: 64, at: 0, duration: 0.05, gain: 0.16, wave: 'sine', endNote: 71 }],
+      pin: [{ note: 76, at: 0, duration: 0.07, gain: 0.24, wave: 'triangle' }, { note: 83, at: 0.03, duration: 0.12, gain: 0.2, wave: 'sine' }],
+      crash: [{ note: 55, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle', endNote: 43 }],
     },
   },
 
   zigzag: {
-    autoScore: true,
     music: {
       bpm: 128,
       steps: 32,
@@ -290,11 +299,13 @@ export const extendedProfiles = {
       finish: [{ note: 65, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 62, at: 0.12, duration: 0.28, gain: 0.24, wave: 'sine' }],
       win: [{ note: 62, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 67, at: 0.1, duration: 0.14, gain: 0.25, wave: 'triangle' }, { note: 74, at: 0.22, duration: 0.38, gain: 0.3, wave: 'sine' }],
       score: [{ note: 72, duration: 0.07, gain: 0.18, wave: 'triangle' }],
+      turn: [{ note: 64, at: 0, duration: 0.05, gain: 0.18, wave: 'triangle', endNote: 67 }],
+      gem: [{ note: 76, at: 0, duration: 0.09, gain: 0.24, wave: 'sine' }, { note: 83, at: 0.07, duration: 0.18, gain: 0.22, wave: 'triangle' }],
+      miss: [{ note: 50, at: 0, duration: 0.16, gain: 0.2, wave: 'triangle', endNote: 42 }],
     },
   },
 
   chop: {
-    autoScore: true,
     music: {
       bpm: 132,
       steps: 32,
@@ -318,11 +329,12 @@ export const extendedProfiles = {
       finish: [{ note: 71, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 67, at: 0.12, duration: 0.28, gain: 0.24, wave: 'sine' }],
       win: [{ note: 67, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 71, at: 0.1, duration: 0.14, gain: 0.25, wave: 'triangle' }, { note: 79, at: 0.22, duration: 0.38, gain: 0.3, wave: 'sine' }],
       score: [{ note: 79, duration: 0.07, gain: 0.18, wave: 'sine' }],
+      chop: [{ note: 55, at: 0, duration: 0.06, gain: 0.24, wave: 'triangle', endNote: 48 }, { note: 67, at: 0, duration: 0.05, gain: 0.16, wave: 'sine' }],
+      crash: [{ note: 48, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle', endNote: 38 }],
     },
   },
 
   meteor: {
-    autoScore: true,
     music: {
       bpm: 110,
       steps: 32,
@@ -346,11 +358,12 @@ export const extendedProfiles = {
       finish: [{ note: 64, at: 0, duration: 0.18, gain: 0.22, wave: 'triangle' }, { note: 61, at: 0.12, duration: 0.3, gain: 0.24, wave: 'sine' }],
       win: [{ note: 61, at: 0, duration: 0.15, gain: 0.24, wave: 'sine' }, { note: 68, at: 0.1, duration: 0.15, gain: 0.25, wave: 'triangle' }, { note: 73, at: 0.22, duration: 0.4, gain: 0.3, wave: 'sine' }],
       score: [{ note: 73, duration: 0.08, gain: 0.18, wave: 'sine' }],
+      star: [{ note: 76, at: 0, duration: 0.08, gain: 0.22, wave: 'sine' }, { note: 83, at: 0.06, duration: 0.18, gain: 0.22, wave: 'triangle' }],
+      crash: [{ note: 45, at: 0, duration: 0.18, gain: 0.24, wave: 'triangle', endNote: 36 }],
     },
   },
 
   hop: {
-    autoScore: true,
     music: {
       bpm: 122,
       steps: 32,
@@ -374,11 +387,14 @@ export const extendedProfiles = {
       finish: [{ note: 64, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 60, at: 0.12, duration: 0.28, gain: 0.24, wave: 'sine' }],
       win: [{ note: 60, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 67, at: 0.1, duration: 0.14, gain: 0.25, wave: 'triangle' }, { note: 72, at: 0.22, duration: 0.38, gain: 0.3, wave: 'triangle' }],
       score: [{ note: 72, duration: 0.07, gain: 0.18, wave: 'triangle' }],
+      bounce: [{ note: 60, at: 0, duration: 0.09, gain: 0.22, wave: 'triangle', endNote: 67 }],
+      spring: [{ note: 67, at: 0, duration: 0.14, gain: 0.26, wave: 'sine', endNote: 81 }],
+      break: [{ note: 52, at: 0, duration: 0.08, gain: 0.18, wave: 'triangle', endNote: 45 }],
+      miss: [{ note: 48, at: 0, duration: 0.16, gain: 0.2, wave: 'triangle', endNote: 40 }],
     },
   },
 
   chroma: {
-    autoScore: true,
     music: {
       bpm: 120,
       steps: 32,
@@ -402,11 +418,14 @@ export const extendedProfiles = {
       finish: [{ note: 68, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 64, at: 0.12, duration: 0.28, gain: 0.24, wave: 'sine' }],
       win: [{ note: 64, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 71, at: 0.1, duration: 0.14, gain: 0.25, wave: 'triangle' }, { note: 76, at: 0.22, duration: 0.38, gain: 0.3, wave: 'sine' }],
       score: [{ note: 76, duration: 0.07, gain: 0.18, wave: 'sine' }],
+      bounce: [{ note: 64, at: 0, duration: 0.08, gain: 0.2, wave: 'sine', endNote: 71 }],
+      star: [{ note: 76, at: 0, duration: 0.1, gain: 0.24, wave: 'triangle' }, { note: 81, at: 0.06, duration: 0.16, gain: 0.22, wave: 'sine' }],
+      switch: [{ note: 69, at: 0, duration: 0.08, gain: 0.2, wave: 'sine' }, { note: 74, at: 0.06, duration: 0.12, gain: 0.2, wave: 'triangle' }],
+      crash: [{ note: 52, at: 0, duration: 0.16, gain: 0.2, wave: 'triangle', endNote: 42 }],
     },
   },
 
   drop: {
-    autoScore: true,
     music: {
       bpm: 114,
       steps: 32,
@@ -430,11 +449,13 @@ export const extendedProfiles = {
       finish: [{ note: 69, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 66, at: 0.12, duration: 0.28, gain: 0.24, wave: 'sine' }],
       win: [{ note: 66, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 73, at: 0.1, duration: 0.14, gain: 0.25, wave: 'triangle' }, { note: 78, at: 0.22, duration: 0.38, gain: 0.3, wave: 'sine' }],
       score: [{ note: 73, duration: 0.07, gain: 0.18, wave: 'sine' }],
+      drop: [{ note: 69, at: 0, duration: 0.08, gain: 0.2, wave: 'sine', endNote: 62 }],
+      gem: [{ note: 74, at: 0, duration: 0.08, gain: 0.22, wave: 'sine' }, { note: 81, at: 0.06, duration: 0.16, gain: 0.2, wave: 'triangle' }],
+      crash: [{ note: 50, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle', endNote: 40 }],
     },
   },
 
   invaders: {
-    autoScore: true,
     music: {
       bpm: 112,
       steps: 32,
@@ -458,11 +479,15 @@ export const extendedProfiles = {
       finish: [{ note: 63, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 60, at: 0.12, duration: 0.28, gain: 0.24, wave: 'sine' }],
       win: [{ note: 60, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 67, at: 0.1, duration: 0.14, gain: 0.25, wave: 'triangle' }, { note: 72, at: 0.22, duration: 0.38, gain: 0.3, wave: 'triangle' }],
       score: [{ note: 67, duration: 0.07, gain: 0.18, wave: 'triangle' }],
+      shoot: [{ note: 76, at: 0, duration: 0.06, gain: 0.18, wave: 'triangle', endNote: 59 }],
+      invader: [{ note: 55, at: 0, duration: 0.08, gain: 0.22, wave: 'triangle', endNote: 43 }, { note: 67, at: 0.02, duration: 0.07, gain: 0.18, wave: 'sine' }],
+      wave: [{ note: 67, at: 0, duration: 0.12, gain: 0.24, wave: 'sine' }, { note: 72, at: 0.09, duration: 0.14, gain: 0.24, wave: 'triangle' }, { note: 79, at: 0.18, duration: 0.26, gain: 0.26, wave: 'sine' }],
+      hit: [{ note: 50, at: 0, duration: 0.14, gain: 0.22, wave: 'triangle', endNote: 40 }],
+      crash: [{ note: 46, at: 0, duration: 0.18, gain: 0.24, wave: 'triangle', endNote: 36 }],
     },
   },
 
   crossy: {
-    autoScore: true,
     music: {
       bpm: 116,
       steps: 32,
@@ -486,11 +511,13 @@ export const extendedProfiles = {
       finish: [{ note: 66, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 62, at: 0.12, duration: 0.28, gain: 0.24, wave: 'sine' }],
       win: [{ note: 62, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 69, at: 0.1, duration: 0.14, gain: 0.25, wave: 'triangle' }, { note: 74, at: 0.22, duration: 0.38, gain: 0.3, wave: 'sine' }],
       score: [{ note: 74, duration: 0.07, gain: 0.18, wave: 'sine' }],
+      hop: [{ note: 62, at: 0, duration: 0.07, gain: 0.2, wave: 'triangle', endNote: 69 }],
+      lane: [{ note: 71, at: 0, duration: 0.09, gain: 0.22, wave: 'sine' }, { note: 76, at: 0.06, duration: 0.14, gain: 0.2, wave: 'triangle' }],
+      crash: [{ note: 48, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle', endNote: 40 }],
     },
   },
 
   target: {
-    autoScore: true,
     music: {
       bpm: 92,
       steps: 32,
@@ -514,11 +541,14 @@ export const extendedProfiles = {
       finish: [{ note: 72, at: 0, duration: 0.18, gain: 0.22, wave: 'triangle' }, { note: 69, at: 0.12, duration: 0.3, gain: 0.24, wave: 'sine' }],
       win: [{ note: 69, at: 0, duration: 0.15, gain: 0.24, wave: 'sine' }, { note: 76, at: 0.1, duration: 0.15, gain: 0.25, wave: 'triangle' }, { note: 81, at: 0.22, duration: 0.4, gain: 0.3, wave: 'sine' }],
       score: [{ note: 81, duration: 0.08, gain: 0.18, wave: 'sine' }],
+      shoot: [{ note: 72, at: 0, duration: 0.07, gain: 0.18, wave: 'sine', endNote: 58 }],
+      hit: [{ note: 60, at: 0, duration: 0.08, gain: 0.22, wave: 'triangle', endNote: 55 }],
+      bullseye: [{ note: 72, at: 0, duration: 0.12, gain: 0.25, wave: 'sine' }, { note: 79, at: 0.08, duration: 0.16, gain: 0.25, wave: 'triangle' }, { note: 84, at: 0.18, duration: 0.3, gain: 0.28, wave: 'sine' }],
+      miss: [{ note: 52, at: 0, duration: 0.15, gain: 0.18, wave: 'triangle', endNote: 44 }],
     },
   },
 
   pop: {
-    autoScore: true,
     music: {
       bpm: 100,
       steps: 32,
@@ -542,6 +572,9 @@ export const extendedProfiles = {
       finish: [{ note: 67, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 63, at: 0.12, duration: 0.28, gain: 0.24, wave: 'sine' }],
       win: [{ note: 63, at: 0, duration: 0.14, gain: 0.24, wave: 'sine' }, { note: 70, at: 0.1, duration: 0.14, gain: 0.25, wave: 'triangle' }, { note: 75, at: 0.22, duration: 0.38, gain: 0.3, wave: 'sine' }],
       score: [{ note: 75, duration: 0.07, gain: 0.18, wave: 'sine' }],
+      pop: [{ note: 67, at: 0, duration: 0.08, gain: 0.22, wave: 'sine', endNote: 74 }],
+      combo: [{ note: 72, at: 0, duration: 0.1, gain: 0.22, wave: 'sine' }, { note: 76, at: 0.06, duration: 0.12, gain: 0.22, wave: 'triangle' }, { note: 81, at: 0.12, duration: 0.22, gain: 0.24, wave: 'sine' }],
+      miss: [{ note: 51, at: 0, duration: 0.16, gain: 0.2, wave: 'triangle', endNote: 43 }],
     },
   },
 };

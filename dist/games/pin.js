@@ -41,6 +41,7 @@ export function createPin(mount,api){
 
   function shoot(){
     if(!running||flyingPin)return;
+    api.audio?.play('shoot');
     const f=view.field;
     const cx=f.x+f.w/2;
     const cy=f.y+f.h*0.38;
@@ -180,13 +181,14 @@ export function createPin(mount,api){
             const hitX=cx;
             const hitY=cy+WHEEL_R+PIN_LEN;
             spawnSparks(hitX,hitY,'#ff3b30');
-            api.finish('Pin Clash!',`${score} pins placed cleanly. Tap to play again.`,score);
+            api.finish('Pin Clash!',`${score} pins placed cleanly. Tap to play again.`,score,'crash');
             return;
           }else{
             // Successfully embedded!
             pins.push({angle:embedAngle,id:flyingPin.id});
             score++;
             api.score(score);
+            api.audio?.play('pin',{pitch:Math.min(8,Math.floor(score/3))});
             flashTimer=0.08;
             spawnSparks(cx,cy+WHEEL_R+PIN_LEN,'#ff5c77');
 

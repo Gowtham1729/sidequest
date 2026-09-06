@@ -121,7 +121,7 @@ export function createHop(mount, api) {
 
   function die() {
     running = false;
-    api.finish('Fell down!', `Reached height of ${score}m. Tap to leap again!`, score);
+    api.finish('Fell down!', `Reached height of ${score}m. Tap to leap again!`, score, 'miss');
   }
 
   function addBounceParticles(x, y, color) {
@@ -206,6 +206,7 @@ export function createHop(mount, api) {
         ) {
           if (p.type === 'fragile') {
             p.broken = true;
+            api.audio?.play('break');
             addBounceParticles(px, p.y, '#c4824d');
             // Small stumble bounce
             vy = BOUNCE_VY * 0.55;
@@ -213,10 +214,12 @@ export function createHop(mount, api) {
           } else if (p.type === 'spring') {
             vy = SUPER_BOUNCE_VY;
             squash = 0.5;
+            api.audio?.play('spring');
             addBounceParticles(px, p.y, '#ffd24c');
           } else {
             vy = BOUNCE_VY;
             squash = 0.65;
+            api.audio?.play('bounce');
             addBounceParticles(px, p.y, '#69f0ae');
           }
           break;

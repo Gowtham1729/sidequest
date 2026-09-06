@@ -134,11 +134,12 @@ export function createInvaders(mount, api) {
 
   function die() {
     running = false;
-    api.finish('Invasion Failed!', `Cleared ${score} invaders across Wave ${wave}. Tap to fight again!`, score);
+    api.finish('Invasion Failed!', `Cleared ${score} invaders across Wave ${wave}. Tap to fight again!`, score, 'crash');
   }
 
   function hitPlayer() {
     lives--;
+    api.audio?.play('hit');
     // Turret damage explosion
     for (let i = 0; i < 15; i++) {
       const a = Math.random() * Math.PI * 2;
@@ -187,6 +188,7 @@ export function createInvaders(mount, api) {
         y: ty - TURRET_H / 2,
         vy: -520
       });
+      api.audio?.play('shoot');
       fireCooldown = FIRE_RATE;
     }
 
@@ -230,6 +232,7 @@ export function createInvaders(mount, api) {
           const pts = al.type * 10;
           score += pts;
           api.score(score);
+          api.audio?.play('invader',{pitch:al.type*2});
 
           // Alien death particles
           const color = al.type === 3 ? '#ff4081' : (al.type === 2 ? '#00e5ff' : '#ffe57f');
@@ -261,6 +264,7 @@ export function createInvaders(mount, api) {
       wave++;
       score += 100;
       api.score(score);
+      api.audio?.play('wave');
       spawnSwarm();
       return;
     }

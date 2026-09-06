@@ -141,13 +141,14 @@ export function createBreaker(mount,api){
       y+=vy*dt;
 
       // Wall collisions
-      if(x<f.x+8){x=f.x+8;vx=Math.abs(vx);}
-      if(x>f.x+f.w-8){x=f.x+f.w-8;vx=-Math.abs(vx);}
-      if(y<f.y+8){y=f.y+8;vy=Math.abs(vy);}
+      if(x<f.x+8){x=f.x+8;vx=Math.abs(vx);api.audio?.play('wall');}
+      if(x>f.x+f.w-8){x=f.x+f.w-8;vx=-Math.abs(vx);api.audio?.play('wall');}
+      if(y<f.y+8){y=f.y+8;vy=Math.abs(vy);api.audio?.play('wall');}
 
       // Paddle collision
       if(vy>0&&prevY+6<=py&&y+6>=py&&Math.abs(x-paddle)<=pw/2+6){
         y=py-7;
+        api.audio?.play('hit');
         const hitOffset=(x-paddle)/(pw/2+6);
         const speed=Math.min(520,300+score*.15);
         vx=Math.sin(hitOffset*1.15)*speed;
@@ -166,6 +167,7 @@ export function createBreaker(mount,api){
           remaining--;
           score+=b.points;
           api.score(score);
+          api.audio?.play('break',{pitch:Math.min(8,Math.floor(score/60))});
           spawnParticles(b.x+b.w/2,b.y+b.h/2,b.color);
 
           // Determine bounce direction
@@ -187,13 +189,13 @@ export function createBreaker(mount,api){
       // Win condition: All bricks cleared
       if(remaining===0){
         running=false;
-        api.finish('Board Cleared!','You smashed all the bricks!',score);
+        api.finish('Board Cleared!','You smashed all the bricks!',score,'win');
       }
 
       // Ball falls below paddle
       if(y>f.y+f.h+12){
         running=false;
-        api.finish('Ball dropped',`${score} points scored. Play again to beat it.`,score);
+        api.finish('Ball dropped',`${score} points scored. Play again to beat it.`,score,'miss');
       }
     }
     draw();

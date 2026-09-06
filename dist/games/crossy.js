@@ -150,6 +150,7 @@ export function createCrossy(mount, api) {
 
     idleTime = 0; // reset idle
     facing = dir;
+    api.audio?.play('hop');
 
     if (dir === 'up') {
       playerGridY++;
@@ -157,6 +158,7 @@ export function createCrossy(mount, api) {
         maxRowReached = playerGridY;
         score = maxRowReached;
         api.score(score);
+        api.audio?.play('lane',{pitch:Math.min(8,Math.floor(score/4))});
       }
     } else if (dir === 'left') {
       if (playerGridX > 0) playerGridX--;
@@ -185,7 +187,7 @@ export function createCrossy(mount, api) {
         maxLife: 0.4
       });
     }
-    api.finish(reason, `Crossed ${score} lanes. Tap to hop again!`, score);
+    api.finish(reason, `Crossed ${score} lanes. Tap to hop again!`, score, 'crash');
   }
 
   function update(dt) {

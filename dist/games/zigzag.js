@@ -53,6 +53,7 @@ export function createZigZag(mount,api){
     dir=dir===0?1:0;
     score++;
     api.score(score);
+    api.audio?.play('turn',{pitch:Math.min(6,Math.floor(score/12))});
     // Pulse particles
     for(let i=0;i<3;i++){
       particles.push({
@@ -219,6 +220,7 @@ export function createZigZag(mount,api){
               c.collected=true;
               score+=2;
               api.score(score);
+              api.audio?.play('gem');
               for(let i=0;i<8;i++){
                 particles.push({
                   x:c.x,y:c.y,
@@ -245,7 +247,7 @@ export function createZigZag(mount,api){
         ballZ+=fallVy*dt;
         if(ballZ>350){
           running=false;
-          api.finish('Fell Off!',`${score} steps navigated. Tap to retry.`,score);
+          api.finish('Fell Off!',`${score} steps navigated. Tap to retry.`,score,'miss');
           return;
         }
       }

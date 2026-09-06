@@ -50,6 +50,7 @@ export function createFlap(mount,api){
   function flap(){
     if(!running)return;
     birdVy=JUMP;
+    api.audio?.play('flap');
     // Spawn subtle puff particles behind bird
     const bx=BIRD_X();
     for(let i=0;i<4;i++){
@@ -152,7 +153,7 @@ export function createFlap(mount,api){
       }
       if(birdY+BIRD_R>f.y+f.h){
         running=false;
-        api.finish('Game Over',`${score} pipes passed. Tap to flap again!`,score);
+        api.finish('Game Over',`${score} pipes passed. Tap to flap again!`,score,'crash');
         return;
       }
 
@@ -173,13 +174,14 @@ export function createFlap(mount,api){
           p.passed=true;
           score++;
           api.score(score);
+          api.audio?.play('pass',{pitch:Math.min(8,Math.floor(score/2))});
         }
 
         // Pipe collision
         if(bx+BIRD_R*0.8>p.x&&bx-BIRD_R*0.8<p.x+PIPE_W){
           if(birdY-BIRD_R*0.75<f.y+p.top||birdY+BIRD_R*0.75>f.y+p.bot){
             running=false;
-            api.finish('Pipe Crash!',`You cleared ${score} pipes. Tap to retry.`,score);
+            api.finish('Pipe Crash!',`You cleared ${score} pipes. Tap to retry.`,score,'crash');
             return;
           }
         }

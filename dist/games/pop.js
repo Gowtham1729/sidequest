@@ -142,6 +142,11 @@ export function createPop(mount, api) {
     comboChain++;
     score += pts;
     api.score(score);
+    if (cluster.length >= 5) {
+      api.audio?.play('combo');
+    } else {
+      api.audio?.play('pop', { pitch: Math.min(8, cluster.length - 2) });
+    }
 
     // Add time bonus: +1.2s per pop, up to MAX_TIME
     timeLeft = Math.min(MAX_TIME, timeLeft + 1.2 + Math.min(3, cluster.length * 0.2));
@@ -212,7 +217,7 @@ export function createPop(mount, api) {
 
   function die() {
     running = false;
-    api.finish('Time Up!', `Popped ${score} points! Tap to play again.`, score);
+    api.finish('Time Up!', `Popped ${score} points! Tap to play again.`, score, 'miss');
   }
 
   function update(dt) {

@@ -128,13 +128,14 @@ export function createPong(mount,api){
       y+=vy*dt;
 
       // Side wall bounces
-      if(x<f.x+9){x=f.x+9;vx=Math.abs(vx);}
-      if(x>f.x+f.w-9){x=f.x+f.w-9;vx=-Math.abs(vx);}
+      if(x<f.x+9){x=f.x+9;vx=Math.abs(vx);api.audio?.play('wall');}
+      if(x>f.x+f.w-9){x=f.x+f.w-9;vx=-Math.abs(vx);api.audio?.play('wall');}
 
       // AI paddle collision (top)
       if(vy<0&&prevY-7>=aiY&&y-7<=aiY&&Math.abs(x-aiX)<=pw/2+7){
         y=aiY+8;
         rally++;
+        api.audio?.play('hit',{pitch:-2});
         const speed=Math.min(620,240+rally*18);
         const hitOffset=(x-aiX)/(pw/2+7);
         vx=Math.sin(hitOffset*1.1)*speed;
@@ -145,6 +146,7 @@ export function createPong(mount,api){
       if(vy>0&&prevY+7<=playerY&&y+7>=playerY&&Math.abs(x-playerX)<=pw/2+7){
         y=playerY-8;
         rally++;
+        api.audio?.play('hit',{pitch:Math.min(6,Math.floor(rally/3))});
         const speed=Math.min(620,240+rally*18);
         const hitOffset=(x-playerX)/(pw/2+7);
         vx=Math.sin(hitOffset*1.1)*speed;
@@ -155,9 +157,10 @@ export function createPong(mount,api){
       if(y<f.y-10){
         playerScore++;
         api.score(playerScore);
+        api.audio?.play('score');
         if(playerScore>=WIN_SCORE){
           running=false;
-          api.finish('You win!',`Victory ${playerScore} to ${aiScore} against CPU!`,playerScore);
+          api.finish('You win!',`Victory ${playerScore} to ${aiScore} against CPU!`,playerScore,'win');
         }else{
           serve(0.9,-1);
         }
@@ -166,9 +169,10 @@ export function createPong(mount,api){
       // AI scores past player (ball goes past bottom)
       if(y>f.y+f.h+10){
         aiScore++;
+        api.audio?.play('miss');
         if(aiScore>=WIN_SCORE){
           running=false;
-          api.finish('CPU wins',`CPU defeated you ${aiScore} to ${playerScore}.`,playerScore);
+          api.finish('CPU wins',`CPU defeated you ${aiScore} to ${playerScore}.`,playerScore,'miss');
         }else{
           serve(0.9,1);
         }

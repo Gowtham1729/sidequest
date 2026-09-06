@@ -36,11 +36,11 @@ function stepCountdown(step){
  const digit=$('countdown-digit');if(!digit)return;
  if(step>0){
   digit.textContent=step;digit.style.animation='none';void digit.offsetWidth;digit.style.animation='';
-  audio.play('count',{pitch:(3-step)*2});announce(String(step));
+  announce(String(step));
   countdownTimer=setTimeout(()=>stepCountdown(step-1),350);
  }else{
   digit.textContent='GO!';digit.style.animation='none';void digit.offsetWidth;digit.style.animation='';
-  audio.play('go');announce('GO!');
+  announce('GO!');
   countdownTimer=setTimeout(launchGame,180);
  }
 }

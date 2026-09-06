@@ -193,6 +193,7 @@ export function createMeteor(mount,api){
           g.collected=true;
           score+=3;
           api.score(score);
+          api.audio?.play('star');
           explode(g.x,g.y,'#ffd700');
           gems.splice(i,1);
           continue;
@@ -212,7 +213,7 @@ export function createMeteor(mount,api){
           running=false;
           explode(shipX,shipY,'#bd7bff');
           explode(m.x,m.y,'#ff7543');
-          api.finish('Hull Breached!',`You survived ${score} meteors. Tap to retry.`,score);
+          api.finish('Hull Breached!',`You survived ${score} meteors. Tap to retry.`,score,'crash');
           return;
         }
 

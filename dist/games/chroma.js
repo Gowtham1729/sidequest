@@ -134,6 +134,7 @@ export function createChroma(mount, api) {
       return;
     }
     vy = JUMP_IMP;
+    api.audio?.play('bounce');
 
     // Small jump puff particles
     const f = view.field;
@@ -155,6 +156,7 @@ export function createChroma(mount, api) {
 
   function die() {
     running = false;
+    api.finish('Color Mismatch!', `Passed through ${score} color rings. Tap to try again!`, score, 'crash');
     // Explode into colored bits
     const f = view.field;
     const cx = f.x + f.w / 2;
@@ -245,6 +247,7 @@ export function createChroma(mount, api) {
         if (p.type === 'star') {
           score++;
           api.score(score);
+          api.audio?.play('star',{pitch:Math.min(8,Math.floor(score/3))});
           // Star sparks
           for (let i = 0; i < 12; i++) {
             const a = (i / 12) * Math.PI * 2;
@@ -266,6 +269,7 @@ export function createChroma(mount, api) {
             newColor = (newColor + 1) % COLORS.length;
           }
           playerColorIdx = newColor;
+          api.audio?.play('switch');
 
           // Color explosion
           for (let i = 0; i < 16; i++) {
