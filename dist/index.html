@@ -16,7 +16,7 @@
     <div id="scene" class="scene">
       <div id="arena" class="arena" tabindex="0" role="group" aria-label="Tap anywhere or press Space to start the game"><div id="game-mount"></div></div>
       <header id="top-hud" class="top-hud" data-feed-zone>
-        <div class="brand">sidequest<span>.</span></div>
+        <div class="brand-group"><div class="brand">sidequest<span>.</span></div><button id="audio-open" class="audio-chip" data-audio-control aria-label="Sound settings" aria-haspopup="dialog"><span aria-hidden="true">♪</span><span id="audio-chip-label">Sound on</span></button></div>
         <div class="score-block"><span id="score-label">HEIGHT</span><strong id="score">00</strong></div>
         <div class="best-block"><span>VISIT BEST</span><strong id="best">—</strong></div>
       </header>
@@ -48,8 +48,18 @@
   </dialog>
   <dialog id="help-dialog" class="sheet" aria-labelledby="help-title">
     <div class="sheet-grip" data-sheet-drag><span></span></div><p class="eyebrow">A FEW SIMPLE GESTURES</p><h2 id="help-title">Go with the flow<span>.</span></h2>
-    <dl class="gesture-guide"><div><dt>Tap</dt><dd>Start, play again, or resume.</dd></div><div><dt>Hold still</dt><dd>Pause your game. Double-tap the paused screen to restart.</dd></div><div><dt>Swipe up / down</dt><dd>Next / previous game between rounds.</dd></div><div><dt>Swipe at the right edge</dt><dd>Switch games during play. You can also swipe with two fingers anywhere.</dd></div><div><dt>Swipe right</dt><dd>Open all games between rounds, or on the bottom title area during play.</dd></div></dl>
-    <p class="sheet-hint">Keyboard: Space to play · P to pause · N / B to browse<br>R to restart · G for games · ? for help<br>Swipe down on the handle to return</p><button class="sr-only focusable dialog-close">Close gesture help</button>
+    <dl class="gesture-guide"><div><dt>Sound &amp; music</dt><dd>Tap the sound label below Sidequest to adjust music and effects separately.</dd></div><div><dt>Tap</dt><dd>Start, play again, or resume.</dd></div><div><dt>Hold still</dt><dd>Pause your game. Double-tap the paused screen to restart.</dd></div><div><dt>Swipe up / down</dt><dd>Next / previous game between rounds.</dd></div><div><dt>Swipe at the right edge</dt><dd>Switch games during play. You can also swipe with two fingers anywhere.</dd></div><div><dt>Swipe right</dt><dd>Open all games between rounds, or on the bottom title area during play.</dd></div></dl>
+    <p class="sheet-hint">Keyboard: Space to play · P to pause · N / B to browse<br>R to restart · G for games · M to mute · ? for help<br>Swipe down on the handle to return</p><button class="sr-only focusable dialog-close">Close gesture help</button>
+  </dialog>
+  <dialog id="audio-dialog" class="sheet audio-sheet" aria-labelledby="audio-title">
+    <div class="sheet-grip" data-sheet-drag><span></span></div>
+    <p class="eyebrow">FIND YOUR VOLUME</p><h2 id="audio-title">Sound &amp; music<span>.</span></h2>
+    <p id="audio-description" class="audio-description">A soundtrack for every sidequest.</p>
+    <label class="audio-switch"><span>Mute all</span><input id="audio-muted" type="checkbox" role="switch"></label>
+    <div class="audio-channel"><label class="audio-switch"><span>Sound effects</span><input id="audio-effects" type="checkbox" role="switch"></label><div class="audio-volume"><label for="audio-effects-volume">Effects volume</label><output id="audio-effects-value" for="audio-effects-volume">65%</output><input id="audio-effects-volume" type="range" min="0" max="100" step="1" value="65"></div></div>
+    <div class="audio-channel"><label class="audio-switch"><span>Music</span><input id="audio-music" type="checkbox" role="switch"></label><div class="audio-volume"><label for="audio-music-volume">Music volume</label><output id="audio-music-value" for="audio-music-volume">40%</output><input id="audio-music-volume" type="range" min="0" max="100" step="1" value="40"></div></div>
+    <div class="audio-actions"><button id="audio-preview" type="button">Try a sound</button><button class="dialog-close" type="button">Done</button></div>
+    <p class="sheet-hint">Music follows your game. Your preferences stay on this device.<br>Swipe down to return · M to mute</p>
   </dialog>
   <div class="sr-only" id="announcement" role="status" aria-live="polite"></div>
   <noscript><p class="noscript">Enable JavaScript to play Sidequest.</p></noscript>

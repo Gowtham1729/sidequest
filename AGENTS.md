@@ -9,9 +9,12 @@ When adding a game, follow the registry contract in `dist/registry.js`, use the 
 Validation for a static change:
 
 ```bash
-for file in dist/app.js dist/feed.js dist/gestures.js dist/registry.js dist/games/*.js; do node --check "$file"; done
+for file in dist/*.js dist/games/*.js dist/audio/*.js; do node --check "$file" || exit 1; done
+node --test tests/*.test.mjs
 test -f dist/index.html
 test -f .openai/hosting.json
 ```
 
 Do not change `.openai/hosting.json`'s `project_id`, replace the Site with a new project, or add credentials to the repository.
+
+Audio is centralized in `dist/audio/engine.js`. Add palettes in `dist/audio/profiles.js` and emit named events with `api.audio?.play(event, options)`. Do not add game-owned audio contexts, volume settings, or looping timers. See README for synthesized and recorded audio contracts. Keep the audio HUD controls excluded from gameplay/feed pointer capture.
