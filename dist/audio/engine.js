@@ -10,7 +10,11 @@ export function readPreferences(storage) {
 }
 const frequency = note => 440 * 2 ** ((note - 69) / 12);
 
-// One context and two buses for the whole feed. Games only emit named events.
+const systemSounds = {
+  count: [{ note: 72, at: 0, duration: 0.08, gain: 0.18, wave: 'sine' }],
+  go: [{ note: 84, at: 0, duration: 0.16, gain: 0.24, wave: 'triangle' }, { note: 88, at: 0.07, duration: 0.22, gain: 0.22, wave: 'sine' }]
+};
+
 export class GameAudio {
   constructor({createContext, storage, setInterval:setTimer=globalThis.setInterval, clearInterval:clearTimer=globalThis.clearInterval, fetch:fetchFile=globalThis.fetch} = {}) {
     this.createContext = createContext || (() => {
@@ -87,7 +91,7 @@ export class GameAudio {
   }
   play(event, {pitch=0}={}) {
     if (!this.canPlay('effects')) return;
-    const sound=this.profile.sounds?.[event]; if (!sound) return;
+    const sound=this.profile.sounds?.[event] || systemSounds[event]; if (!sound) return;
     const now=this.context.currentTime;
     if (now-(this.cooldowns.get(event)??-Infinity)<(event==='score'?.18:.045)) return;
     this.cooldowns.set(event, now);

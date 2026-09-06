@@ -9,7 +9,7 @@ const audio=new GameAudio();
 const feed=new GameFeed(games.length),bests=new Map(),pointers=new Map();
 const hudObserver=new ResizeObserver(()=>{arcade.style.setProperty('--field-top',`${$('top-hud').offsetHeight+8}px`);arcade.style.setProperty('--field-bottom',`${$('bottom-hud').offsetHeight+8}px`);});
 hudObserver.observe($('top-hud'));hudObserver.observe($('bottom-hud'));
-let game,phase='ready',score=0,lastFrame=0,gesture=null,holdTimer=null,tapTimer=null,lastTap=0,lastNav=0,result=null;
+let game,phase='ready',score=0,lastFrame=0,gesture=null,holdTimer=null,tapTimer=null,countdownTimer=null,lastTap=0,lastNav=0,result=null;
 const directions={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down',a:'left',d:'right',w:'up',s:'down'};
 const current=()=>games[feed.current],modalOpen=()=>!!document.querySelector('dialog[open]');
 const announce=value=>{$('announcement').textContent=value;};
@@ -19,7 +19,7 @@ function setState(){
  audio.setPlaying(phase==='playing'&&!modalOpen());
  arcade.dataset.phase=phase;mount.inert=phase!=='playing';
  const meta=current(),ready=phase==='ready';
- $('gesture-hint').innerHTML=phase==='playing'?'Hold to pause <span>·</span> Edge swipe to switch':phase==='paused'?'Double-tap to restart <span>·</span> Swipe right for all games':'Swipe up to explore <span>·</span> Swipe right for all games';
+ $('gesture-hint').innerHTML=phase==='playing'?'Hold to pause <span>·</span> Edge swipe to switch':phase==='paused'?'Double-tap to restart <span>·</span> Swipe right for all games':phase==='countdown'?'Tap to skip <span>·</span> Edge swipe to switch':'Swipe up to explore <span>·</span> Swipe right for all games';
  $('overlay-eyebrow').textContent=ready?meta.eyebrow:phase==='paused'?'TAKE YOUR TIME':'ONE MORE ROUND?';
  title(ready?meta.title:phase==='paused'?'Catch your breath':result?.title||meta.title);
  $('overlay-subtitle').textContent=ready?meta.intro:phase==='paused'?'Your game is right here.':result?.subtitle||'';
@@ -30,11 +30,27 @@ function setState(){
  $('accessible-pause').disabled=phase!=='playing';
 }
 function finish(message,subtitle,finalScore,cue='finish'){if(phase!=='playing')return;if(current().lowerIsBetter&&finalScore)bests.set(current().id,Math.min(finalScore,bests.get(current().id)||Infinity));result={title:message,subtitle};phase='finished';clearTimeout(holdTimer);$('hold-feedback').classList.remove('visible');showScore(score);setState();audio.play(cue);announce(`${message} ${subtitle}`);}
-function start(){void audio.unlock();if(phase==='paused'){resume();return;}if(phase==='playing')return;clearTimeout(tapTimer);phase='playing';setState();game.start();audio.play('start');arena.focus({preventScroll:true});lastFrame=performance.now();announce(`${current().title} started.`);}
-function pause(){if(phase!=='playing')return;game.pause?.();game.cancel?.();phase='paused';setState();announce('Paused. Tap to resume, double-tap to restart, or swipe to browse.');}
+function cancelCountdown(){if(countdownTimer){clearTimeout(countdownTimer);countdownTimer=null;}}
+function launchGame(){cancelCountdown();phase='playing';setState();game.start();audio.play('start');arena.focus({preventScroll:true});lastFrame=performance.now();announce(`${current().title} started.`);}
+function stepCountdown(step){
+ const digit=$('countdown-digit');if(!digit)return;
+ if(step>0){
+  digit.textContent=step;digit.style.animation='none';void digit.offsetWidth;digit.style.animation='';
+  audio.play('count',{pitch:(3-step)*2});announce(String(step));
+  countdownTimer=setTimeout(()=>stepCountdown(step-1),350);
+ }else{
+  digit.textContent='GO!';digit.style.animation='none';void digit.offsetWidth;digit.style.animation='';
+  audio.play('go');announce('GO!');
+  countdownTimer=setTimeout(launchGame,180);
+ }
+}
+function startCountdown(){cancelCountdown();clearTimeout(tapTimer);phase='countdown';setState();stepCountdown(3);}
+function skipCountdown(){if(phase!=='countdown')return;cancelCountdown();launchGame();}
+function start(){void audio.unlock();if(phase==='paused'){resume();return;}if(phase==='playing')return;if(phase==='countdown'){skipCountdown();return;}startCountdown();}
+function pause(){if(phase==='countdown'){cancelCountdown();phase='ready';setState();return;}if(phase!=='playing')return;game.pause?.();game.cancel?.();phase='paused';setState();announce('Paused. Tap to resume, double-tap to restart, or swipe to browse.');}
 function resume(){if(phase!=='paused')return;void audio.unlock();phase='playing';setState();lastFrame=performance.now();arena.focus({preventScroll:true});announce('Game resumed.');}
 function renderGame(direction='next'){
- clearTimeout(tapTimer);lastTap=0;game?.destroy();mount.replaceChildren();phase='ready';result=null;score=0;
+ clearTimeout(tapTimer);cancelCountdown();lastTap=0;game?.destroy();mount.replaceChildren();phase='ready';result=null;score=0;
  const meta=current();arcade.style.setProperty('--accent',meta.accent);arcade.style.setProperty('--bg',meta.bg);arcade.style.setProperty('--glow',meta.glow);document.querySelector('meta[name="theme-color"]').content=meta.bg;
  $('game-title').textContent=meta.title;$('category').textContent=meta.category.toUpperCase();$('game-instruction').textContent=meta.hint;$('score-label').textContent=meta.scoreLabel;
  $('feed-count').textContent=`${String(feed.current+1).padStart(2,'0')} / ${String(games.length).padStart(2,'0')}`;
@@ -45,7 +61,7 @@ function renderGame(direction='next'){
  scene.classList.remove('enter-next','enter-prev','settle');scene.style.transform='';scene.style.opacity='';void scene.offsetWidth;scene.classList.add(direction==='prev'?'enter-prev':'enter-next');
  announce(`${meta.title}. ${meta.hint} Tap to start.`);
 }
-function navigate(direction){if(modalOpen())return;clearTimeout(tapTimer);lastNav=performance.now();if(direction==='prev'){if(feed.cursor===0)return;feed.previous();}else feed.next();renderGame(direction);}
+function navigate(direction){if(modalOpen())return;clearTimeout(tapTimer);cancelCountdown();lastNav=performance.now();if(direction==='prev'){if(feed.cursor===0)return;feed.previous();}else feed.next();renderGame(direction);}
 function updateHelpSheet(){
   const meta=current();if(!meta)return;
   $('help-glyph').textContent=meta.glyph;
@@ -57,14 +73,15 @@ function updateHelpSheet(){
   $('help-game-instructions').textContent=meta.instructions;
   $('help-game-chips').replaceChildren(...(meta.chips||[]).map(c=>{const s=document.createElement('span');s.className='help-chip';s.textContent=c;return s;}));
  }
-function openSheet(id){cancelGesture();pause();audio.setPlaying(false);if(id==='help-dialog')updateHelpSheet();$(id).showModal();}
-function restart(){renderGame();start();}
-function tap(){if(phase==='paused'){const now=performance.now();if(now-lastTap<280){clearTimeout(tapTimer);lastTap=0;restart();}else{lastTap=now;tapTimer=setTimeout(()=>{if(phase==='paused'&&!gesture&&!modalOpen())resume();},280);}}else start();}
+function openSheet(id){cancelGesture();cancelCountdown();pause();audio.setPlaying(false);if(id==='help-dialog')updateHelpSheet();$(id).showModal();}
+function restart(){cancelCountdown();renderGame();start();}
+function tap(){if(phase==='countdown'){skipCountdown();return;}if(phase==='paused'){const now=performance.now();if(now-lastTap<280){clearTimeout(tapTimer);lastTap=0;restart();}else{lastTap=now;tapTimer=setTimeout(()=>{if(phase==='paused'&&!gesture&&!modalOpen())resume();},280);}}else start();}
 function clearHold(){clearTimeout(holdTimer);$('hold-feedback').classList.remove('visible');}
 function resetDrag(){arcade.classList.remove('dragging');$('nav-feedback').classList.remove('visible','armed');scene.classList.add('settle');scene.style.transform='';scene.style.opacity='';}
 function cancelGesture(){clearHold();game?.cancel?.();gesture=null;pointers.clear();resetDrag();}
 function updateDrag(g){
  if(g.mode!=='feed'||Math.hypot(g.dx,g.dy)<12)return;
+ cancelCountdown();
  const vertical=Math.abs(g.dy)>Math.abs(g.dx),intent=navigationIntent(g.dx,g.dy);
  arcade.classList.add('dragging');scene.classList.remove('enter-next','enter-prev','settle');
  scene.style.transform=vertical?`translateY(${Math.max(-180,Math.min(180,g.dy*.63))}px)`:`translateX(${Math.max(-90,Math.min(90,g.dx*.3))}px)`;
@@ -136,14 +153,14 @@ document.addEventListener('keydown',event=>{
  if(commands[key]){if(!event.repeat){event.preventDefault();cancelGesture();commands[key]();}return;}
  if(directions[key]&&phase==='playing'&&(game.keyDown||game.direction)){event.preventDefault();if(game.keyDown)game.keyDown(directions[key]);else game.direction(directions[key]);return;}
  if(event.target.closest('button'))return;
- if(key===' '){event.preventDefault();if(event.repeat)return;if(phase==='playing')game.action?.();else start();}
+ if(key===' '){event.preventDefault();if(event.repeat)return;if(phase==='playing')game.action?.();else if(phase==='countdown')skipCountdown();else start();}
 });
 document.addEventListener('keyup',event=>{const d=directions[event.key.length===1?event.key.toLowerCase():event.key];if(d)game?.keyUp?.(d);});
-function backgroundPause(){audio.setForeground(false);cancelGesture();clearTimeout(tapTimer);pause();}
+function backgroundPause(){audio.setForeground(false);cancelGesture();cancelCountdown();clearTimeout(tapTimer);pause();}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)backgroundPause();else audio.setForeground(document.hasFocus());});window.addEventListener('blur',backgroundPause);window.addEventListener('focus',()=>audio.setForeground(!document.hidden));window.addEventListener('pagehide',backgroundPause);
 let viewportWidth=window.innerWidth;
 window.addEventListener('resize',()=>{if(gesture)cancelGesture();if(Math.abs(window.innerWidth-viewportWidth)>80)pause();viewportWidth=window.innerWidth;});
-function frame(now){const dt=lastFrame?Math.min((now-lastFrame)/1000,.035):0;lastFrame=now;audio.setPlaying(phase==='playing'&&!modalOpen()&&gesture?.mode!=='feed');if(!document.hidden)game?.tick(((phase==='playing'&&!modalOpen()&&gesture?.mode!=='feed')||phase==='ready')?dt:0);requestAnimationFrame(frame);}
+function frame(now){const dt=lastFrame?Math.min((now-lastFrame)/1000,.035):0;lastFrame=now;audio.setPlaying(phase==='playing'&&!modalOpen()&&gesture?.mode!=='feed');if(!document.hidden)game?.tick(((phase==='playing'&&!modalOpen()&&gesture?.mode!=='feed')||phase==='ready'||phase==='countdown')?dt:0);requestAnimationFrame(frame);}
 bindAudioControls(audio,{open:()=>openSheet('audio-dialog'),current:()=>current()});
 audio.setForeground(!document.hidden);
 renderGame();requestAnimationFrame(frame);
