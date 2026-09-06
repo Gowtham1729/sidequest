@@ -1,21 +1,22 @@
-import {surface,clear,rect,text} from './shared.js';
+import {surface,clear,rect,text,circle,orb,slab,ring,line,badge,specks,diamond} from './art.js';
 
 export function createFlap(mount,api){
-  const s=surface(mount),{ctx,view}=s;
+  const s=surface(mount,'sky'),{ctx,view}=s;
   let birdY,birdVy,birdRot,pipes=[],particles=[],score=0,running=false;
+  let scenery=0;
   let spawnTimer=0,passedPipes=new Set(),oldField;
   const BIRD_X=()=>view.field.x+view.field.w*.28;
   const BIRD_R=12;
-  const GRAVITY=960;
-  const JUMP=-310;
+  const GRAVITY=760;
+  const JUMP=-280;
   const SPEED=135;
-  const GAP=125;
+  const GAP=150;
   const PIPE_W=48;
 
   function reset(preview=false){
     const f=view.field;
     birdY=f.y+f.h*.45;
-    birdVy=0;
+    birdVy=preview?0:JUMP*.6;
     birdRot=0;
     pipes=[];
     particles=[];
@@ -66,7 +67,8 @@ export function createFlap(mount,api){
     const f=view.field;
     const minH=40;
     const maxH=f.h-GAP-minH;
-    const topH=Math.floor(Math.random()*(maxH-minH))+minH;
+    const previous=pipes.length?pipes[pipes.length-1].top:(f.h-GAP)/2;
+    const topH=Math.max(minH,Math.min(maxH,previous+(Math.random()-.5)*110));
     pipes.push({
       x:f.x+f.w+10,
       top:topH,
@@ -80,6 +82,8 @@ export function createFlap(mount,api){
     const f=view.field,bx=BIRD_X();
     clear(ctx);
 
+    specks(ctx,f,'#dbedcd',scenery*.1);
+    for(let i=0;i<5;i++){const cy=f.y+f.h*(.22+i*.16);line(ctx,f.x+20,cy,f.x+f.w-20,cy,'#d0e9e908');}
     // Subtle background horizon line
     ctx.strokeStyle='#ffd15c15';
     ctx.lineWidth=1;
@@ -91,15 +95,15 @@ export function createFlap(mount,api){
     // Pipes
     for(const p of pipes){
       // Top pipe body & cap
-      rect(ctx,p.x,f.y,PIPE_W,p.top,'#32c262',4);
-      rect(ctx,p.x-3,f.y+p.top-16,PIPE_W+6,16,'#48db77',4);
+      slab(ctx,p.x,f.y,PIPE_W,p.top,'#5c9d92',4);
+      rect(ctx,p.x-3,f.y+p.top-16,PIPE_W+6,16,'#a7d5b2',4);
       // Highlights
       rect(ctx,p.x+3,f.y,4,p.top,'#ffffff33',2);
 
       // Bottom pipe body & cap
       const botH=f.h-p.bot;
-      rect(ctx,p.x,f.y+p.bot,PIPE_W,botH,'#32c262',4);
-      rect(ctx,p.x-3,f.y+p.bot,PIPE_W+6,16,'#48db77',4);
+      slab(ctx,p.x,f.y+p.bot,PIPE_W,botH,'#5c9d92',4);
+      rect(ctx,p.x-3,f.y+p.bot,PIPE_W+6,16,'#a7d5b2',4);
       // Highlights
       rect(ctx,p.x+3,f.y+p.bot,4,botH,'#ffffff33',2);
     }
@@ -117,7 +121,7 @@ export function createFlap(mount,api){
     ctx.rotate(birdRot);
 
     // Body
-    rect(ctx,-BIRD_R,-BIRD_R,BIRD_R*2,BIRD_R*2,'#ffd15c',BIRD_R);
+    orb(ctx,0,0,BIRD_R,'#ffcf7b');
     // Belly highlight
     rect(ctx,-BIRD_R+2,-BIRD_R+2,BIRD_R*2-4,BIRD_R-1,'#ffe89c',6);
     // Eye
@@ -141,10 +145,11 @@ export function createFlap(mount,api){
     const f=view.field,bx=BIRD_X();
 
     if(running&&dt>0){
+      scenery+=SPEED*dt;
       // Update bird physics
       birdVy+=GRAVITY*dt;
       birdY+=birdVy*dt;
-      birdRot=Math.max(-0.45,Math.min(1.1,birdVy*0.0024));
+      birdRot=Math.max(-0.45,Math.min(1.1,birdVy*0.002));
 
       // Ceiling / Floor collision
       if(birdY-BIRD_R<f.y){

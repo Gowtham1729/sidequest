@@ -1,8 +1,8 @@
 // Sidequest - Hop (Vertical Climber)
-import { createCanvas, clear, rect, circle, text } from './shared.js';
+import { createCanvas, clear, rect, circle, text, orb, slab, ring, line, badge, specks, diamond } from './art.js';
 
 export function createHop(mount, api) {
-  const s = createCanvas(mount, { fit: 'contain', aspectRatio: 9 / 16 });
+  const s = createCanvas(mount, 'sky');
   const ctx = s.ctx;
   const view = s.view;
 
@@ -23,7 +23,7 @@ export function createHop(mount, api) {
   let squash = 1; // vertical stretch factor for bounce animation
 
   // Camera
-  let cameraY = 0;
+  let cameraY = 0;let oldField={...view.field};
 
   // Input
   let steerDir = 0; // -1, 0, 1 from keys or touch
@@ -105,7 +105,8 @@ export function createHop(mount, api) {
     }
 
     const margin = 20;
-    const x = f.x + margin + Math.random() * (f.w - margin * 2 - PLAT_W);
+    const previous=platforms[platforms.length-1];
+    const x=Math.max(f.x+margin,Math.min(f.x+f.w-margin-PLAT_W,(previous?.x??f.x+f.w/2)+(Math.random()-.5)*210));
     const speed = (Math.random() < 0.5 ? 1 : -1) * (45 + Math.min(65, score * 0.8));
 
     platforms.push({
@@ -171,6 +172,7 @@ export function createHop(mount, api) {
     }
 
     // Vertical gravity
+    const previousFeet=py+PLAYER_R;
     vy += GRAVITY * dt;
     py += vy * dt;
 
@@ -200,16 +202,17 @@ export function createHop(mount, api) {
         // Check if feet are crossing platform top
         if (
           feetY >= p.y &&
-          feetY <= p.y + p.h + 10 &&
+          previousFeet <= p.y &&
           px + PLAYER_R * 0.7 >= p.x &&
           px - PLAYER_R * 0.7 <= p.x + p.w
         ) {
+          py=p.y-PLAYER_R;
           if (p.type === 'fragile') {
             p.broken = true;
             api.audio?.play('break');
             addBounceParticles(px, p.y, '#c4824d');
             // Small stumble bounce
-            vy = BOUNCE_VY * 0.55;
+            vy = BOUNCE_VY;
             squash = 0.7;
           } else if (p.type === 'spring') {
             vy = SUPER_BOUNCE_VY;
@@ -277,13 +280,7 @@ export function createHop(mount, api) {
     const f = view.field;
     clear(ctx);
 
-    // Sky gradient background
-    const grad = ctx.createLinearGradient(0, f.y, 0, f.y + f.h);
-    grad.addColorStop(0, '#1a103c');
-    grad.addColorStop(0.5, '#162447');
-    grad.addColorStop(1, '#0f3460');
-    ctx.fillStyle = grad;
-    ctx.fillRect(f.x, f.y, f.w, f.h);
+    specks(ctx,f,'#d7eddb',-cameraY*.12);
 
     // Gentle background clouds
     ctx.fillStyle = '#ffffff0f';
@@ -303,22 +300,22 @@ export function createHop(mount, api) {
 
       if (p.type === 'normal') {
         // Neon green platform
-        rect(ctx, p.x, screenY, p.w, p.h, '#43a047', 4);
+        slab(ctx,p.x,screenY,p.w,p.h,'#a6cda1',5);
         rect(ctx, p.x + 2, screenY + 2, p.w - 4, 3, '#76d275', 2);
       } else if (p.type === 'moving') {
         // Cyan moving platform
-        rect(ctx, p.x, screenY, p.w, p.h, '#0288d1', 4);
+        slab(ctx,p.x,screenY,p.w,p.h,'#83c7d4',5);line(ctx,p.x+20,screenY+7,p.x+p.w-20,screenY+7,'#d9faff',2);
         rect(ctx, p.x + 2, screenY + 2, p.w - 4, 3, '#81d4fa', 2);
         // Arrow accent
         circle(ctx, p.x + p.w / 2, screenY + p.h / 2, 2.5, '#ffffff99');
       } else if (p.type === 'fragile') {
         // Brown fragile cracked platform
-        rect(ctx, p.x, screenY, p.w, p.h, '#8d6e63', 4);
+        slab(ctx,p.x,screenY,p.w,p.h,'#bd967d',5);
         // Crack line
         rect(ctx, p.x + p.w * 0.45, screenY, 3, p.h, '#4e342e', 1);
       } else if (p.type === 'spring') {
         // Gold platform with bounce spring
-        rect(ctx, p.x, screenY, p.w, p.h, '#f57c00', 4);
+        slab(ctx,p.x,screenY,p.w,p.h,'#edc77b',5);
         rect(ctx, p.x + 2, screenY + 2, p.w - 4, 3, '#ffb74d', 2);
         // Spring coil
         const springX = p.x + p.w / 2;
@@ -345,7 +342,7 @@ export function createHop(mount, api) {
 
     // Cute green alien hopper
     // Shadow underneath when bouncing
-    circle(ctx, 0, 0, PLAYER_R, '#00e676');
+    orb(ctx,0,0,PLAYER_R,'#c0e4a7');
     circle(ctx, -2, -3, PLAYER_R * 0.7, '#69f0ae'); // Highlight
 
     // Snout / trunk pointing forward
@@ -366,8 +363,9 @@ export function createHop(mount, api) {
   }
 
   function tick(dt) {
+    const f=view.field;if(f.w!==oldField.w||f.h!==oldField.h||f.y!==oldField.y){const dx=f.x-oldField.x;px+=dx;platforms.forEach(p=>p.x+=dx);cameraY=py-f.h*.6;oldField={...f};}
     if (running && dt > 0) {
-      update(dt);
+      let left=dt;while(left>0&&running){const step=Math.min(left,1/120);update(step);left-=step;}
     }
     draw();
   }
@@ -424,6 +422,8 @@ export function createHop(mount, api) {
     pointerUp() {
       targetX = null;
     },
+    pause(){steerDir=0;targetX=null;vx=0;},
+    cancel(){steerDir=0;targetX=null;},
     destroy() {
       running = false;
       s.destroy();

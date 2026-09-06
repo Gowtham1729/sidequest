@@ -1,7 +1,7 @@
-import {surface,clear,rect,text} from './shared.js';
+import {surface,clear,rect,text,circle,orb,slab,ring,line,badge,specks,diamond} from './art.js';
 
 export function createPong(mount,api){
-  const s=surface(mount),{ctx,view}=s;
+  const s=surface(mount,'court'),{ctx,view}=s;
   let x,y,vx,vy,playerX,playerTarget,aiX;
   let playerScore=0,aiScore=0,running=false;
   let trail=[],pressed=new Set(),serveTimer=0,rally=0,oldField;
@@ -50,6 +50,9 @@ export function createPong(mount,api){
     const f=view.field,pw=paddleWidth();
     clear(ctx);
 
+    ring(ctx,f.x+f.w/2,f.y+f.h/2,38,'#b4ebdd22');
+    badge(ctx,'CPU · '+aiScore,f.x+f.w/2,f.y+55,'#ffb2a5');
+    badge(ctx,'YOU · '+playerScore,f.x+f.w/2,f.y+f.h-60,'#a6f0df');
     // Court boundary lines
     rect(ctx,f.x,f.y,2,f.h,'#56d6ff33',1);
     rect(ctx,f.x+f.w-2,f.y,2,f.h,'#56d6ff33',1);
@@ -76,15 +79,15 @@ export function createPong(mount,api){
     ctx.globalAlpha=1;
 
     // Ball
-    rect(ctx,x-7,y-7,14,14,'#ffffff',7);
+    orb(ctx,x,y,7,'#e9fff4');
 
     // AI paddle (top)
-    rect(ctx,aiX-pw/2,f.y+16,pw,paddleHeight,'#ff8585',5);
+    slab(ctx,aiX-pw/2,f.y+16,pw,paddleHeight,'#f8a89a',5);
     rect(ctx,aiX-pw*.35,f.y+27,pw*.7,2,'#ff858522',1);
 
     // Player paddle (bottom)
     const playerY=f.y+f.h-26;
-    rect(ctx,playerX-pw/2,playerY,pw,paddleHeight,'#56d6ff',5);
+    slab(ctx,playerX-pw/2,playerY,pw,paddleHeight,'#a6edda',5);
     rect(ctx,playerX-pw*.35,playerY-4,pw*.7,2,'#56d6ff33',1);
 
     // Serve / status cue
@@ -110,10 +113,10 @@ export function createPong(mount,api){
       // AI movement (smooth tracking with dynamic error)
       let aiTarget=f.x+f.w/2;
       if(vy<0){
-        aiTarget=x;
+        aiTarget=x+Math.sin(rally*2.7)*pw*.24;
       }
       aiTarget=Math.max(f.x+pw/2+4,Math.min(f.x+f.w-pw/2-4,aiTarget));
-      const aiSpeed=Math.min(390,260+rally*14);
+      const aiSpeed=Math.min(295,165+rally*9);
       const aiDiff=aiTarget-aiX;
       aiX+=Math.sign(aiDiff)*Math.min(Math.abs(aiDiff),aiSpeed*dt);
 
@@ -194,6 +197,7 @@ export function createPong(mount,api){
     keyDown(d){pressed.add(d);},
     keyUp(d){pressed.delete(d);},
     pause(){pressed.clear();},
+    cancel(){pressed.clear();},
     destroy(){running=false;s.destroy();}
   };
 }

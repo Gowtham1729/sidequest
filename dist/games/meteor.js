@@ -1,7 +1,8 @@
-import {surface,clear,rect,text} from './shared.js';
+import {surface,clear,rect,text,circle,orb,slab,ring,line,badge,specks,diamond} from './art.js';
 
 export function createMeteor(mount,api){
-  const s=surface(mount),{ctx,view}=s;
+  const s=surface(mount,'space'),{ctx,view}=s;
+  let elapsed=0,shield=1,invulnerable=0;
   let shipX,shipTarget,meteors=[],stars=[],particles=[],score=0,running=false;
   let spawnTimer=0,gemTimer=0,gems=[],pressed=new Set(),oldField;
   const SHIP_W=28;
@@ -11,7 +12,7 @@ export function createMeteor(mount,api){
     const f=view.field;
     shipX=f.x+f.w/2;
     shipTarget=shipX;
-    score=0;
+    score=0;elapsed=0;shield=1;invulnerable=0;
     meteors=[];
     gems=[];
     particles=[];
@@ -47,6 +48,7 @@ export function createMeteor(mount,api){
     if(oldField&&(f.w!==oldField.w||f.h!==oldField.h||f.y!==oldField.y)){
       shipX=f.x+(shipX-oldField.x)/oldField.w*f.w;
       shipTarget=shipX;
+      for(const list of [meteors,gems,stars,particles])for(const p of list){p.x=f.x+(p.x-oldField.x)/oldField.w*f.w;p.y=f.y+(p.y-oldField.y)/oldField.h*f.h;}
       oldField={...f};
     }
   }
@@ -89,6 +91,7 @@ export function createMeteor(mount,api){
     const shipY=f.y+f.h-42;
     clear(ctx);
 
+    badge(ctx,shield?'SHIELD READY':'HULL EXPOSED',f.x+f.w/2,f.y+24,'#d3c7f6');
     // Stars
     for(const st of stars){
       ctx.globalAlpha=st.alpha;
@@ -117,10 +120,10 @@ export function createMeteor(mount,api){
       ctx.rotate(m.rot);
 
       // Meteor Body
-      rect(ctx,-m.r,-m.r,m.r*2,m.r*2,'#875c4c',m.r*0.8);
+      orb(ctx,0,0,m.r,'#9e89b5');
       // Crater details
-      rect(ctx,-m.r*0.4,-m.r*0.3,m.r*0.6,m.r*0.6,'#573528',m.r*0.3);
-      rect(ctx,m.r*0.2,m.r*0.1,m.r*0.5,m.r*0.5,'#573528',m.r*0.25);
+      rect(ctx,-m.r*0.4,-m.r*0.3,m.r*0.6,m.r*0.6,'#4d446888',m.r*0.3);
+      rect(ctx,m.r*0.2,m.r*0.1,m.r*0.5,m.r*0.5,'#4d446888',m.r*0.25);
 
       ctx.restore();
     }
@@ -132,6 +135,7 @@ export function createMeteor(mount,api){
     }
     ctx.globalAlpha=1;
 
+    if(shield||invulnerable>0)ring(ctx,shipX,shipY,25,invulnerable>0?'#ffffffaa':'#a9ceff55',1.5);
     // Ship Thruster trail
     rect(ctx,shipX-4,shipY+SHIP_H/2-2,8,12,'#56d6ff99',4);
     rect(ctx,shipX-2,shipY+SHIP_H/2+2,4,8,'#ffffff',2);
@@ -156,6 +160,7 @@ export function createMeteor(mount,api){
     const shipY=f.y+f.h-42;
 
     if(running&&dt>0){
+      elapsed+=dt;invulnerable=Math.max(0,invulnerable-dt);
       // Keyboard input
       if(pressed.has('left'))shipTarget-=540*dt;
       if(pressed.has('right'))shipTarget+=540*dt;
@@ -209,11 +214,12 @@ export function createMeteor(mount,api){
 
         // Meteor collision with ship
         const dist=Math.hypot(shipX-m.x,shipY-m.y);
-        if(dist<m.r+SHIP_W*0.4){
+        if(dist<m.r+SHIP_W*.3&&invulnerable<=0){
+          if(shield){shield=0;invulnerable=1.5;explode(m.x,m.y,'#bdd7ff');meteors.splice(i,1);api.audio?.play('star');continue;}
           running=false;
           explode(shipX,shipY,'#bd7bff');
           explode(m.x,m.y,'#ff7543');
-          api.finish('Hull Breached!',`You survived ${score} meteors. Tap to retry.`,score,'crash');
+          api.finish('Hull Breached!',`${score} points in ${Math.floor(elapsed)} seconds. Fly again.`,score,'crash');
           return;
         }
 
@@ -249,6 +255,7 @@ export function createMeteor(mount,api){
     keyDown(d){pressed.add(d);},
     keyUp(d){pressed.delete(d);},
     pause(){pressed.clear();},
+    cancel(){pressed.clear();},
     destroy(){running=false;s.destroy();}
   };
 }

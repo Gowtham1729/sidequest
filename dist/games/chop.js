@@ -1,7 +1,8 @@
-import {surface,clear,rect,text} from './shared.js';
+import {surface,clear,rect,text,circle,orb,slab,ring,line,badge,specks,diamond} from './art.js';
 
 export function createChop(mount,api){
-  const s=surface(mount),{ctx,view}=s;
+  const s=surface(mount,'wood'),{ctx,view}=s;
+  let chopAnim=0,elapsed=0;
   let playerSide='left',branches=[],chips=[],score=0,running=false;
   let timeLeft=4.0,maxTime=4.0,oldField,lastChopTime=0;
   const TRUNK_W=64;
@@ -13,7 +14,7 @@ export function createChop(mount,api){
     const f=view.field;
     playerSide='left';
     score=0;
-    timeLeft=4.0;
+    timeLeft=4.0;chopAnim=0;elapsed=0;
     chips=[];
     branches=[];
 
@@ -44,7 +45,7 @@ export function createChop(mount,api){
   function chop(side){
     if(!running)return;
     playerSide=side;
-    lastChopTime=performance.now();
+    lastChopTime=elapsed;chopAnim=1;
 
     // Check if current bottom branch hits player
     if(branches[0]===playerSide){
@@ -60,7 +61,7 @@ export function createChop(mount,api){
     api.audio?.play('chop',{pitch:Math.min(8,Math.floor(score/6))});
 
     // Add time back
-    timeLeft=Math.min(maxTime,timeLeft+0.22);
+    timeLeft=Math.min(maxTime,timeLeft+0.34);
 
     // Check if the branch that just descended hits the player
     if(branches[0]===playerSide){
@@ -104,23 +105,17 @@ export function createChop(mount,api){
     const cx=f.x+f.w/2;
     const baseY=f.y+f.h-40;
     clear(ctx);
-
-    // Time bar at top of field
-    const barW=f.w*0.65;
-    const barX=cx-barW/2;
-    const barY=f.y+12;
-    rect(ctx,barX,barY,barW,8,'#ffffff18',4);
-    const fillW=Math.max(0,(timeLeft/maxTime)*barW);
-    const barColor=timeLeft<1.2?'#ff4d4d':'#ff8843';
-    rect(ctx,barX,barY,fillW,8,barColor,4);
+    specks(ctx,f,'#ead5a4',elapsed*4);
+    rect(ctx,f.x,baseY+2,f.w,38,'#0c1b16');
 
     // Tree Trunk & Branches
     for(let i=0;i<branches.length;i++){
-      const segY=baseY-i*SEG_H;
+      const segY=baseY-i*SEG_H-chopAnim*SEG_H;
       const b=branches[i];
 
       // Trunk segment
-      rect(ctx,cx-TRUNK_W/2,segY-SEG_H,TRUNK_W,SEG_H,'#82532a',2);
+      slab(ctx,cx-TRUNK_W/2,segY-SEG_H,TRUNK_W,SEG_H,'#aa7950',2);
+      line(ctx,cx-TRUNK_W/2+2,segY,cx+TRUNK_W/2-2,segY,'#e6bd8040');
       // Trunk wood bark texture lines
       rect(ctx,cx-TRUNK_W/2+8,segY-SEG_H,4,SEG_H,'#5a3717',1);
       rect(ctx,cx+TRUNK_W/2-14,segY-SEG_H,6,SEG_H,'#996434',1);
@@ -163,7 +158,7 @@ export function createChop(mount,api){
     rect(ctx,playerSide==='left'?px-4:px-8,py-36,12,8,'#5a3717',2);
     // Axe
     const axeDir=playerSide==='left'?1:-1;
-    const swinging=(performance.now()-lastChopTime)<90;
+    const swinging=(elapsed-lastChopTime)<.12;
     const axeAngle=swinging?(axeDir*0.7):(-axeDir*0.4);
     ctx.save();
     ctx.translate(px+(axeDir*10),py-20);
@@ -172,22 +167,33 @@ export function createChop(mount,api){
     rect(ctx,-8,-24,16,10,'#cfd8dc',3); // Blade
     ctx.restore();
 
+    // Time bar at top of field
+    const barW=f.w*0.65;
+    const barX=cx-barW/2;
+    const barY=f.y+12;
+    rect(ctx,barX,barY,barW,8,'#ffffff18',4);
+    const fillW=Math.max(0,(timeLeft/maxTime)*barW);
+    const barColor=timeLeft<1.2?'#ff4d4d':'#ff8843';
+    rect(ctx,barX,barY,fillW,8,barColor,4);
+
+    badge(ctx,'ENERGY',cx,f.y+40,'#e8cba0');
     // On-screen touch tap indicators (safely inset from feed edge guard)
     const padW=Math.min(110,f.w*0.32);
     rect(ctx,f.x+16,f.y+f.h-38,padW,28,'#ffffff12',8);
-    text(ctx,'CHOP ◀',f.x+16+padW/2,f.y+f.h-24,12,'#ff8843cc',600);
+    text(ctx,'LEFT',f.x+16+padW/2,f.y+f.h-24,12,'#ff8843cc',600);
 
     const rightPadX=Math.min(f.x+f.w-padW-16,view.width-padW-34);
     rect(ctx,rightPadX,f.y+f.h-38,padW,28,'#ffffff12',8);
-    text(ctx,'▶ CHOP',rightPadX+padW/2,f.y+f.h-24,12,'#ff8843cc',600);
+    text(ctx,'RIGHT',rightPadX+padW/2,f.y+f.h-24,12,'#ff8843cc',600);
   }
 
   function tick(dt){
     resizeState();
 
     if(running&&dt>0){
+      elapsed+=dt;chopAnim=Math.max(0,chopAnim-dt*10);
       // Countdown timer accelerates as score increases
-      const drainRate=1.0+Math.min(2.0,score*0.025);
+      const drainRate=1.0+Math.min(1.2,score*0.012);
       timeLeft-=dt*drainRate;
       if(timeLeft<=0){
         die('Time Out!');
@@ -224,7 +230,6 @@ export function createChop(mount,api){
     tick,
     pointerDown:handleTouch,
     direction(d){if(d==='left')chop('left');else if(d==='right')chop('right');},
-    keyDown(d){if(d==='left')chop('left');else if(d==='right')chop('right');},
     destroy(){running=false;s.destroy();}
   };
 }

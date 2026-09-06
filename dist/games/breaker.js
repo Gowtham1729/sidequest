@@ -1,8 +1,9 @@
-import {surface,clear,rect,text} from './shared.js';
+import {surface,clear,rect,text,circle,orb,slab,ring,line,badge,specks,diamond} from './art.js';
 
 export function createBreaker(mount,api){
-  const s=surface(mount),{ctx,view}=s;
+  const s=surface(mount,'amber'),{ctx,view}=s;
   let x,y,vx,vy,paddle,target,score=0,running=false;
+  let lives=3,serveTimer=0,trail=[];
   let bricks=[],particles=[],pressed=new Set(),oldField;
   const ROWS=5,COLS=6;
   const ROW_COLORS=['#ff6b8b','#ffa26b','#f7d070','#6fe3a2','#5ed1ff'];
@@ -14,10 +15,10 @@ export function createBreaker(mount,api){
   function initBricks(){
     const f=view.field;
     bricks=[];
-    const gap=4;
+    const gap=7;
     const bw=(f.w-(COLS+1)*gap)/COLS;
-    const bh=Math.min(18,f.h*.04);
-    const startY=f.y+22;
+    const bh=Math.min(23,f.h*.055);
+    const startY=f.y+55;
 
     for(let r=0;r<ROWS;r++){
       for(let c=0;c<COLS;c++){
@@ -38,7 +39,7 @@ export function createBreaker(mount,api){
     const f=view.field;
     paddle=f.x+f.w/2;
     target=paddle;
-    score=0;
+    score=0;lives=3;serveTimer=1;trail=[];
     particles=[];
     pressed.clear();
     initBricks();
@@ -61,7 +62,7 @@ export function createBreaker(mount,api){
       target=paddle;
       x=f.x+(x-oldField.x)/oldField.w*f.w;
       y=f.y+(y-oldField.y)/oldField.h*f.h;
-      initBricks();
+      const alive=bricks.map(b=>b.alive);initBricks();bricks.forEach((b,i)=>b.alive=alive[i]);
       oldField={...f};
     }
   }
@@ -86,6 +87,8 @@ export function createBreaker(mount,api){
     const f=view.field,pw=paddleWidth();
     clear(ctx);
 
+    badge(ctx,'CLEAR THE WALL',f.x+14,f.y+24,'#f6d99e','left');
+    badge(ctx,'● '.repeat(lives).trim(),f.x+f.w-14,f.y+24,'#f6d99e','right');
     // Arena side & top walls
     rect(ctx,f.x,f.y,2,f.h,'#f7d07033',1);
     rect(ctx,f.x+f.w-2,f.y,2,f.h,'#f7d07033',1);
@@ -94,7 +97,7 @@ export function createBreaker(mount,api){
     // Bricks
     for(const b of bricks){
       if(b.alive){
-        rect(ctx,b.x,b.y,b.w,b.h,b.color,3);
+        slab(ctx,b.x,b.y,b.w,b.h,b.color,5);
         // Highlight shine
         rect(ctx,b.x+2,b.y+1,b.w-4,2,'#ffffff44',1);
       }
@@ -109,11 +112,12 @@ export function createBreaker(mount,api){
 
     // Paddle
     const py=f.y+f.h-26;
-    rect(ctx,paddle-pw/2,py,pw,paddleHeight,'#f7d070',5);
+    slab(ctx,paddle-pw/2,py,pw,paddleHeight,'#f7d070',5);
     rect(ctx,paddle-pw*.35,py-3,pw*.7,2,'#f7d07033',1);
 
     // Ball
-    rect(ctx,x-6,y-6,12,12,'#ffffff',6);
+    trail.forEach((p,i)=>{ctx.globalAlpha=i/trail.length*.25;circle(ctx,p.x,p.y,5,'#fff2bc');});ctx.globalAlpha=1;orb(ctx,x,y,6,'#fff2bc');
+    if(serveTimer>0&&running)badge(ctx,'READY',paddle,py-45,'#fff2bc');
   }
 
   function tick(dt){
@@ -136,6 +140,8 @@ export function createBreaker(mount,api){
         if(p.life<=0)particles.splice(i,1);
       }
 
+      if(serveTimer>0){serveTimer-=dt;x=paddle;y=py-15;draw();return;}
+      trail.push({x,y});if(trail.length>12)trail.shift();
       const prevX=x,prevY=y;
       x+=vx*dt;
       y+=vy*dt;
@@ -194,8 +200,9 @@ export function createBreaker(mount,api){
 
       // Ball falls below paddle
       if(y>f.y+f.h+12){
-        running=false;
-        api.finish('Ball dropped',`${score} points scored. Play again to beat it.`,score,'miss');
+        lives--;trail=[];
+        if(lives===0){running=false;api.finish('Nice run',`${score} points. A fresh wall is waiting.`,score,'miss');}
+        else{api.audio?.play('miss');serveTimer=1;x=paddle;y=py-15;vx=95;vy=-270;}
       }
     }
     draw();
@@ -212,6 +219,7 @@ export function createBreaker(mount,api){
     keyDown(d){pressed.add(d);},
     keyUp(d){pressed.delete(d);},
     pause(){pressed.clear();},
+    cancel(){pressed.clear();},
     destroy(){running=false;s.destroy();}
   };
 }

@@ -4,13 +4,14 @@ export function viewport(width,height,safeTop=0,safeBottom=0,topInset=null,botto
   const top=topInset??((height<550?80:100)+safeTop),bottom=bottomInset??((height<550?106:130)+safeBottom);
   return {width:width/scale,height:height/scale,scale,field:{x:18/scale,y:top/scale,w:(width-36)/scale,h:Math.max(100,height-top-bottom)/scale}};
 }
-export function surface(mount){
+export function surface(mount,{maxFieldWidth=Infinity}={}){
   const canvas=document.createElement('canvas');canvas.setAttribute('aria-hidden','true');mount.replaceChildren(canvas);
   const ctx=canvas.getContext('2d'),view={};
   function resize(){
     const width=mount.clientWidth||window.innerWidth,height=mount.clientHeight||window.innerHeight;
     const style=getComputedStyle(mount);
     Object.assign(view,viewport(width,height,parseFloat(style.getPropertyValue('--safe-top'))||0,parseFloat(style.getPropertyValue('--safe-bottom'))||0,document.getElementById('top-hud')?.offsetHeight+8,document.getElementById('bottom-hud')?.offsetHeight+8));
+    if(view.field.w>maxFieldWidth){view.field.x+=(view.field.w-maxFieldWidth)/2;view.field.w=maxFieldWidth;}
     const dpr=Math.min(window.devicePixelRatio||1,2);
     canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr*view.scale,0,0,dpr*view.scale,0,0);
   }

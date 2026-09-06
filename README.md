@@ -41,10 +41,10 @@ The repository is prepared for the existing ChatGPT Site identified by `.openai/
 
 Tap **Sound on/off** below the Sidequest name to open the audio sheet. Music and effects have independent switches and volume sliders; **Mute all** silences both. `M` toggles mute outside dialogs. Preferences are saved only on the current device. Audio unlocks after a touch/click/key interaction; a browser that cannot play audio still runs the games normally.
 
-The original five games have tailored synthesized loops and event sounds. The 14 newer games use a shared arcade loop with start, score, and finish cues until their own profiles are added. Music plays only during an active round, stops for pause, feed gestures, dialogs, and backgrounding, and starts a fresh phrase on resume. Switching games stops the previous game's voices. Results have short ending cues without continuing the music. No sound files, downloads, libraries, or third-party music services are required for the included games.
+All 19 games have tailored synthesized loops and event sounds. Game visuals and gameplay use the existing centralized audio lifecycle. Music plays only during an active round, stops for pause, feed gestures, dialogs, and backgrounding, and starts a fresh phrase on resume. Switching games stops the previous game's voices. Results have short ending cues without continuing the music. No sound files, downloads, libraries, or third-party music services are required for the included games.
 
 - `dist/audio/engine.js`: one lazy Web Audio context, separate music/effects gains, output limiter, short look-ahead music scheduler, bounded voices, device preferences, and lifecycle cleanup.
-- `dist/audio/profiles.js`: declarative sound palettes and original music for all five games.
+- `dist/audio/profiles.js`: declarative sound palettes and original music for all 19 games.
 - `dist/audio/controls.js`: accessible audio settings and preference bindings.
 - `tests/audio.test.mjs`: dependency-free regression tests using a mock audio backend.
 
@@ -92,3 +92,31 @@ node --test tests/*.test.mjs
 ```
 
 Regression tests cover lifecycle isolation, preferences, music scheduling, and sample loading. They do not replace listening and gesture checks on actual iOS/Android devices. The browser-audio approach follows [MDN's Web Audio guidance](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices).
+
+## Arcade refinement
+
+The original five games retain their existing rendering and rules. The other 14
+use `dist/games/art.js` for bounded, safe-area-aware canvas fields and shared
+materials, with individual palettes and game-specific objects. This remains a
+static, dependency-free site.
+
+- Pong: a scored court, bounded CPU speed, and angled paddle returns.
+- Breaker: three balls, a serve grace period, dimensional bricks, and resize-safe progress.
+- Flap: gentler gravity, wider gaps, and constrained changes between gates.
+- Pin: eight-pin rounds, direction changes between rounds, and a corrected launcher.
+- ZigZag: an approachable starting path, distance scoring, diamond collision bounds, and bounded collectibles.
+- Chop: bark materials, chop movement, visible energy, and a gentler timer curve.
+- Meteor: a one-hit shield, dimensional asteroids, and clearer survival results.
+- Hop: reachable platform spacing, distinct platform types, swept landings, and cleared pause input.
+- Chroma: complete-ring scoring, safe checkpoints, and segment symbols alongside color.
+- Drop: constrained gap spacing, a gentler lift speed, and a textured shaft.
+- Invaders: three animated pixel silhouettes, damage protection, stable collision steps, and wave transitions.
+- Crossy: tap forward and directional swipes, aligned lane collisions, log riding, and safe waiting on grass.
+- Target: center-plane hit scoring, reachable bullseyes, trajectory guidance, and an accurate best-streak result.
+- Pop: a larger 6×7 board, falling gems, distinct gem shapes, a 60-second round, and timed chain multipliers.
+
+`tests/games.test.mjs` exercises all 14 factories across phone, small-phone,
+landscape, and desktop dimensions, plus pause/restart/cleanup and key scoring
+regressions. It uses a validating canvas test double. It does **not** establish
+browser rendering quality, measured frame rate, or real-device touch behavior.
+Those still require browser and iOS/Android play-testing.

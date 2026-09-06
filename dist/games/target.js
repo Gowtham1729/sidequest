@@ -1,15 +1,16 @@
 // Sidequest - Target (Archery Precision Shoot)
-import { createCanvas, clear, rect, circle, text } from './shared.js';
+import { createCanvas, clear, rect, circle, text, orb, slab, ring, line, badge, specks, diamond } from './art.js';
 
 export function createTarget(mount, api) {
-  const s = createCanvas(mount, { fit: 'contain', aspectRatio: 9 / 16 });
+  const s = createCanvas(mount, 'court');
   const ctx = s.ctx;
   const view = s.view;
 
+  let oldField={...view.field};
   let running = false;
   let score = 0;
   let arrowsLeft = 5;
-  let combo = 0;
+  let combo = 0,maxCombo=0;
 
   // Bow & Arrow at bottom center
   let bowX = 0;
@@ -26,7 +27,7 @@ export function createTarget(mount, api) {
 
   // Targets (bullseyes moving horizontally at different heights)
   let targets = [];
-  const TARGET_RADIUS = 24;
+
 
   // Wind factor (-40 to +40)
   let wind = 0;
@@ -40,9 +41,9 @@ export function createTarget(mount, api) {
     targets = [];
     // 3 lanes of moving targets
     const lanes = [
-      { y: f.y + 70, spd: 45, dir: 1, r: 20 },
-      { y: f.y + 130, spd: 70, dir: -1, r: 22 },
-      { y: f.y + 195, spd: 55, dir: 1, r: 26 }
+      { y: f.y + f.h*.22, spd: 28, dir: 1, r: 26 },
+      { y: f.y + f.h*.38, spd: 42, dir: -1, r: 29 },
+      { y: f.y + f.h*.54, spd: 34, dir: 1, r: 32 }
     ];
 
     for (let i = 0; i < lanes.length; i++) {
@@ -68,7 +69,7 @@ export function createTarget(mount, api) {
     bowY = f.y + f.h - 60;
     score = 0;
     arrowsLeft = 5;
-    combo = 0;
+    combo = 0;maxCombo=0;
     isAiming = false;
     aimAngle = -Math.PI / 2;
     aimPower = 0.7;
@@ -89,7 +90,7 @@ export function createTarget(mount, api) {
       api.score(0);
       return;
     }
-    if (arrowsLeft <= 0) return;
+    if (arrowsLeft <= 0||flyingArrows.length) return;
 
     arrowsLeft--;
     api.audio?.play('shoot');
@@ -109,7 +110,7 @@ export function createTarget(mount, api) {
 
   function die() {
     running = false;
-    api.finish('Out of Arrows!', `Scored ${score} points with ${combo} max streak. Tap to shoot again!`, score, 'miss');
+    api.finish('Out of Arrows!', `Scored ${score} points with ${maxCombo} best streak. Tap to shoot again!`, score, 'miss');
   }
 
   function update(dt) {
@@ -133,6 +134,7 @@ export function createTarget(mount, api) {
       const a = flyingArrows[i];
       if (!a.alive) continue;
 
+      const oldX=a.x,oldY=a.y;
       // Apply wind and gravity
       a.vx += wind * dt;
       a.vy += GRAVITY * dt;
@@ -144,27 +146,30 @@ export function createTarget(mount, api) {
       let hit = false;
       for (const t of targets) {
         if (t.hitCooldown > 0) continue;
-        const dist = Math.hypot(a.x - t.x, a.y - t.y);
-        if (dist <= t.r) {
+        const crosses=a.vy<0&&oldY>=t.y&&a.y<=t.y;
+        const fraction=crosses?(oldY-t.y)/(oldY-a.y):0;
+        const impactX=oldX+(a.x-oldX)*fraction;
+        const dist=Math.abs(impactX-t.x);
+        if (crosses&&dist <= t.r) {
           hit = true;
           t.hitCooldown = 0.4;
           a.alive = false;
 
           let pts = 2;
           let label = 'HIT! +2';
-          let color = '#29b6f6';
+          let color = '#83bfc7';
 
           if (dist <= t.r * 0.3) {
             pts = 10;
-            label = '🎯 BULLSEYE! +10';
-            color = '#ffd700';
+            label = 'BULLSEYE +10 · +1 ARROW';
+            color = '#efcf85';
             combo++;
             arrowsLeft++; // Bonus arrow for bullseye!
             api.audio?.play('bullseye');
           } else if (dist <= t.r * 0.65) {
             pts = 5;
             label = 'GREAT! +5';
-            color = '#ff5252';
+            color = '#dd9390';
             combo++;
             api.audio?.play('hit', {pitch: combo > 1 ? Math.min(6, combo) : 0});
           } else {
@@ -172,6 +177,7 @@ export function createTarget(mount, api) {
             api.audio?.play('hit');
           }
 
+          maxCombo=Math.max(maxCombo,combo);
           score += pts;
           api.score(score);
 
@@ -247,22 +253,17 @@ export function createTarget(mount, api) {
     const f = view.field;
     clear(ctx);
 
-    // Archery range gradient background
-    const grad = ctx.createLinearGradient(0, f.y, 0, f.y + f.h);
-    grad.addColorStop(0, '#101626');
-    grad.addColorStop(0.7, '#1b263b');
-    grad.addColorStop(1, '#0d1b2a');
-    ctx.fillStyle = grad;
-    ctx.fillRect(f.x, f.y, f.w, f.h);
+    for(const t of targets){line(ctx,f.x+16,t.y,f.x+f.w-16,t.y,'#d4dfcd17');}
+    // Range lane lines
 
     // Wind indicator HUD
     const windSign = wind > 5 ? '⇨' : (wind < -5 ? '⇦' : '·');
     const windSpeed = (Math.abs(wind) / 10).toFixed(1);
     rect(ctx, f.x + 14, f.y + 12, 104, 24, '#ffffff14', 6);
-    text(ctx, `WIND ${windSign} ${windSpeed}m/s`, f.x + 14 + 52, f.y + 24, 11, '#81d4fa', 600, 'center');
+    text(ctx, `WIND ${windSign} ${windSpeed}`, f.x + 14 + 52, f.y + 24, 11, '#81d4fa', 600, 'center');
 
     // Arrows left HUD
-    for (let i = 0; i < arrowsLeft; i++) {
+    for (let i = 0; i < Math.min(10,arrowsLeft); i++) {
       const ax = f.x + f.w - 20 - i * 14;
       rect(ctx, ax - 1.5, f.y + 16, 3, 16, '#ffb74d', 1);
       circle(ctx, ax, f.y + 16, 2.5, '#cfd8dc');
@@ -270,14 +271,16 @@ export function createTarget(mount, api) {
 
     // Draw Targets (Concentric Bullseyes)
     for (const t of targets) {
+      circle(ctx,t.x+2,t.y+4,t.r+3,'#00000035');
+      ring(ctx,t.x,t.y,t.r+4,'#e3d5b166',2);
       // Outer White ring
       circle(ctx, t.x, t.y, t.r, '#ffffff');
       // Blue ring
-      circle(ctx, t.x, t.y, t.r * 0.75, '#29b6f6');
+      circle(ctx, t.x, t.y, t.r * 0.75, '#83bfc7');
       // Red ring
-      circle(ctx, t.x, t.y, t.r * 0.5, '#ff5252');
+      circle(ctx, t.x, t.y, t.r * 0.5, '#dd9390');
       // Gold Bullseye center
-      circle(ctx, t.x, t.y, t.r * 0.25, '#ffd700');
+      circle(ctx, t.x, t.y, t.r * 0.25, '#efcf85');
     }
 
     // Trajectory preview dots when aiming
@@ -368,13 +371,19 @@ export function createTarget(mount, api) {
 
     // Touch Drag Aim guide instruction
     if (!isAiming && running) {
-      text(ctx, 'Drag back to aim & release', bowX, bowY + 34, 12, '#ffffff55', 500, 'center');
+      badge(ctx,'PULL BACK · RELEASE',bowX,bowY+34,'#b7cccf');
     }
   }
 
   function tick(dt) {
+    const f=view.field;
+    if(f.w!==oldField.w||f.h!==oldField.h||f.x!==oldField.x||f.y!==oldField.y){
+      const mapX=x=>f.x+(x-oldField.x)/oldField.w*f.w,mapY=y=>f.y+(y-oldField.y)/oldField.h*f.h;
+      bowX=mapX(bowX);bowY=f.y+f.h-60;targets.forEach(t=>{t.x=mapX(t.x);t.y=mapY(t.y);t.minX=f.x+t.r+10;t.maxX=f.x+f.w-t.r-10;});flyingArrows.forEach(a=>{a.x=mapX(a.x);a.y=mapY(a.y);});isAiming=false;
+      oldField={...f};
+    }
     if (running && dt > 0) {
-      update(dt);
+      let left=dt;while(left>0&&running){const step=Math.min(left,1/120);update(step);left-=step;}
     }
     draw();
   }
@@ -399,7 +408,7 @@ export function createTarget(mount, api) {
 
     if (dist > 8) {
       // Slingshot angle
-      aimAngle = Math.atan2(dy, dx);
+      aimAngle = Math.max(-Math.PI*.9,Math.min(-Math.PI*.1,Math.atan2(Math.min(-1,dy),dx)));
       aimPower = Math.min(1, dist / 80);
     } else {
       // Direct angle towards touch

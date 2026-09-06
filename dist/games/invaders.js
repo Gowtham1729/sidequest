@@ -1,14 +1,15 @@
 // Sidequest - Invaders (Classic Space Invaders)
-import { createCanvas, clear, rect, circle, text } from './shared.js';
+import { createCanvas, clear, rect, circle, text, orb, slab, ring, line, badge, specks, diamond } from './art.js';
 
 export function createInvaders(mount, api) {
-  const s = createCanvas(mount, { fit: 'contain', aspectRatio: 9 / 16 });
+  const s = createCanvas(mount, 'space');
   const ctx = s.ctx;
   const view = s.view;
 
+  let oldField={...view.field};
   let running = false;
   let score = 0;
-  let wave = 1;
+  let wave = 1,invulnerable=0,clock=0,waveBanner=0;
   let lives = 3;
 
   // Player Turret
@@ -81,7 +82,7 @@ export function createInvaders(mount, api) {
       for (let c = 0; c < COLS; c++) {
         aliens.push({
           x: startX + c * spacingX + spacingX / 2,
-          y: startY + r * spacingY,
+          y: startY + r * spacingY,col:c,
           w: 22,
           h: 16,
           type,
@@ -99,7 +100,7 @@ export function createInvaders(mount, api) {
     tx = f.x + f.w / 2;
     ty = f.y + f.h - 40;
     score = 0;
-    wave = 1;
+    wave = 1;invulnerable=0;clock=0;waveBanner=1.4;alienDropCooldown=1.5;
     lives = 3;
     playerLasers = [];
     alienBombs = [];
@@ -134,10 +135,11 @@ export function createInvaders(mount, api) {
 
   function die() {
     running = false;
-    api.finish('Invasion Failed!', `Cleared ${score} invaders across Wave ${wave}. Tap to fight again!`, score, 'crash');
+    api.finish('Invasion Failed!', `${score} points through wave ${wave}. The next fleet awaits.`, score, 'crash');
   }
 
   function hitPlayer() {
+    if(invulnerable>0)return;invulnerable=1.5;
     lives--;
     api.audio?.play('hit');
     // Turret damage explosion
@@ -166,6 +168,7 @@ export function createInvaders(mount, api) {
   function update(dt) {
     const f = view.field;
 
+    clock+=dt;invulnerable=Math.max(0,invulnerable-dt);waveBanner=Math.max(0,waveBanner-dt);
     // Turret movement
     const maxSpeed = 360;
     if (targetX !== null) {
@@ -265,7 +268,7 @@ export function createInvaders(mount, api) {
       score += 100;
       api.score(score);
       api.audio?.play('wave');
-      spawnSwarm();
+      alienBombs=[];playerLasers=[];alienDropCooldown=1.6;waveBanner=1.4;invulnerable=1.4;spawnSwarm();
       return;
     }
 
@@ -300,7 +303,7 @@ export function createInvaders(mount, api) {
       // Pick random bottom alien to drop bomb
       const colsMap = {};
       for (const a of aliveAliens) {
-        const colKey = Math.round(a.x / 20);
+        const colKey = a.col;
         if (!colsMap[colKey] || a.y > colsMap[colKey].y) {
           colsMap[colKey] = a;
         }
@@ -369,7 +372,7 @@ export function createInvaders(mount, api) {
     clear(ctx);
 
     // Retro CRT deep space background
-    rect(ctx, f.x, f.y, f.w, f.h, '#0b0c16');
+    specks(ctx,f,'#babfe7',clock*4);
 
     // Subtle starfield
     ctx.fillStyle = '#ffffff22';
@@ -384,14 +387,10 @@ export function createInvaders(mount, api) {
       if (!a.alive) continue;
       const color = a.type === 3 ? '#ff4081' : (a.type === 2 ? '#00e5ff' : '#ffe57f');
 
-      // Alien body
-      rect(ctx, a.x - a.w / 2, a.y - a.h / 2, a.w, a.h, color, 3);
-      // Alien eyes
-      circle(ctx, a.x - 5, a.y - 1, 2.5, '#0b0c16');
-      circle(ctx, a.x + 5, a.y - 1, 2.5, '#0b0c16');
-      // Antennae / legs
-      rect(ctx, a.x - a.w / 2 + 2, a.y + a.h / 2, 4, 3, color, 1);
-      rect(ctx, a.x + a.w / 2 - 6, a.y + a.h / 2, 4, 3, color, 1);
+      const sprites={3:['0011100','0111110','1101011','1111111','0100010'],2:['0100010','0011100','0111110','1101011','1111111','1010101'],1:['0011100','0111110','1101011','1111111','0101010','1000001']};
+      const sprite=sprites[a.type],pixel=3;ctx.save();ctx.translate(a.x-10.5,a.y-9);
+      for(let row=0;row<sprite.length;row++)for(let col=0;col<7;col++)if(sprite[row][col]==='1'){const offset=row===sprite.length-1&&Math.floor(clock*3)%2?(col<3?-1:1):0;rect(ctx,(col+offset)*pixel,row*pixel,pixel,pixel,color);}
+      ctx.restore();
     }
 
     // Draw Bunkers
@@ -411,6 +410,8 @@ export function createInvaders(mount, api) {
       circle(ctx, b.x, b.y, 2, '#ffffff');
     }
 
+    if(invulnerable>0)ring(ctx,tx,ty,24,'#b4f3d577',2);
+    if(waveBanner>0)badge(ctx,'WAVE '+wave,f.x+f.w/2,f.y+f.h*.48,'#dcf1ca');
     // Draw Player Turret
     rect(ctx, tx - TURRET_W / 2, ty - TURRET_H / 2, TURRET_W, TURRET_H, '#00e676', 3);
     // Cannon nozzle
@@ -438,8 +439,14 @@ export function createInvaders(mount, api) {
   }
 
   function tick(dt) {
+    const f=view.field;
+    if(f.w!==oldField.w||f.h!==oldField.h||f.x!==oldField.x||f.y!==oldField.y){
+      const mapX=x=>f.x+(x-oldField.x)/oldField.w*f.w,mapY=y=>f.y+(y-oldField.y)/oldField.h*f.h;
+      tx=mapX(tx);ty=f.y+f.h-40;aliens.forEach(a=>{a.x=mapX(a.x);a.y=mapY(a.y);});bunkers.forEach(b=>{b.x=mapX(b.x);b.y=mapY(b.y);});playerLasers.forEach(a=>{a.x=mapX(a.x);a.y=mapY(a.y);});alienBombs.forEach(a=>{a.x=mapX(a.x);a.y=mapY(a.y);});
+      oldField={...f};
+    }
     if (running && dt > 0) {
-      update(dt);
+      let left=dt;while(left>0&&running){const step=Math.min(left,1/120);update(step);left-=step;}
     }
     draw();
   }
@@ -499,6 +506,8 @@ export function createInvaders(mount, api) {
     pointerUp() {
       targetX = null;
     },
+    pause(){steerDir=0;targetX=null;},
+    cancel(){steerDir=0;targetX=null;},
     destroy() {
       running = false;
       s.destroy();

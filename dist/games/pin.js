@@ -1,18 +1,19 @@
-import {surface,clear,rect,text} from './shared.js';
+import {surface,clear,rect,text,circle,orb,slab,ring,line,badge,specks,diamond} from './art.js';
 
 export function createPin(mount,api){
-  const s=surface(mount),{ctx,view}=s;
+  const s=surface(mount,'rose'),{ctx,view}=s;
   let wheelAngle=0,wheelSpeed=1.85,pins=[],flyingPin=null,score=0,running=false;
+  let round=1,roundPins=0,roundTimer=0;
   let particles=[],oldField,flashTimer=0;
-  const WHEEL_R=46;
-  const PIN_LEN=72;
+  let WHEEL_R=46;
+  let PIN_LEN=72;
   const PIN_HEAD_R=8;
-  const MIN_DIST=0.28; // ~16 degrees minimum clearance
+  const MIN_DIST=0.19; // ~16 degrees minimum clearance
 
   function reset(preview=false){
     const f=view.field;
     wheelAngle=0;
-    wheelSpeed=1.85;
+    wheelSpeed=1.35;round=1;roundPins=0;roundTimer=0;
     score=0;
     flyingPin=null;
     particles=[];
@@ -33,23 +34,23 @@ export function createPin(mount,api){
   }
 
   function resizeState(){
-    const f=view.field;
+    const f=view.field;const scale=Math.min(1,f.h/440,f.w/330);WHEEL_R=46*scale;PIN_LEN=72*scale;
     if(oldField&&(f.w!==oldField.w||f.h!==oldField.h||f.y!==oldField.y)){
       oldField={...f};
     }
   }
 
   function shoot(){
-    if(!running||flyingPin)return;
+    if(!running||flyingPin||roundTimer>0)return;resizeState();
     api.audio?.play('shoot');
     const f=view.field;
     const cx=f.x+f.w/2;
     const cy=f.y+f.h*0.38;
-    const startY=f.y+f.h-48;
+    const startY=f.y+f.h-PIN_LEN-24;
     flyingPin={
       x:cx,
       y:startY,
-      targetY:cy+WHEEL_R+PIN_LEN,
+      targetY:cy+WHEEL_R,
       speed:1250,
       id:score+1
     };
@@ -74,6 +75,9 @@ export function createPin(mount,api){
     const cy=f.y+f.h*0.38;
     clear(ctx);
 
+    badge(ctx,'ROUND '+round,cx,f.y+24,'#efbdca');
+    ring(ctx,cx,cy,WHEEL_R+PIN_LEN+12,'#ecadc01c');
+    for(let i=0;i<60;i++){const a=i*Math.PI/30;line(ctx,cx+Math.cos(a)*(WHEEL_R+PIN_LEN+17),cy+Math.sin(a)*(WHEEL_R+PIN_LEN+17),cx+Math.cos(a)*(WHEEL_R+PIN_LEN+(i%5===0?24:20)),cy+Math.sin(a)*(WHEEL_R+PIN_LEN+(i%5===0?24:20)),'#edb4c433');}
     // Subtle target grid ring
     ctx.strokeStyle='#ff5c7715';
     ctx.lineWidth=1;
@@ -116,7 +120,7 @@ export function createPin(mount,api){
 
     // Next pin waiting at bottom launcher
     if(!flyingPin&&running){
-      const launchY=f.y+f.h-48;
+      const launchY=f.y+f.h-PIN_LEN-24;
       ctx.strokeStyle='#ff5c7744';
       ctx.lineWidth=2;
       ctx.beginPath();
@@ -134,7 +138,8 @@ export function createPin(mount,api){
     rect(ctx,cx-WHEEL_R+4,cy-WHEEL_R+4,(WHEEL_R-4)*2,(WHEEL_R-4)*2,'#1e1418',WHEEL_R-4);
 
     // Center score inside wheel
-    text(ctx,String(score),cx,cy,24,'#ff5c77',700);
+    text(ctx,String(8-roundPins),cx,cy-5,30,'#f6c4d1',700);text(ctx,'TO GO',cx,cy+20,10,'#d59cac',600);
+    if(roundTimer>0)badge(ctx,'BEAUTIFULLY PLACED',cx,f.y+f.h-35,'#f6c4d1');
 
     // Particles
     for(const pt of particles){
@@ -151,6 +156,7 @@ export function createPin(mount,api){
     const cy=f.y+f.h*0.38;
 
     if(running&&dt>0){
+      if(roundTimer>0){roundTimer-=dt;if(roundTimer<=0){round++;roundPins=0;pins=Array.from({length:Math.min(6,2+round)},(_,i)=>({angle:i*Math.PI*2/Math.min(6,2+round)}));wheelSpeed=(1.25+Math.min(1,round*.12))*(round%2?1:-1);}draw();return;}
       // Rotate wheel
       wheelAngle+=wheelSpeed*dt;
       if(flashTimer>0)flashTimer-=dt;
@@ -193,7 +199,7 @@ export function createPin(mount,api){
             spawnSparks(cx,cy+WHEEL_R+PIN_LEN,'#ff5c77');
 
             // Slightly increase speed or alternate occasionally for excitement
-            wheelSpeed=(1.8+score*0.06)*(score%7===4?-1:1);
+            roundPins++;if(roundPins===8){roundTimer=1;api.audio?.play('win');}
             flyingPin=null;
           }
         }
@@ -219,7 +225,6 @@ export function createPin(mount,api){
     action:shoot,
     pointerDown:shoot,
     direction:shoot,
-    keyDown:shoot,
     destroy(){running=false;s.destroy();}
   };
 }

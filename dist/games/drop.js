@@ -1,11 +1,12 @@
 // Sidequest - Drop (Classic Fall Down)
-import { createCanvas, clear, rect, circle, text } from './shared.js';
+import { createCanvas, clear, rect, circle, text, orb, slab, ring, line, badge, specks, diamond } from './art.js';
 
 export function createDrop(mount, api) {
-  const s = createCanvas(mount, { fit: 'contain', aspectRatio: 9 / 16 });
+  const s = createCanvas(mount, 'amber');
   const ctx = s.ctx;
   const view = s.view;
 
+  let oldField={...view.field};
   let running = false;
   let score = 0;
   let depth = 0;
@@ -27,7 +28,7 @@ export function createDrop(mount, api) {
 
   // Rising Platforms
   let platforms = [];
-  let baseRiseSpeed = 120;
+  let baseRiseSpeed = 82;
   let riseSpeed = baseRiseSpeed;
   const PLAT_H = 14;
   const ROW_GAP = 90;
@@ -67,7 +68,8 @@ export function createDrop(mount, api) {
   function spawnPlatformRow(y) {
     const f = view.field;
     const gapW = Math.max(52, 74 - Math.min(20, score * 0.4));
-    const gapX = f.x + 20 + Math.random() * (f.w - gapW - 40);
+    const last=platforms[platforms.length-1];
+    const gapX=Math.max(f.x+20,Math.min(f.x+f.w-gapW-20,(last?.gapX??f.x+f.w/2-gapW/2)+(Math.random()-.5)*200));
 
     platforms.push({
       y,
@@ -114,7 +116,7 @@ export function createDrop(mount, api) {
     const f = view.field;
 
     // Difficulty scales speed gently
-    riseSpeed = baseRiseSpeed + Math.min(130, score * 2.8);
+    riseSpeed = baseRiseSpeed + Math.min(100, score * 1.8);
 
     // Horizontal steering
     if (targetX !== null) {
@@ -262,10 +264,7 @@ export function createDrop(mount, api) {
   function draw() {
     const f = view.field;
     clear(ctx);
-
-    // Deep slate background
-    rect(ctx, f.x, f.y, f.w, f.h, '#151722');
-
+    for(let i=0;i<10;i++){const y=f.y+(i*62+depth)%f.h;line(ctx,f.x+9,y,f.x+20,y,'#ad977955',2);line(ctx,f.x+f.w-20,y,f.x+f.w-9,y,'#ad977955',2);}
     // Platforms
     for (const p of platforms) {
       if (p.y < f.y - 10 || p.y > f.y + f.h + 10) continue;
@@ -273,7 +272,7 @@ export function createDrop(mount, api) {
       // Left segment
       const leftW = Math.max(0, p.gapX - f.x);
       if (leftW > 0) {
-        rect(ctx, f.x, p.y, leftW, p.h, '#2a324b', 3);
+        slab(ctx,f.x,p.y,leftW,p.h,'#7d8096',4);
         rect(ctx, f.x, p.y, leftW, 3, '#4a5578', 2);
       }
 
@@ -281,7 +280,7 @@ export function createDrop(mount, api) {
       const rightX = p.gapX + p.gapW;
       const rightW = Math.max(0, (f.x + f.w) - rightX);
       if (rightW > 0) {
-        rect(ctx, rightX, p.y, rightW, p.h, '#2a324b', 3);
+        slab(ctx,rightX,p.y,rightW,p.h,'#7d8096',4);
         rect(ctx, rightX, p.y, rightW, 3, '#4a5578', 2);
       }
 
@@ -290,6 +289,7 @@ export function createDrop(mount, api) {
       circle(ctx, p.gapX + p.gapW - 2, p.y + p.h / 2, 2.5, '#00e5ff88');
     }
 
+    line(ctx,f.x+6,f.y+40,f.x+6,f.y+f.h,'#c8a37933',2);line(ctx,f.x+f.w-6,f.y+40,f.x+f.w-6,f.y+f.h,'#c8a37933',2);
     // Gems
     for (const g of gems) {
       if (g.collected) continue;
@@ -317,14 +317,14 @@ export function createDrop(mount, api) {
     ctx.save();
     ctx.shadowBlur = 12;
     ctx.shadowColor = '#ff9100';
-    circle(ctx, bx, by, BALL_R, '#ff9100');
+    orb(ctx,bx,by,BALL_R,'#ffd18f');
     circle(ctx, bx - 2, by - 3, BALL_R * 0.45, '#ffe082');
     ctx.restore();
 
     // Dangerous Ceiling Spikes at top
     const spikeW = 16;
     const numSpikes = Math.ceil(f.w / spikeW);
-    ctx.fillStyle = '#ff1744';
+    ctx.fillStyle = '#e98389';
     ctx.beginPath();
     for (let i = 0; i < numSpikes; i++) {
       const sx = f.x + i * spikeW;
@@ -335,15 +335,21 @@ export function createDrop(mount, api) {
     ctx.fill();
 
     // Spikes danger bar backing
-    rect(ctx, f.x, f.y, f.w, 10, '#b71c1c');
+    rect(ctx, f.x, f.y, f.w, 10, '#9c5264');
 
     // Score in top corner below danger spikes
     text(ctx, `${score}`, f.x + f.w - 18, f.y + CEILING_SPIKES_H + 26, 18, '#ffffffbb', 700, 'right');
   }
 
   function tick(dt) {
+    const f=view.field;
+    if(f.w!==oldField.w||f.h!==oldField.h||f.x!==oldField.x||f.y!==oldField.y){
+      const mapX=x=>f.x+(x-oldField.x)/oldField.w*f.w,mapY=y=>f.y+(y-oldField.y)/oldField.h*f.h;
+      bx=mapX(bx);by=mapY(by);platforms.forEach(p=>{p.gapX=mapX(p.gapX);p.y=mapY(p.y);});gems.forEach(g=>{g.x=mapX(g.x);g.y=mapY(g.y);});
+      oldField={...f};
+    }
     if (running && dt > 0) {
-      update(dt);
+      let left=dt;while(left>0&&running){const step=Math.min(left,1/120);update(step);left-=step;}
     }
     draw();
   }
@@ -400,6 +406,8 @@ export function createDrop(mount, api) {
     pointerUp() {
       targetX = null;
     },
+    pause(){steerDir=0;targetX=null;bvx=0;},
+    cancel(){steerDir=0;targetX=null;},
     destroy() {
       running = false;
       s.destroy();

@@ -1,10 +1,11 @@
-import {surface,clear,rect,text} from './shared.js';
+import {surface,clear,rect,text,circle,orb,slab,ring,line,badge,specks,diamond} from './art.js';
 
 export function createZigZag(mount,api){
-  const s=surface(mount),{ctx,view}=s;
+  const s=surface(mount,'night'),{ctx,view}=s;
   let ballX=0,ballY=0,ballZ=0,dir=0,speed=210,score=0,running=false;
+  let pathDir=0,pathRun=4,distance=0;
   let tiles=[],crystals=[],particles=[],falling=false,fallVy=0,trail=[],oldField;
-  const TILE_SIZE=34;
+  const TILE_SIZE=42;
   const BALL_R=9;
 
   // Directions in 2D isometric screen projection:
@@ -19,8 +20,8 @@ export function createZigZag(mount,api){
     ballY=f.y+f.h*0.62;
     ballZ=0;
     dir=0;
-    speed=210;
-    score=0;
+    speed=105;
+    score=0;pathDir=0;pathRun=4;distance=0;
     falling=false;
     fallVy=0;
     trail=[];
@@ -34,7 +35,8 @@ export function createZigZag(mount,api){
     tiles.push({x:curX,y:curY});
 
     for(let i=0;i<40;i++){
-      const nextDir=Math.random()<0.5?0:1;
+      if(pathRun--<=0){pathDir=1-pathDir;pathRun=2+Math.floor(Math.random()*4);}
+      const nextDir=pathDir;
       curX+=nextDir===0?(TILE_SIZE*ISO_X):(-TILE_SIZE*ISO_X);
       curY-=TILE_SIZE*ISO_Y;
       tiles.push({x:curX,y:curY});
@@ -51,8 +53,7 @@ export function createZigZag(mount,api){
   function toggleDir(){
     if(!running||falling)return;
     dir=dir===0?1:0;
-    score++;
-    api.score(score);
+
     api.audio?.play('turn',{pitch:Math.min(6,Math.floor(score/12))});
     // Pulse particles
     for(let i=0;i<3;i++){
@@ -67,6 +68,8 @@ export function createZigZag(mount,api){
   function resizeState(){
     const f=view.field;
     if(oldField&&(f.w!==oldField.w||f.h!==oldField.h||f.y!==oldField.y)){
+      const dx=f.x+f.w/2-ballX,dy=f.y+f.h*.62-ballY;ballX+=dx;ballY+=dy;
+      for(const list of [tiles,crystals,particles,trail])for(const p of list){p.x+=dx;p.y+=dy;}
       oldField={...f};
     }
   }
@@ -78,7 +81,7 @@ export function createZigZag(mount,api){
     const depth=14;
 
     // Left facet
-    ctx.fillStyle='#18454a';
+    ctx.fillStyle='#283352';
     ctx.beginPath();
     ctx.moveTo(tx-hw,ty);
     ctx.lineTo(tx,ty+hh);
@@ -88,7 +91,7 @@ export function createZigZag(mount,api){
     ctx.fill();
 
     // Right facet
-    ctx.fillStyle='#235f66';
+    ctx.fillStyle='#354667';
     ctx.beginPath();
     ctx.moveTo(tx,ty+hh);
     ctx.lineTo(tx+hw,ty);
@@ -98,7 +101,7 @@ export function createZigZag(mount,api){
     ctx.fill();
 
     // Top diamond surface
-    ctx.fillStyle='#2f7a83';
+    ctx.fillStyle='#70969f';
     ctx.beginPath();
     ctx.moveTo(tx,ty-hh);
     ctx.lineTo(tx+hw,ty);
@@ -108,7 +111,7 @@ export function createZigZag(mount,api){
     ctx.fill();
 
     // Subtle edge highlight
-    ctx.strokeStyle='#5cf4ff44';
+    ctx.strokeStyle='#d6f9eb88';
     ctx.lineWidth=1;
     ctx.stroke();
   }
@@ -118,6 +121,8 @@ export function createZigZag(mount,api){
     const f=view.field;
     clear(ctx);
 
+    specks(ctx,f,'#bbc4e4');
+    badge(ctx,'FOLLOW THE LIGHT',f.x+f.w/2,f.y+26,'#b5d9e9');
     // Tiles
     for(const t of tiles){
       drawTile(t.x,t.y);
@@ -145,7 +150,7 @@ export function createZigZag(mount,api){
     ctx.globalAlpha=1;
 
     // Ball
-    rect(ctx,ballX-BALL_R,ballY+ballZ-BALL_R,BALL_R*2,BALL_R*2,'#5cf4ff',BALL_R);
+    orb(ctx,ballX,ballY+ballZ,BALL_R,'#edfbd7');
     // Specular highlight
     rect(ctx,ballX-BALL_R*0.4,ballY+ballZ-BALL_R*0.6,BALL_R*0.7,BALL_R*0.7,'#ffffff',BALL_R*0.35);
 
@@ -178,7 +183,7 @@ export function createZigZag(mount,api){
 
         // Camera follow X: center ball
         const targetX=f.x+f.w/2;
-        const scrollDx=(targetX-ballX)*0.08;
+        const scrollDx=(targetX-ballX)*(1-Math.exp(-5*dt));
         ballX+=scrollDx;
         for(const t of tiles)t.x+=scrollDx;
         for(const c of crystals)c.x+=scrollDx;
@@ -186,7 +191,8 @@ export function createZigZag(mount,api){
         // Append more tiles ahead
         const lastTile=tiles[tiles.length-1];
         if(lastTile.y>f.y-60){
-          const nextDir=Math.random()<0.5?0:1;
+          if(pathRun--<=0){pathDir=1-pathDir;pathRun=2+Math.floor(Math.random()*4);}
+      const nextDir=pathDir;
           const nextX=lastTile.x+(nextDir===0?(TILE_SIZE*ISO_X):(-TILE_SIZE*ISO_X));
           const nextY=lastTile.y-TILE_SIZE*ISO_Y;
           tiles.push({x:nextX,y:nextY});
@@ -206,7 +212,7 @@ export function createZigZag(mount,api){
         for(const t of tiles){
           const dx=Math.abs(ballX-t.x);
           const dy=Math.abs(ballY-t.y);
-          if(dx<TILE_SIZE*ISO_X*0.85&&dy<TILE_SIZE*ISO_Y*0.95){
+          if(dx/(TILE_SIZE*ISO_X)+dy/(TILE_SIZE*ISO_Y)<1.04){
             onTile=true;
             break;
           }
@@ -218,7 +224,7 @@ export function createZigZag(mount,api){
             const dist=Math.hypot(ballX-c.x,ballY-c.y);
             if(dist<18){
               c.collected=true;
-              score+=2;
+              distance+=TILE_SIZE*2;score+=2;
               api.score(score);
               api.audio?.play('gem');
               for(let i=0;i<8;i++){
@@ -240,7 +246,9 @@ export function createZigZag(mount,api){
         if(trail.length>8)trail.shift();
 
         // Progressive speed ramp
-        speed=Math.min(380,210+score*1.8);
+        distance+=speed*dt;const progress=Math.floor(distance/TILE_SIZE);if(progress>score){score=progress;api.score(score);}
+        crystals=crystals.filter(c=>!c.collected&&c.y<f.y+f.h+60);
+        speed=Math.min(175,105+score*.7);
       }else{
         // Falling animation
         fallVy+=880*dt;
@@ -272,7 +280,6 @@ export function createZigZag(mount,api){
     action:toggleDir,
     pointerDown:toggleDir,
     direction:toggleDir,
-    keyDown:toggleDir,
     destroy(){running=false;s.destroy();}
   };
 }
