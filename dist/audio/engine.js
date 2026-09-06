@@ -131,6 +131,8 @@ export class GameAudio {
         catch { this.buffers.delete(src); return null; }
       })();
       this.buffers.set(src,promise);
+      // Decoded audio is large (about 10 MB per minute), so cache only the newest loops; evicted files refetch on demand.
+      while (this.buffers.size>8) this.buffers.delete(this.buffers.keys().next().value);
     }
     return this.buffers.get(src);
   }

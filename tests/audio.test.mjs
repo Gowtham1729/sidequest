@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { GameAudio, readPreferences } from '../dist/audio/engine.js';
 import { audioProfiles } from '../dist/audio/profiles.js';
+import { recordedLoops } from '../dist/audio/recorded.js';
 
 class FakeParam {
   constructor(value = 0) { this.value = value; this.calls = []; }
@@ -167,11 +168,34 @@ test('a decoded current sample plays, then pause stops it', async () => {
 test('recorded music starts one looping sample and stays cached', async () => {
   const context = new FakeContext(); let fetches = 0;
   const audio = new GameAudio({ createContext: () => context, storage: new Storage(), fetch: async () => { fetches++; return { ok: true, arrayBuffer: async () => new ArrayBuffer(0) }; } });
-  await audio.unlock(); audio.activate(audioProfiles.stack); audio.setPlaying(true);
+  await audio.unlock(); audio.activate({ ...audioProfiles.snake, music: recordedLoops.stack }); audio.setPlaying(true);
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(context.bufferSources.length, 1); assert.equal(context.bufferSources[0].loop, true); assert.equal(context.bufferSources[0].started, 1);
   audio.syncMusic(); await new Promise(resolve => setImmediate(resolve));
   assert.equal(context.bufferSources.length, 1); assert.equal(fetches, 1);
+});
+
+test('decoded sample cache stays bounded and refetches evicted entries', async () => {
+  const context = new FakeContext(); const fetched = [];
+  const audio = new GameAudio({ createContext: () => context, storage: new Storage(), fetch: async url => { fetched.push(url); return { ok: true, arrayBuffer: async () => new ArrayBuffer(0) }; } });
+  await audio.unlock();
+  for (let i = 0; i < 10; i++) await audio.buffer('file-' + i);
+  assert.equal(audio.buffers.size, 8);
+  assert.ok(!audio.buffers.has('file-0')); assert.ok(audio.buffers.has('file-9'));
+  await audio.buffer('file-0');
+  assert.equal(fetched.filter(url => url === 'file-0').length, 2);
+});
+
+test('recorded loops are valid, override their games, and leave quiet games alone', async () => {
+  const { getAudioProfile } = await import('../dist/audio/profiles.js');
+  for (const [id, loop] of Object.entries(recordedLoops)) {
+    assert.ok(loop.src.startsWith('/audio/assets/'), id);
+    assert.ok(loop.gain > 0 && loop.gain <= 1, id);
+    assert.equal(getAudioProfile(id).music, loop, id);
+  }
+  assert.equal(Object.keys(recordedLoops).length, 32);
+  assert.equal(getAudioProfile('echo').music.src, undefined);
+  assert.equal(getAudioProfile('rhythm').music.src, undefined);
 });
 
 test('delayed music timer skips missed beats and pausing stops every scheduled voice',async()=>{
