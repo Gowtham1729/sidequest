@@ -1,0 +1,35 @@
+id,title,family,module,ticket,initial_focus,focus_evidence,visual_status,device_status
+stack,Stack,precision,stack.js,R04,Press timing; falling overhang; camera settle; readable miss,source-confirmed,unverified,unverified
+snake,Snake,movement,snake.js,R13,Assess visual step interpolation without changing discrete collisions; turn buffering and cell proportions,review-proposal,unverified,unverified
+2048,2048,board,merge.js,R05,Square board; tile travel; merge/new-tile sequence; fast input,source-confirmed,unverified,unverified
+rally,Rally,court,rally.js,R12,Assess paddle tracking; ball visibility; contact weight; score/serve rhythm,review-proposal,unverified,unverified
+memory,Memory,board,memory.js,R08,Grid proportions; reveal and match transitions; last-match visibility,source-confirmed,unverified,unverified
+pong,Pong,court,pong.js,R12,Assess contact angle readability; court framing; fair CPU; serve/reset transition,review-proposal,unverified,unverified
+breaker,Breaker,court,breaker.js,R12,Assess ball visibility and paddle feel; brick hit hierarchy; life-loss and serve clarity,review-proposal,unverified,unverified
+flap,Flap,movement,flap.js,R13,Assess flap acknowledgment; silhouette/hitbox agreement; next-gap readability; retry,review-proposal,unverified,unverified
+pin,Pin,timing,pin.js,R11,Assess launch timing; target overlap readability; pin settle; round transitions,review-proposal,unverified,unverified
+zigzag,ZigZag,movement,zigzag.js,R13,Assess path edge depth; turn feedback; camera and falling outcome,review-proposal,unverified,unverified
+chop,Chop,timing,chop.js,R13,Assess left/right response; branch anticipation; energy readability and impact rhythm,review-proposal,unverified,unverified
+meteor,Meteor,movement,meteor.js,R13,Assess ship tracking; hazard contrast; shield state; hit and pickup hierarchy,review-proposal,unverified,unverified
+hop,Hop,movement,hop.js,R13,Assess steering; spring/breakaway platform identity; landing and camera motion,review-proposal,unverified,unverified
+chroma,Chroma,timing,chroma.js,R11,Assess press timing; non-colour segment cues; checkpoint and crossing clarity,review-proposal,unverified,unverified
+drop,Drop,movement,drop.js,R13,Assess ball/ledge contact; coming-gap readability; hazard warning and death visibility,review-proposal,unverified,unverified
+invaders,Invaders,movement,invaders.js,R13,Assess shot/hit readability; invulnerability; bunkers; wave transition and touch occlusion,review-proposal,unverified,unverified
+crossy,Crossy,movement,crossy.js,R13,Assess hop/landing; lane depth; log riding and collision legibility; safe waiting,review-proposal,unverified,unverified
+target,Target,precision,target.js,R12,Assess held aim/cancel; trajectory clarity; impact/score synchronization; final arrow,review-proposal,unverified,unverified
+pop,Pop,board,pop.js,R10,Assess pop/fall sequence; cluster recognition; combo timer clarity; final cascade,review-proposal,unverified,unverified
+blocks,Pocket Blocks,board,blocks.js,R10,Assess dense cells and side labels; swipe/tap arbitration; lock and line-clear sequence,review-proposal,unverified,unverified
+mines,Minesweeper,board,mines.js,R08,Assess small-cell touch; reveal/flag discoverability; flood reveal and mine-loss explanation,review-proposal,unverified,unverified
+slide,Slide Nine,board,slide.js,R08,Tile travel rather than instant swap; square cell scale and winning move visibility,source-confirmed,unverified,unverified
+lights,Lights Out,board,lights.js,R08,Assess cross-neighbour causal feedback; on/off contrast; circuit transitions,review-proposal,unverified,unverified
+echo,Echo,timing,echo.js,R11,Assess playback/player-turn handover; pad press feedback; audio/visual timing,review-proposal,unverified,unverified
+four,Four in a Row,strategy,four.js,R09,Falling discs; duplicate instructional text; turn handover; unobscured winning line,source-confirmed,unverified,unverified
+reversi,Reversi,strategy,reversi.js,R09,Visible flips; count and turn hierarchy; pass explanation; final board,source-confirmed,unverified,unverified
+bubbles,Bubble Sky,board,bubbles.js,R10,Assess aiming/rail prediction; snap/pop/fall order; unsupported drops; ceiling warning,review-proposal,unverified,unverified
+golf,Pocket Golf,precision,golf.js,R06,Held-aim pause conflict; controlled power; cup sink and final-hole presentation,source-confirmed,unverified,unverified
+hoops,Swish,precision,hoops.js,R12,Assess finger occlusion; aim/cancel; rim contact and net/score feedback; shot reset,review-proposal,unverified,unverified
+sprint,Lane Rush,movement,sprint.js,R13,Assess lane transition feel; upcoming safe path; collision/shield clarity and road depth,review-proposal,unverified,unverified
+slice,Prism Slice,movement,slice.js,R13,Assess swipe trail/targets; cut result; hazard distinction; meaningful combo feedback,review-proposal,unverified,unverified
+orbit,Orbit,timing,orbit.js,R11,Release-based tap timing; reversal anticipation; target/perfect-zone clarity,source-confirmed,unverified,unverified
+maze,Maze Escape,board,maze.js,R13,Assess trace vs tap intent; passage legibility; collected sparks and exit/round transition,review-proposal,unverified,unverified
+rhythm,Beat Drop,timing,rhythm.js,R11,Release-based tap judgment; input/clock/audio alignment; readable timing and combo feedback,source-confirmed,unverified,unverified

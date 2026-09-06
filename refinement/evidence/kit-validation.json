@@ -1,0 +1,13 @@
+{
+  "relative_document_links": "pass",
+  "tasks": 19,
+  "catalogue_games": 34,
+  "dependency_graph": "pass: rechecked after final dependencies",
+  "catalogue_coverage": "checked",
+  "source_fingerprints": "checked",
+  "errors": [],
+  "skill_frontmatter": "pass: parsed with Ruby safe YAML and checked name/description constraints",
+  "bundled_skill_validator": "Unavailable: Python PyYAML missing; independent YAML/schema checks completed instead",
+  "evidence_overwrite_protection": "pass: existing baseline refused with exit 2",
+  "game_source_unchanged": "pass"
+}

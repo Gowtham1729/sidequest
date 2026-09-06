@@ -1,0 +1,340 @@
+TAP version 13
+# Subtest: constructing the audio service does not create an AudioContext
+ok 1 - constructing the audio service does not create an AudioContext
+  ---
+  duration_ms: 1.247958
+  type: 'test'
+  ...
+# Subtest: unlock failure can be retried on the same lazily-created context
+ok 2 - unlock failure can be retried on the same lazily-created context
+  ---
+  duration_ms: 0.522
+  type: 'test'
+  ...
+# Subtest: preferences persist and clamp numeric values while preserving invalid values
+ok 3 - preferences persist and clamp numeric values while preserving invalid values
+  ---
+  duration_ms: 0.678708
+  type: 'test'
+  ...
+# Subtest: new devices use an audible music default and migrate the old untouched default
+ok 4 - new devices use an audible music default and migrate the old untouched default
+  ---
+  duration_ms: 0.210375
+  type: 'test'
+  ...
+# Subtest: playing music is idempotent and schedules one loop timer
+ok 5 - playing music is idempotent and schedules one loop timer
+  ---
+  duration_ms: 0.397834
+  type: 'test'
+  ...
+# Subtest: pause, background, and mute stop active voices and clear the loop timer
+ok 6 - pause, background, and mute stop active voices and clear the loop timer
+  ---
+  duration_ms: 0.393
+  type: 'test'
+  ...
+# Subtest: retired game handles are ignored; current handle works after foreground restore
+ok 7 - retired game handles are ignored; current handle works after foreground restore
+  ---
+  duration_ms: 0.205833
+  type: 'test'
+  ...
+# Subtest: late effect and music sample loads are cancelled after pause or game switch
+ok 8 - late effect and music sample loads are cancelled after pause or game switch
+  ---
+  duration_ms: 5.304708
+  type: 'test'
+  ...
+# Subtest: all five bundled profiles are distinct with valid synthesized or recorded music
+ok 9 - all five bundled profiles are distinct with valid synthesized or recorded music
+  ---
+  duration_ms: 0.603875
+  type: 'test'
+  ...
+# Subtest: late effects are discarded independently on pause, mute, and game switch
+ok 10 - late effects are discarded independently on pause, mute, and game switch
+  ---
+  duration_ms: 1.4645
+  type: 'test'
+  ...
+# Subtest: a decoded current sample plays, then pause stops it
+ok 11 - a decoded current sample plays, then pause stops it
+  ---
+  duration_ms: 0.798917
+  type: 'test'
+  ...
+# Subtest: recorded music starts one looping sample and stays cached
+ok 12 - recorded music starts one looping sample and stays cached
+  ---
+  duration_ms: 0.564125
+  type: 'test'
+  ...
+# Subtest: decoded sample cache stays bounded and refetches evicted entries
+ok 13 - decoded sample cache stays bounded and refetches evicted entries
+  ---
+  duration_ms: 0.312084
+  type: 'test'
+  ...
+# Subtest: recorded loops are valid, override their games, and leave quiet games alone
+ok 14 - recorded loops are valid, override their games, and leave quiet games alone
+  ---
+  duration_ms: 0.376625
+  type: 'test'
+  ...
+# Subtest: delayed music timer skips missed beats and pausing stops every scheduled voice
+ok 15 - delayed music timer skips missed beats and pausing stops every scheduled voice
+  ---
+  duration_ms: 0.280541
+  type: 'test'
+  ...
+# Subtest: all registered games receive a profile and new games get rate-limited score cues
+ok 16 - all registered games receive a profile and new games get rate-limited score cues
+  ---
+  duration_ms: 16.768458
+  type: 'test'
+  ...
+# Subtest: exactly 15 distinct additions bring the complete feed to 34
+ok 17 - exactly 15 distinct additions bring the complete feed to 34
+  ---
+  duration_ms: 0.931291
+  type: 'test'
+  ...
+# Subtest: all new cues and music have valid, bounded synthesis parameters
+ok 18 - all new cues and music have valid, bounded synthesis parameters
+  ---
+  duration_ms: 1.042916
+  type: 'test'
+  ...
+# Subtest: Minesweeper always protects first click and neighbors, at every position
+ok 19 - Minesweeper always protects first click and neighbors, at every position
+  ---
+  duration_ms: 3.026291
+  type: 'test'
+  ...
+# Subtest: Minesweeper flags resist flood fill and all safe squares finish the game
+ok 20 - Minesweeper flags resist flood fill and all safe squares finish the game
+  ---
+  duration_ms: 1.452458
+  type: 'test'
+  ...
+# Subtest: sliding boards are nontrivial and solvable; nonadjacent moves do nothing
+ok 21 - sliding boards are nontrivial and solvable; nonadjacent moves do nothing
+  ---
+  duration_ms: 5.972167
+  type: 'test'
+  ...
+# Subtest: all five Lights Out circuits can be completed through actual input
+ok 22 - all five Lights Out circuits can be completed through actual input
+  ---
+  duration_ms: 18.770833
+  type: 'test'
+  ...
+# Subtest: Echo ignores input during playback, accepts a pattern, and rejects a wrong note
+ok 23 - Echo ignores input during playback, accepts a pattern, and rejects a wrong note
+  ---
+  duration_ms: 5.03475
+  type: 'test'
+  ...
+# Subtest: block rotations, boundary collision and simultaneous four-line clears
+ok 24 - block rotations, boundary collision and simultaneous four-line clears
+  ---
+  duration_ms: 0.966958
+  type: 'test'
+  ...
+# Subtest: Pocket Blocks hard drops lock pieces and top-out ends only once
+ok 25 - Pocket Blocks hard drops lock pieces and top-out ends only once
+  ---
+  duration_ms: 0.948834
+  type: 'test'
+  ...
+# Subtest: Four in a Row detects all line directions and CPU wins or blocks
+ok 26 - Four in a Row detects all line directions and CPU wins or blocks
+  ---
+  duration_ms: 21.109833
+  type: 'test'
+  ...
+# Subtest: Reversi flips only bracketed discs and CPU always chooses a legal move
+ok 27 - Reversi flips only bracketed discs and CPU always chooses a legal move
+  ---
+  duration_ms: 1.395667
+  type: 'test'
+  ...
+# Subtest: bubble matches follow hex neighbors and only unanchored clusters fall
+ok 28 - bubble matches follow hex neighbors and only unanchored clusters fall
+  ---
+  duration_ms: 1.828541
+  type: 'test'
+  ...
+# Subtest: golf walls reflect an incoming ball and retain a finite position
+ok 29 - golf walls reflect an incoming ball and retain a finite position
+  ---
+  duration_ms: 0.178
+  type: 'test'
+  ...
+# Subtest: first golf hole can actually be sunk with a controlled putt
+ok 30 - first golf hole can actually be sunk with a controlled putt
+  ---
+  duration_ms: 7.328917
+  type: 'test'
+  ...
+# Subtest: hoops only awards descending shots through the inside of the rim
+ok 31 - hoops only awards descending shots through the inside of the rim
+  ---
+  duration_ms: 0.112958
+  type: 'test'
+  ...
+# Subtest: Swish default keyboard shot scores once and the tenth attempt ends the round
+ok 32 - Swish default keyboard shot scores once and the tenth attempt ends the round
+  ---
+  duration_ms: 26.438666
+  type: 'test'
+  ...
+# Subtest: Lane Rush can survive all 60 seconds by taking each open lane
+ok 33 - Lane Rush can survive all 60 seconds by taking each open lane
+  ---
+  duration_ms: 48.680583
+  type: 'test'
+  ...
+# Subtest: slicing detects swept intersections, including zero-length taps
+ok 34 - slicing detects swept intersections, including zero-length taps
+  ---
+  duration_ms: 0.208417
+  type: 'test'
+  ...
+# Subtest: Prism Slice rewards a real sweep through a wave and ignores a second cut
+ok 35 - Prism Slice rewards a real sweep through a wave and ignores a second cut
+  ---
+  duration_ms: 2.0985
+  type: 'test'
+  ...
+# Subtest: orbit wraps angles correctly and timing hits score while spamming misses ends
+ok 36 - orbit wraps angles correctly and timing hits score while spamming misses ends
+  ---
+  duration_ms: 4.468625
+  type: 'test'
+  ...
+# Subtest: every generated maze is fully connected with reciprocal walls and a path to exit
+ok 37 - every generated maze is fully connected with reciprocal walls and a path to exit
+  ---
+  duration_ms: 10.428041
+  type: 'test'
+  ...
+# Subtest: Beat Drop perfect input can finish all 64 beats; hit spam cannot double score
+ok 38 - Beat Drop perfect input can finish all 64 beats; hit spam cannot double score
+  ---
+  duration_ms: 35.285208
+  type: 'test'
+  ...
+# Subtest: every new game freezes at dt=0, restarts, and becomes inert after destroy
+ok 39 - every new game freezes at dt=0, restarts, and becomes inert after destroy
+  ---
+  duration_ms: 29.886417
+  type: 'test'
+  ...
+# Subtest: Bubble Sky a matching shot clears a connected ceiling and wins once
+ok 40 - Bubble Sky a matching shot clears a connected ceiling and wins once
+  ---
+  duration_ms: 7.727334
+  type: 'test'
+  ...
+# Subtest: all five golf courses have a playable route within the stroke budget
+ok 41 - all five golf courses have a playable route within the stroke budget
+  ---
+  duration_ms: 50.6065
+  type: 'test'
+  ...
+# Subtest: three full Maze Escape rounds can collect all sparks and reach the exit
+ok 42 - three full Maze Escape rounds can collect all sparks and reach the exit
+  ---
+  duration_ms: 6.106708
+  type: 'test'
+  ...
+# Subtest: all 29 canvas arcade games render, play, pause and restart at 390×844
+ok 43 - all 29 canvas arcade games render, play, pause and restart at 390×844
+  ---
+  duration_ms: 353.29275
+  type: 'test'
+  ...
+# Subtest: all 29 canvas arcade games render, play, pause and restart at 320×568
+ok 44 - all 29 canvas arcade games render, play, pause and restart at 320×568
+  ---
+  duration_ms: 207.111625
+  type: 'test'
+  ...
+# Subtest: all 29 canvas arcade games render, play, pause and restart at 844×390
+ok 45 - all 29 canvas arcade games render, play, pause and restart at 844×390
+  ---
+  duration_ms: 170.306375
+  type: 'test'
+  ...
+# Subtest: all 29 canvas arcade games render, play, pause and restart at 1440×900
+ok 46 - all 29 canvas arcade games render, play, pause and restart at 1440×900
+  ---
+  duration_ms: 175.085333
+  type: 'test'
+  ...
+# Subtest: ZigZag awards no progress for spamming turn without movement
+ok 47 - ZigZag awards no progress for spamming turn without movement
+  ---
+  duration_ms: 0.355333
+  type: 'test'
+  ...
+# Subtest: Crossy lets a player wait safely on grass for a full minute
+ok 48 - Crossy lets a player wait safely on grass for a full minute
+  ---
+  duration_ms: 50.794209
+  type: 'test'
+  ...
+# Subtest: Chroma starts at a safe checkpoint without an instant fall timer
+ok 49 - Chroma starts at a safe checkpoint without an instant fall timer
+  ---
+  duration_ms: 3.931625
+  type: 'test'
+  ...
+# Subtest: Pop flood fill includes connected matching gems only
+ok 50 - Pop flood fill includes connected matching gems only
+  ---
+  duration_ms: 0.598875
+  type: 'test'
+  ...
+# Subtest: Pop ends exactly once at 60 seconds and restarts cleanly
+ok 51 - Pop ends exactly once at 60 seconds and restarts cleanly
+  ---
+  duration_ms: 163.466292
+  type: 'test'
+  ...
+# Subtest: Target awards an actual bullseye for a centered shot
+ok 52 - Target awards an actual bullseye for a centered shot
+  ---
+  duration_ms: 1.791041
+  type: 'test'
+  ...
+# Subtest: Crossy traffic can hit a stationary player in the center of a road lane
+ok 53 - Crossy traffic can hit a stationary player in the center of a road lane
+  ---
+  duration_ms: 16.828667
+  type: 'test'
+  ...
+# Subtest: gameplay swipes stay with the game; edge and two fingers navigate
+ok 54 - gameplay swipes stay with the game; edge and two fingers navigate
+  ---
+  duration_ms: 0.971958
+  type: 'test'
+  ...
+# Subtest: game outcomes used for audio still distinguish merges and perfect drops
+ok 55 - game outcomes used for audio still distinguish merges and perfect drops
+  ---
+  duration_ms: 1.807625
+  type: 'test'
+  ...
+1..55
+# tests 55
+# suites 0
+# pass 55
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1234.1175

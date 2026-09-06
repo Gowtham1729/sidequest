@@ -1,0 +1,1140 @@
+{
+  "schema_version": 1,
+  "prepared_date": "2026-09-06",
+  "baseline_commit": "6777c90a8e860f3882106620cf5cde141658b107",
+  "policy": "Coordinator owns state; do not mark missing evidence passed. Later tasks are optional and excluded from the initial programme.",
+  "tasks": [
+    {
+      "id": "R00",
+      "title": "Establish actual browser baseline and comparable reference observations",
+      "stage": "foundation",
+      "kind": "review",
+      "status": "blocked",
+      "owner": null,
+      "write_paths": [],
+      "depends_on": [],
+      "dependency_gate": "implemented",
+      "acceptance": [
+        "Record current source fingerprint and relation to tested URL; do not assume deployed parity.",
+        "Capture pilot baseline states at QA viewports through approved browser control.",
+        "Inspect at most two useful mechanic references per pilot, or document unavailable access; do not fabricate observations."
+      ],
+      "required_gates": [
+        "code",
+        "visual"
+      ],
+      "gates": {
+        "code": {
+          "status": "pass",
+          "evidence": [
+            "refinement/evidence/baseline/summary.json",
+            "refinement/evidence/baseline/tests.log"
+          ],
+          "reviewer": "kit preparation: offline checkpoint only",
+          "source_fingerprint": "daf4fac93220f072d6c81516b78ca7c04b4592e33b551676cc8d6cee5e1248c9"
+        },
+        "visual": {
+          "status": "blocked",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": [
+        "Chrome and in-app browser policy verification unavailable on 2026-09-06; offline baseline completed separately. Independent source preparation may continue."
+      ]
+    },
+    {
+      "id": "R01",
+      "title": "Give game input explicit ownership and reliable timing",
+      "stage": "foundation",
+      "kind": "implementation",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/app.js",
+        "dist/gestures.js",
+        "dist/registry.js",
+        "dist/games/expansion.js",
+        "tests/gestures.test.mjs",
+        "tests/input-lifecycle.test.mjs"
+      ],
+      "depends_on": [],
+      "dependency_gate": "implemented",
+      "acceptance": [
+        "Timing-game press is judged once; drag-release games keep their intended semantics.",
+        "Holding an active Golf aim for one second does not invoke pause or fire.",
+        "Centre swipes stay in games; edge and two-finger feed behavior remains deliberate.",
+        "Cancel, pause, second finger, background and restart leave no stale gesture."
+      ],
+      "required_gates": [
+        "code",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R02",
+      "title": "Define compact HUD and stable layout families",
+      "stage": "foundation",
+      "kind": "implementation",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/style.css",
+        "dist/index.html",
+        "dist/app.js",
+        "dist/games/shared.js",
+        "dist/games/cabinet.js",
+        "dist/games/art.js",
+        "tests/layout.test.mjs"
+      ],
+      "depends_on": [
+        "R01"
+      ],
+      "dependency_gate": "implemented",
+      "acceptance": [
+        "Board, portrait-action, and scene layout responsibilities are explicit with backward-compatible defaults.",
+        "Ready-to-play transitions do not unexpectedly change collision geometry.",
+        "Regular UI remains readable and comfortable across the QA viewport matrix.",
+        "Remove redundant play-state prose; provide discoverable compact pause/browse access.",
+        "Preserve feed rail reachability and all game IDs; correct stale nineteen-game metadata."
+      ],
+      "required_gates": [
+        "code",
+        "visual"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R03",
+      "title": "Add only the motion and finishing support needed by the pilots",
+      "stage": "foundation",
+      "kind": "implementation",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/app.js",
+        "dist/games/shared.js",
+        "dist/games/cabinet.js",
+        "dist/games/motion.js",
+        "tests/motion-lifecycle.test.mjs"
+      ],
+      "depends_on": [
+        "R02"
+      ],
+      "dependency_gate": "implemented",
+      "acceptance": [
+        "Simulation and presentation have separate terminal behavior; scores stop while ending visuals can resolve.",
+        "Outcome and ending cue occur once; skip/retry cancels pending presentation.",
+        "Game switch, pause and background cannot leak effects or timers.",
+        "Reduced motion is available to canvas consumers.",
+        "Unmigrated games preserve their existing rules and lifecycle."
+      ],
+      "required_gates": [
+        "code",
+        "visual"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R04",
+      "title": "Refine Stack to the flagship brief",
+      "stage": "pilots",
+      "kind": "implementation",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/games/stack.js",
+        "tests/stack-refinement.test.mjs"
+      ],
+      "depends_on": [
+        "R01",
+        "R02",
+        "R03"
+      ],
+      "dependency_gate": "implemented",
+      "acceptance": [
+        "Meet all Stack requirements and scenarios in pilot-briefs.md.",
+        "Preserve stated rules unless a separately reviewed gameplay change is recorded.",
+        "Provide matching baseline/candidate layout and motion evidence and fresh review.",
+        "Pass real-device controls, safe-area and sound checks."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R05",
+      "title": "Refine 2048 to the flagship brief",
+      "stage": "pilots",
+      "kind": "implementation",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/games/merge.js",
+        "tests/merge-refinement.test.mjs"
+      ],
+      "depends_on": [
+        "R01",
+        "R02",
+        "R03"
+      ],
+      "dependency_gate": "implemented",
+      "acceptance": [
+        "Meet all 2048 requirements and scenarios in pilot-briefs.md.",
+        "Preserve stated rules unless a separately reviewed gameplay change is recorded.",
+        "Provide matching baseline/candidate layout and motion evidence and fresh review.",
+        "Pass real-device controls, safe-area and sound checks."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R06",
+      "title": "Refine Pocket Golf to the flagship brief",
+      "stage": "pilots",
+      "kind": "implementation",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/games/golf.js",
+        "tests/golf-refinement.test.mjs"
+      ],
+      "depends_on": [
+        "R01",
+        "R02",
+        "R03"
+      ],
+      "dependency_gate": "implemented",
+      "acceptance": [
+        "Meet all Pocket Golf requirements and scenarios in pilot-briefs.md.",
+        "Preserve stated rules unless a separately reviewed gameplay change is recorded.",
+        "Provide matching baseline/candidate layout and motion evidence and fresh review.",
+        "Pass real-device controls, safe-area and sound checks."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R07",
+      "title": "Accept the three flagships and freeze the proven design decisions",
+      "stage": "pilot-gate",
+      "kind": "review",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "refinement/state",
+        "refinement/sidequest-refinement/references/quality-standard.md"
+      ],
+      "depends_on": [
+        "R00",
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "All three pilots pass code, visual, and device gates on integrated source.",
+        "Collect actual formative player observations for all pilots; no simulated participants.",
+        "Record one coherent shared design direction, exceptions, final issues, and source-bound evidence.",
+        "No unresolved input, fairness, legibility or lifecycle blocker."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device",
+        "player"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R08",
+      "title": "Puzzle tiles and switches",
+      "stage": "catalogue",
+      "kind": "batch",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/games/memory.js",
+        "dist/games/mines.js",
+        "dist/games/slide.js",
+        "dist/games/lights.js"
+      ],
+      "depends_on": [
+        "R07"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "Split this batch into one-game subtickets with exclusive write ownership before implementation.",
+        "Revalidate catalogue focus items; apply the accepted standard only where it improves the specific game.",
+        "Every listed game receives source, visual, motion and relevant device evidence; preserve unique mechanics.",
+        "Integrated regression checks pass, including gesture and audio behavior."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": [],
+      "game_ids": [
+        "memory",
+        "mines",
+        "slide",
+        "lights"
+      ]
+    },
+    {
+      "id": "R09",
+      "title": "Turn-based strategy",
+      "stage": "catalogue",
+      "kind": "batch",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/games/four.js",
+        "dist/games/reversi.js"
+      ],
+      "depends_on": [
+        "R07"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "Split this batch into one-game subtickets with exclusive write ownership before implementation.",
+        "Revalidate catalogue focus items; apply the accepted standard only where it improves the specific game.",
+        "Every listed game receives source, visual, motion and relevant device evidence; preserve unique mechanics.",
+        "Integrated regression checks pass, including gesture and audio behavior."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": [],
+      "game_ids": [
+        "four",
+        "reversi"
+      ]
+    },
+    {
+      "id": "R10",
+      "title": "Boards with moving pieces",
+      "stage": "catalogue",
+      "kind": "batch",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/games/blocks.js",
+        "dist/games/bubbles.js",
+        "dist/games/pop.js"
+      ],
+      "depends_on": [
+        "R07"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "Split this batch into one-game subtickets with exclusive write ownership before implementation.",
+        "Revalidate catalogue focus items; apply the accepted standard only where it improves the specific game.",
+        "Every listed game receives source, visual, motion and relevant device evidence; preserve unique mechanics.",
+        "Integrated regression checks pass, including gesture and audio behavior."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": [],
+      "game_ids": [
+        "blocks",
+        "bubbles",
+        "pop"
+      ]
+    },
+    {
+      "id": "R11",
+      "title": "Timing and rhythm",
+      "stage": "catalogue",
+      "kind": "batch",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/games/echo.js",
+        "dist/games/orbit.js",
+        "dist/games/rhythm.js",
+        "dist/games/pin.js",
+        "dist/games/chroma.js"
+      ],
+      "depends_on": [
+        "R07"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "Split this batch into one-game subtickets with exclusive write ownership before implementation.",
+        "Revalidate catalogue focus items; apply the accepted standard only where it improves the specific game.",
+        "Every listed game receives source, visual, motion and relevant device evidence; preserve unique mechanics.",
+        "Integrated regression checks pass, including gesture and audio behavior."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": [],
+      "game_ids": [
+        "echo",
+        "orbit",
+        "rhythm",
+        "pin",
+        "chroma"
+      ]
+    },
+    {
+      "id": "R12",
+      "title": "Courts and precision",
+      "stage": "catalogue",
+      "kind": "batch",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/games/rally.js",
+        "dist/games/pong.js",
+        "dist/games/breaker.js",
+        "dist/games/target.js",
+        "dist/games/hoops.js"
+      ],
+      "depends_on": [
+        "R07"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "Split this batch into one-game subtickets with exclusive write ownership before implementation.",
+        "Revalidate catalogue focus items; apply the accepted standard only where it improves the specific game.",
+        "Every listed game receives source, visual, motion and relevant device evidence; preserve unique mechanics.",
+        "Integrated regression checks pass, including gesture and audio behavior."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": [],
+      "game_ids": [
+        "rally",
+        "pong",
+        "breaker",
+        "target",
+        "hoops"
+      ]
+    },
+    {
+      "id": "R13",
+      "title": "Movement and survival",
+      "stage": "catalogue",
+      "kind": "batch",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/games/snake.js",
+        "dist/games/flap.js",
+        "dist/games/zigzag.js",
+        "dist/games/chop.js",
+        "dist/games/meteor.js",
+        "dist/games/hop.js",
+        "dist/games/drop.js",
+        "dist/games/invaders.js",
+        "dist/games/crossy.js",
+        "dist/games/sprint.js",
+        "dist/games/slice.js",
+        "dist/games/maze.js"
+      ],
+      "depends_on": [
+        "R07"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "Split this batch into one-game subtickets with exclusive write ownership before implementation.",
+        "Revalidate catalogue focus items; apply the accepted standard only where it improves the specific game.",
+        "Every listed game receives source, visual, motion and relevant device evidence; preserve unique mechanics.",
+        "Integrated regression checks pass, including gesture and audio behavior."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": [],
+      "game_ids": [
+        "snake",
+        "flap",
+        "zigzag",
+        "chop",
+        "meteor",
+        "hop",
+        "drop",
+        "invaders",
+        "crossy",
+        "sprint",
+        "slice",
+        "maze"
+      ]
+    },
+    {
+      "id": "R14",
+      "title": "Audit the collection audio mix and transitions",
+      "stage": "integration",
+      "kind": "implementation",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "dist/audio/profiles.js",
+        "dist/audio/expansion-profiles.js",
+        "dist/audio/recorded.js",
+        "tests/audio.test.mjs"
+      ],
+      "depends_on": [
+        "R07"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "Real listening evidence covers speakers/headphones, repeated actions, loop joins, and game switches.",
+        "No perceived clipping, harsh transition, action masking, or stale playback remains unexplained.",
+        "Mute/volume persistence and centralized engine isolation tests remain green.",
+        "Asset/payload change is measured and does not gate gameplay."
+      ],
+      "required_gates": [
+        "code",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R15",
+      "title": "Measure frame pacing, loading, and cleanup",
+      "stage": "integration",
+      "kind": "review",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [],
+      "depends_on": [
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13",
+        "R14"
+      ],
+      "dependency_gate": "implemented",
+      "acceptance": [
+        "Record actual device and connection profiles and measurements from qa-protocol.md.",
+        "Any performance fix gets its own bounded implementation ticket and fresh evidence.",
+        "Distinguish on-disk bytes from transferred bytes and actual interactive readiness.",
+        "Inspect repeated game-switch cleanup without inferring leaks from a single sample."
+      ],
+      "required_gates": [
+        "code",
+        "device"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R16",
+      "title": "Final integrated acceptance and release handoff",
+      "stage": "release-review",
+      "kind": "review",
+      "status": "queued",
+      "owner": null,
+      "write_paths": [
+        "refinement/state"
+      ],
+      "depends_on": [
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13",
+        "R14",
+        "R15"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "All 34 registered games are accounted for with required review evidence.",
+        "All required code/visual/device gates pass; flagship player observations remain applicable or are repeated after material changes.",
+        "Record unresolved non-blocking issues and verify no new regression invalidated earlier evidence.",
+        "Prepare the intended source revision and existing Site identity for a separately authorized deployment; do not deploy under this ticket."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device",
+        "player"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R17",
+      "title": "Optional local personal-best persistence",
+      "stage": "later",
+      "kind": "implementation",
+      "status": "deferred",
+      "owner": null,
+      "write_paths": [
+        "dist/app.js",
+        "tests/bests.test.mjs"
+      ],
+      "depends_on": [
+        "R07"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "Explicitly activate this product enhancement before implementation.",
+        "Higher/lower-is-better semantics remain correct; invalid saved values and unavailable storage are handled.",
+        "No account or network dependency; clear record semantics."
+      ],
+      "required_gates": [
+        "code",
+        "visual"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "id": "R18",
+      "title": "Optional fixed-camera 3D Golf comparison",
+      "stage": "later",
+      "kind": "implementation",
+      "status": "deferred",
+      "owner": null,
+      "write_paths": [],
+      "depends_on": [
+        "R07"
+      ],
+      "dependency_gate": "accepted",
+      "acceptance": [
+        "Activate as separate scope; build one hole only with unchanged rules.",
+        "Compare against refined existing version using matched shots and actual player/device evidence.",
+        "Continue only if depth improves play enough to justify measured loading/rendering costs."
+      ],
+      "required_gates": [
+        "code",
+        "visual",
+        "device",
+        "player"
+      ],
+      "gates": {
+        "code": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "visual": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "device": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        },
+        "player": {
+          "status": "unverified",
+          "evidence": [],
+          "reviewer": null,
+          "source_fingerprint": null
+        }
+      },
+      "evidence": [],
+      "notes": []
+    }
+  ]
+}
