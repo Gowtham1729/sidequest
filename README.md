@@ -41,7 +41,7 @@ The repository is prepared for the existing ChatGPT Site identified by `.openai/
 
 Tap **Sound on/off** below the Sidequest name to open the audio sheet. Music and effects have independent switches and volume sliders; **Mute all** silences both. `M` toggles mute outside dialogs. Preferences are saved only on the current device. Audio unlocks after a touch/click/key interaction; a browser that cannot play audio still runs the games normally.
 
-All 34 games have tailored synthesized sound palettes. Echo and Beat Drop deliberately leave background music silent so memory cues and rhythm timing remain clear. Game visuals and gameplay use the existing centralized audio lifecycle. Music plays only during an active round, stops for pause, feed gestures, dialogs, and backgrounding, and starts a fresh phrase on resume. Switching games stops the previous game's voices. Results have short ending cues without continuing the music. No sound files, downloads, libraries, or third-party music services are required for the included games.
+All 34 games have tailored event sounds. Thirty-two use synthesized palettes; Echo and Beat Drop deliberately leave background music silent so memory cues and rhythm timing remain clear. Stack and Chop load short recorded loops (AI-generated, kept in `dist/audio/assets/`) the first time they are played. Game visuals and gameplay use the existing centralized audio lifecycle. Music plays only during an active round, stops for pause, feed gestures, dialogs, and backgrounding, and starts a fresh phrase on resume. Switching games stops the previous game's voices. Results have short ending cues without continuing the music. Apart from those two loops, no sound files, downloads, libraries, or third-party music services are required.
 
 - `dist/audio/engine.js`: one lazy Web Audio context, separate music/effects gains, output limiter, short look-ahead music scheduler, bounded voices, device preferences, and lifecycle cleanup.
 - `dist/audio/profiles.js`: declarative sound palettes and original music for the original 19 games; `dist/audio/expansion-profiles.js` supplies the 15 additions.
@@ -78,9 +78,9 @@ myGame: {
 
 Notes are MIDI numbers (60 = middle C); `null` is a rest. Music advances in eighth-note steps. Effect `at` offsets and note `duration` use seconds; `gain` is 0–1. Keep music quiet and leave space for gameplay feedback. `endNote` creates a pitch glide. The included 32-step loops span four bars.
 
-### Use recorded audio later
+### Use recorded audio
 
-Place audio that you have rights to use in `dist/audio/assets/`. Replace an effect's note array with `{src:'/audio/assets/collect.ogg', gain:.3}`. Replace a music pattern with `{src:'/audio/assets/my-loop.mp3', gain:.2}` for looping recorded music. Effects also support `playbackRate` (0.25–4). Choose formats supported on your target devices and trim loops at clean boundaries.
+Place audio that you have rights to use in `dist/audio/assets/`. Replace an effect's note array with `{src:'/audio/assets/collect.ogg', gain:.3}`. Replace a music pattern with `{src:'/audio/assets/my-loop.mp3', gain:.2}` for looping recorded music. Effects also support `playbackRate` (0.25–4). Choose formats supported on your target devices and trim loops at clean boundaries. Cut loops on bar boundaries at the game's BPM so they rejoin on the downbeat: 8 bars at 112 BPM ≈ 17.1s, 16 bars at 132 BPM ≈ 29.1s (Stack and Chop ship loops cut this way).
 
 Files are fetched and decoded lazily, cached per session, and played through the same controls. Loading/decoding failures are silent; late loads cannot leak across a game switch, pause, or mute. The first play of an uncached file can be delayed, so keep files small. The supplied synthesized sounds have no loading delay.
 

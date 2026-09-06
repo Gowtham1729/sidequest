@@ -89,7 +89,7 @@ test('preferences persist and clamp numeric values while preserving invalid valu
 test('playing music is idempotent and schedules one loop timer', async () => {
   const clock = timers(); const context = new FakeContext();
   const audio = new GameAudio({ createContext: () => context, storage: new Storage(), setInterval: clock.setInterval, clearInterval: clock.clearInterval });
-  await audio.unlock(); audio.activate(audioProfiles.stack); audio.setPlaying(true); audio.syncMusic();
+  await audio.unlock(); audio.activate(audioProfiles.snake); audio.setPlaying(true); audio.syncMusic();
   assert.equal(clock.active.size, 1); assert.equal(audio.musicActive, true);
   audio.syncMusic(); assert.equal(clock.active.size, 1);
 });
@@ -97,7 +97,7 @@ test('playing music is idempotent and schedules one loop timer', async () => {
 test('pause, background, and mute stop active voices and clear the loop timer', async () => {
   const clock = timers(); const context = new FakeContext();
   const audio = new GameAudio({ createContext: () => context, storage: new Storage(), setInterval: clock.setInterval, clearInterval: clock.clearInterval });
-  await audio.unlock(); const handle = audio.activate({ music: audioProfiles.stack.music, sounds: { tap: [{ note: 60, duration: 1, gain: .2, wave: 'sine' }] } });
+  await audio.unlock(); const handle = audio.activate({ music: audioProfiles.snake.music, sounds: { tap: [{ note: 60, duration: 1, gain: .2, wave: 'sine' }] } });
   audio.setPlaying(true); handle.play('tap'); assert.ok(audio.voices.size > 0); assert.equal(clock.active.size, 1);
   audio.setForeground(false); assert.equal(audio.voices.size, 0); assert.equal(clock.active.size, 0);
   audio.setForeground(true); audio.update({ muted: true }); assert.equal(audio.voices.size, 0);
@@ -125,14 +125,19 @@ test('late effect and music sample loads are cancelled after pause or game switc
   assert.equal(context.bufferSources.length, 0);
 });
 
-test('all five bundled profiles are distinct and contain valid sparse 32-step music', () => {
+test('all five bundled profiles are distinct with valid synthesized or recorded music', () => {
   const names = ['stack', 'snake', '2048', 'rally', 'memory'];
   assert.deepEqual(Object.keys(audioProfiles).sort(), names.sort());
   const signatures = new Set();
   for (const name of names) {
-    const profile = audioProfiles[name]; signatures.add(JSON.stringify(profile.music.voices.map(v => v.notes)));
-    assert.equal(profile.music.steps, 32); assert.ok(profile.music.voices.length >= 2);
-    for (const voice of profile.music.voices) { assert.equal(voice.notes.length, 32); assert.ok(voice.notes.some(note => note === null)); assert.ok(['sine', 'triangle'].includes(voice.wave)); }
+    const profile = audioProfiles[name]; signatures.add(JSON.stringify(profile.music));
+    if (profile.music.src) {
+      assert.ok(profile.music.src.startsWith('/audio/assets/'), name);
+      assert.ok(profile.music.gain > 0 && profile.music.gain <= 1, name);
+    } else {
+      assert.equal(profile.music.steps, 32); assert.ok(profile.music.voices.length >= 2);
+      for (const voice of profile.music.voices) { assert.equal(voice.notes.length, 32); assert.ok(voice.notes.some(note => note === null)); assert.ok(['sine', 'triangle'].includes(voice.wave)); }
+    }
     for (const event of ['start', 'finish', 'win']) assert.ok(profile.sounds[event]?.length);
   }
   assert.equal(signatures.size, 5);
@@ -157,6 +162,16 @@ test('a decoded current sample plays, then pause stops it', async () => {
   await new Promise(resolve=>setImmediate(resolve));
   assert.equal(context.bufferSources.length,1);assert.equal(context.bufferSources[0].started,1);
   audio.setPlaying(false);assert.equal(context.bufferSources[0].stopped.length,1);
+});
+
+test('recorded music starts one looping sample and stays cached', async () => {
+  const context = new FakeContext(); let fetches = 0;
+  const audio = new GameAudio({ createContext: () => context, storage: new Storage(), fetch: async () => { fetches++; return { ok: true, arrayBuffer: async () => new ArrayBuffer(0) }; } });
+  await audio.unlock(); audio.activate(audioProfiles.stack); audio.setPlaying(true);
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(context.bufferSources.length, 1); assert.equal(context.bufferSources[0].loop, true); assert.equal(context.bufferSources[0].started, 1);
+  audio.syncMusic(); await new Promise(resolve => setImmediate(resolve));
+  assert.equal(context.bufferSources.length, 1); assert.equal(fetches, 1);
 });
 
 test('delayed music timer skips missed beats and pausing stops every scheduled voice',async()=>{

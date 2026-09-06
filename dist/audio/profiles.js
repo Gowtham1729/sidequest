@@ -5,24 +5,8 @@ import {expansionProfiles} from './expansion-profiles.js';
 
 export const audioProfiles = {
   stack: {
-    music: {
-      bpm: 112,
-      steps: 32,
-      voices: [
-        {
-          wave: 'triangle',
-          gain: 0.16,
-          duration: 0.28,
-          notes: [60, null, 64, null, 67, null, 71, null, 72, null, 71, null, 67, null, 64, null, 60, null, 64, null, 67, null, 71, null, 74, null, 72, null, 67, null, 64, null],
-        },
-        {
-          wave: 'sine',
-          gain: 0.13,
-          duration: 0.38,
-          notes: [48, null, null, 48, null, null, 55, null, 48, null, null, 48, null, null, 55, null, 50, null, null, 50, null, null, 57, null, 48, null, null, 48, null, null, 55, null],
-        },
-      ],
-    },
+    // Recorded loop: AI-generated performance trimmed to 8 bars at 112 BPM.
+    music: { src: '/audio/assets/stack-loop.mp3', gain: 0.25 },
     sounds: {
       start: [{ note: 60, at: 0, duration: 0.16, gain: 0.22, wave: 'sine' }, { note: 64, at: 0.1, duration: 0.2, gain: 0.18, wave: 'sine' }],
       finish: [{ note: 67, at: 0, duration: 0.18, gain: 0.24, wave: 'triangle' }, { note: 72, at: 0.12, duration: 0.3, gain: 0.25, wave: 'triangle' }],
@@ -307,24 +291,8 @@ export const extendedProfiles = {
   },
 
   chop: {
-    music: {
-      bpm: 132,
-      steps: 32,
-      voices: [
-        {
-          wave: 'sine',
-          gain: 0.16,
-          duration: 0.18,
-          notes: [67, null, 71, 74, null, 76, 74, null, 67, null, 71, 74, null, 79, 76, null, 65, null, 69, 72, null, 74, 72, null, 67, null, 71, 74, null, 76, null, null],
-        },
-        {
-          wave: 'triangle',
-          gain: 0.13,
-          duration: 0.26,
-          notes: [43, null, 50, null, 43, null, 50, null, 43, null, 50, null, 43, null, 50, null, 41, null, 48, null, 41, null, 48, null, 43, null, 50, null, 43, null, 50, null],
-        },
-      ],
-    },
+    // Recorded loop: AI-generated performance trimmed to 16 bars at 132 BPM.
+    music: { src: '/audio/assets/chop-loop.mp3', gain: 0.25 },
     sounds: {
       start: [{ note: 67, at: 0, duration: 0.14, gain: 0.22, wave: 'sine' }, { note: 74, at: 0.09, duration: 0.2, gain: 0.2, wave: 'triangle' }],
       finish: [{ note: 71, at: 0, duration: 0.16, gain: 0.22, wave: 'triangle' }, { note: 67, at: 0.12, duration: 0.28, gain: 0.24, wave: 'sine' }],
