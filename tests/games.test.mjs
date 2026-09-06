@@ -5,7 +5,7 @@ import {games} from '../dist/registry.js';
 import {clusterAt,COLS,ROWS} from '../dist/games/pop.js';
 
 for(const [width,height] of [[390,844],[320,568],[844,390],[1440,900]]){
- test(`all 14 games render, play, pause and restart at ${width}×${height}`,()=>{
+ test(`all 29 canvas arcade games render, play, pause and restart at ${width}×${height}`,()=>{
   const random=Math.random;let seed=731;Math.random=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
   try{for(const meta of games.slice(5)){
    const env=environment(width,height),game=meta.create(env.mount,env.api);game.tick(0);game.start();

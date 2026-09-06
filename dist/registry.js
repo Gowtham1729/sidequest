@@ -1,3 +1,4 @@
+import {expansionGames} from './games/expansion.js';
 import {getAudioProfile} from './audio/profiles.js';
 import {createStack} from './games/stack.js';
 import {createSnake} from './games/snake.js';
@@ -41,4 +42,5 @@ export const games=[
   {id:'crossy',title:'Crossy',category:'Timing',glyph:'↟',accent:'#d5dfb0',tint:'#fffde7',ink:'#786500',scoreLabel:'LANES',description:'Traffic roaring. Rivers rushing. Hop across.',instructions:'Tap to hop forward. Swipe left, right or down to step in that direction. Wait for a traffic gap and land on logs to cross rivers. You can take your time on grass.',chips:['Tap to hop', 'Swipe to steer', 'Arrow keys'],hint:'Tap forward. Swipe to steer. Take your time.',eyebrow:'HIGHWAY RUSH. LOG RUNNER.',intro:'The other side is calling.',bg:'#14261f',glow:'#78650033',create:createCrossy},
   {id:'target',title:'Target',category:'Precision',glyph:'◎',accent:'#e8cd91',tint:'#fff9c4',ink:'#755e00',scoreLabel:'POINTS',description:'Draw bow. Account for the wind. Hit bullseye.',instructions:'Touch and pull down to draw the bow, then release. The dotted path shows your shot. Hit the gold center for ten points and a bonus arrow. Use arrows to aim and Space to shoot on a keyboard.',chips:['Drag to aim','Release to shoot'],hint:'Pull back, aim, release. Gold earns an extra arrow.',eyebrow:'DEAD CENTER. MASTER ARCHER.',intro:'Breathe. Aim. Let go.',bg:'#10242c',glow:'#755e0033',create:createTarget},
   {id:'pop',title:'Pop',category:'Puzzle',glyph:'◆',accent:'#d4b4e6',tint:'#fae6ff',ink:'#78008c',scoreLabel:'POINTS',description:'Gem collapse cascade. Trigger giant combos.',instructions:'Tap a connected group of at least two matching gems. Larger groups earn more. Pop again within 2.5 seconds to build a chain up to five times the score. You have 60 seconds. Arrow keys select; Space pops.',chips:['Tap a cluster', 'Chain for ×5', 'Arrows + Space'],hint:'Pop matching gems. Keep the chain going.',eyebrow:'JEWEL COLLAPSE. CASCADE COMBO.',intro:'Make room for a little joy.',bg:'#151523',glow:'#78008c33',create:createPop}
+,...expansionGames
 ].map(game => ({...game, audio:getAudioProfile(game.id)}));

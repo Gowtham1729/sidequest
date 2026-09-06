@@ -1,6 +1,6 @@
 # Sidequest
 
-Sidequest is a full-screen, mobile-first pocket arcade: swipe into a game, play immediately, and keep exploring. The lineup includes Stack, Snake, 2048, Rally, Memory Match, and 14 additional arcade games.
+Sidequest is a full-screen, mobile-first pocket arcade: swipe into a game, play immediately, and keep exploring. The lineup includes 34 games, from Stack, Snake and 2048 to fifteen new classic, puzzle, sports and rhythm games.
 
 ## Run it locally
 
@@ -41,10 +41,10 @@ The repository is prepared for the existing ChatGPT Site identified by `.openai/
 
 Tap **Sound on/off** below the Sidequest name to open the audio sheet. Music and effects have independent switches and volume sliders; **Mute all** silences both. `M` toggles mute outside dialogs. Preferences are saved only on the current device. Audio unlocks after a touch/click/key interaction; a browser that cannot play audio still runs the games normally.
 
-All 19 games have tailored synthesized loops and event sounds. Game visuals and gameplay use the existing centralized audio lifecycle. Music plays only during an active round, stops for pause, feed gestures, dialogs, and backgrounding, and starts a fresh phrase on resume. Switching games stops the previous game's voices. Results have short ending cues without continuing the music. No sound files, downloads, libraries, or third-party music services are required for the included games.
+All 34 games have tailored synthesized sound palettes. Echo and Beat Drop deliberately leave background music silent so memory cues and rhythm timing remain clear. Game visuals and gameplay use the existing centralized audio lifecycle. Music plays only during an active round, stops for pause, feed gestures, dialogs, and backgrounding, and starts a fresh phrase on resume. Switching games stops the previous game's voices. Results have short ending cues without continuing the music. No sound files, downloads, libraries, or third-party music services are required for the included games.
 
 - `dist/audio/engine.js`: one lazy Web Audio context, separate music/effects gains, output limiter, short look-ahead music scheduler, bounded voices, device preferences, and lifecycle cleanup.
-- `dist/audio/profiles.js`: declarative sound palettes and original music for all 19 games.
+- `dist/audio/profiles.js`: declarative sound palettes and original music for the original 19 games; `dist/audio/expansion-profiles.js` supplies the 15 additions.
 - `dist/audio/controls.js`: accessible audio settings and preference bindings.
 - `tests/audio.test.mjs`: dependency-free regression tests using a mock audio backend.
 
@@ -120,3 +120,30 @@ landscape, and desktop dimensions, plus pause/restart/cleanup and key scoring
 regressions. It uses a validating canvas test double. It does **not** establish
 browser rendering quality, measured frame rate, or real-device touch behavior.
 Those still require browser and iOS/Android play-testing.
+
+
+## Fifteen-game expansion
+
+All additions live in `dist/games/expansion.js` and join the existing registry, feed, help sheet, score display, countdown, pause and centralized audio lifecycle. Existing game identifiers and feed gestures are preserved. Every new game has touch and keyboard controls.
+
+| Game | Round and controls |
+| --- | --- |
+| Pocket Blocks | Seven-piece bag, rotation kicks, landing ghost, soft/hard drops, escalating gravity and a 40-line goal. Tap rotates; swipe sideways moves; swipe down drops. |
+| Minesweeper | 7×7 board, eight mines, safe first neighborhood, flood reveal and optional flags. Reveal all 41 safe squares. |
+| Slide Nine | Solvable 3×3 sliding puzzle, generated with legal moves. Tap adjacent tiles; arrows slide. Fewer moves is better. |
+| Lights Out | Five solvable 4×4 toggle circuits. Tap flips the selected light and its four neighbors. |
+| Echo | Four distinct musical pads; copy a growing sequence. Pads are ignored during playback. Arrows match the pad symbols. |
+| Four in a Row | Standard 7×6 gravity board against a CPU with depth-limited lookahead, winning/blocking moves and diagonal detection. |
+| Reversi | Quick 6×6 game, legal move hints, multi-direction flips, automatic passes and positional CPU play. |
+| Bubble Sky | Hex-grid bubble shooting, wall banks, match-three clusters, unsupported drops, descending ceiling and a clear-board win. |
+| Pocket Golf | Five authored courses, drag-to-putt, friction, rail rebounds, gentle cup capture, 20-stroke budget. |
+| Swish | Ten ballistic basketball shots, trajectory guide, rim rebounds, moving hoop and consecutive-basket bonuses. |
+| Lane Rush | Sixty-second three-lane racer, guaranteed gaps, collectible tokens, three lives and brief collision protection. |
+| Prism Slice | Swept-pointer gem cuts, chained combos, marked hazards, three lives and a 45-second round. |
+| Orbit | One-tap angular timing, perfect-hit bonus, shrinking windows, changing direction, three misses and 45 seconds. |
+| Maze Escape | Three connected procedural mazes, three sparks each, visited trails, trace/swipe/tap movement, 55 seconds per maze. |
+| Beat Drop | A 64-note four-lane phrase, faster second half, perfect/good timing windows, combos, five lives and quiet guide pulses. |
+
+`dist/games/cabinet.js` adapts a stable logical playfield to the shared safe HUD bounds. It owns no animation frames, intervals or global input listeners. The feed supplies the clock and routes input; the cabinet handles scores, original synthesized event cues, bounded particles and result cleanup. Game-specific timers advance only with positive active frame time. Resizing changes presentation rather than physics state.
+
+`tests/expansion.test.mjs` verifies generators and rules, actual input-driven wins and losses, all golf courses and maze rounds, the complete rhythm phrase, duplicate-score protection, audio parameters, and pause/restart/destruction. The existing canvas suite covers the original fourteen arcade additions plus the new fifteen at four viewport sizes. These are automated simulation and drawing-contract checks, not browser visual or listening tests.

@@ -1,3 +1,4 @@
+import {expansionProfiles} from './expansion-profiles.js';
 // Original, lightweight audio palette for Sidequest's five mini-games.
 // Notes use MIDI numbers; null leaves a step silent. Each loop is four bars
 // of eighth notes at the profile's BPM.
@@ -593,6 +594,6 @@ const arcadeProfile = {
 };
 
 export function getAudioProfile(gameId) {
-  return audioProfiles[gameId] || extendedProfiles[gameId] || arcadeProfile;
+  return audioProfiles[gameId] || extendedProfiles[gameId] || expansionProfiles[gameId] || arcadeProfile;
 }
 

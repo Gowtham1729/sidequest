@@ -19,3 +19,6 @@
 .countdown-digit{font-size:clamp(84px,28vw,144px);font-weight:900;line-height:1;color:var(--accent);text-shadow:0 0 30px var(--accent),0 0 60px var(--glow,#253d2333);animation:countdown-pop .35s cubic-bezier(.175,.885,.32,1.275);user-select:none}
 .countdown-hint{font-size:12px;letter-spacing:.14em;font-weight:650;text-transform:uppercase;color:#bdcbb4;margin-top:16px;opacity:.75}
 @keyframes countdown-pop{0%{transform:scale(1.75);opacity:0}50%{transform:scale(1.05);opacity:1}100%{transform:scale(1);opacity:1}}
+
+/* Keep an expanded lineup from squeezing the game title off small screens. */
+.feed-dots{display:grid;grid-template-columns:repeat(17,3px);gap:3px;max-width:99px}.feed-dots span,.feed-dots span.active{width:3px;height:3px;border-radius:50%}.feed-position{min-width:76px}.bottom-hud{grid-template-columns:minmax(0,1fr) auto}.game-meta{min-width:0}.title-line{flex-wrap:wrap;gap:4px 10px}
