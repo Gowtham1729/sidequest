@@ -10,13 +10,13 @@ export const audioProfiles = {
       voices: [
         {
           wave: 'triangle',
-          gain: 0.11,
+          gain: 0.16,
           duration: 0.28,
           notes: [60, null, 64, null, 67, null, 71, null, 72, null, 71, null, 67, null, 64, null, 60, null, 64, null, 67, null, 71, null, 74, null, 72, null, 67, null, 64, null],
         },
         {
           wave: 'sine',
-          gain: 0.09,
+          gain: 0.13,
           duration: 0.38,
           notes: [48, null, null, 48, null, null, 55, null, 48, null, null, 48, null, null, 55, null, 50, null, null, 50, null, null, 57, null, 48, null, null, 48, null, null, 55, null],
         },
@@ -39,13 +39,13 @@ export const audioProfiles = {
       voices: [
         {
           wave: 'triangle',
-          gain: 0.1,
+          gain: 0.16,
           duration: 0.22,
           notes: [57, null, 60, 62, null, 64, 62, null, 57, null, 60, 64, null, 67, 64, null, 55, null, 59, 60, null, 62, 60, null, 55, null, 59, 62, null, 64, 62, null],
         },
         {
           wave: 'sine',
-          gain: 0.08,
+          gain: 0.13,
           duration: 0.34,
           notes: [45, null, null, 45, null, null, 52, null, 45, null, null, 45, null, null, 52, null, 43, null, null, 43, null, null, 50, null, 43, null, null, 43, null, null, 50, null],
         },
@@ -68,13 +68,13 @@ export const audioProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.12,
+          gain: 0.17,
           duration: 0.34,
           notes: [60, null, 62, null, 65, null, 67, null, 69, null, 67, null, 65, null, 62, null, 60, null, 62, null, 65, null, 69, null, 72, null, 69, null, 65, null, 62, null],
         },
         {
           wave: 'triangle',
-          gain: 0.075,
+          gain: 0.12,
           duration: 0.48,
           notes: [48, null, null, null, 53, null, null, null, 45, null, null, null, 52, null, null, null, 48, null, null, null, 53, null, null, null, 45, null, null, null, 52, null, null, null],
         },
@@ -97,13 +97,13 @@ export const audioProfiles = {
       voices: [
         {
           wave: 'triangle',
-          gain: 0.105,
+          gain: 0.16,
           duration: 0.24,
           notes: [62, null, 65, 67, null, 69, 67, null, 62, null, 65, 69, null, 72, 69, null, 60, null, 64, 65, null, 67, 65, null, 60, null, 64, 67, null, 69, 67, null],
         },
         {
           wave: 'sine',
-          gain: 0.085,
+          gain: 0.13,
           duration: 0.4,
           notes: [50, null, null, 50, null, null, 57, null, 50, null, null, 50, null, null, 57, null, 48, null, null, 48, null, null, 55, null, 48, null, null, 48, null, null, 55, null],
         },
@@ -126,13 +126,13 @@ export const audioProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.1,
+          gain: 0.16,
           duration: 0.3,
           notes: [60, null, 64, 65, null, 67, 65, null, 60, null, 64, 67, null, 69, 67, null, 57, null, 60, 62, null, 64, 62, null, 57, null, 60, 64, null, 65, 64, null],
         },
         {
           wave: 'triangle',
-          gain: 0.08,
+          gain: 0.13,
           duration: 0.46,
           notes: [48, null, null, null, 55, null, null, null, 50, null, null, null, 57, null, null, null, 48, null, null, null, 55, null, null, null, 50, null, null, null, 57, null, null, null],
         },
@@ -161,13 +161,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.1,
+          gain: 0.16,
           duration: 0.22,
           notes: [64, null, 67, null, 71, null, 69, 67, null, 64, null, 67, 71, null, 74, 71, 64, null, 67, null, 71, null, 69, 67, null, 64, 67, 69, null, 71, null, null],
         },
         {
           wave: 'triangle',
-          gain: 0.085,
+          gain: 0.13,
           duration: 0.34,
           notes: [40, null, null, 40, null, null, 47, null, 40, null, null, 40, null, null, 47, null, 43, null, null, 43, null, null, 50, null, 40, null, null, 40, null, 47, null, null],
         },
@@ -189,13 +189,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'triangle',
-          gain: 0.095,
+          gain: 0.16,
           duration: 0.2,
           notes: [69, null, 72, null, 74, null, 76, null, 74, 72, null, 69, null, 72, 74, null, 67, null, 71, null, 72, null, 74, null, 72, 71, null, 67, null, 71, 74, null],
         },
         {
           wave: 'triangle',
-          gain: 0.085,
+          gain: 0.13,
           duration: 0.32,
           notes: [45, null, null, 45, null, null, 52, null, 45, null, null, 45, null, null, 52, null, 43, null, null, 43, null, null, 50, null, 45, null, null, 45, null, 52, null, null],
         },
@@ -217,13 +217,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.1,
+          gain: 0.17,
           duration: 0.28,
           notes: [65, null, 69, null, 72, null, 76, null, 77, null, 76, null, 72, null, 69, null, 67, null, 71, null, 72, null, 74, null, 76, null, 72, null, 69, null, 72, null],
         },
         {
           wave: 'triangle',
-          gain: 0.075,
+          gain: 0.12,
           duration: 0.4,
           notes: [41, null, null, null, 48, null, null, null, 45, null, null, null, 48, null, null, null, 43, null, null, null, 50, null, null, null, 41, null, null, null, 48, null, null, null],
         },
@@ -245,13 +245,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.09,
+          gain: 0.15,
           duration: 0.24,
           notes: [71, null, 74, 71, null, 76, 74, null, 71, null, 74, 71, null, 78, 76, null, 69, null, 73, 69, null, 74, 73, null, 71, null, 74, 71, null, 74, null, null],
         },
         {
           wave: 'triangle',
-          gain: 0.075,
+          gain: 0.12,
           duration: 0.34,
           notes: [47, null, null, 47, null, null, 54, null, 47, null, null, 47, null, null, 54, null, 45, null, null, 45, null, null, 52, null, 47, null, null, 47, null, null, 54, null],
         },
@@ -273,13 +273,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'triangle',
-          gain: 0.09,
+          gain: 0.16,
           duration: 0.2,
           notes: [62, null, 65, null, 67, null, 69, null, 67, 65, null, 67, 69, null, 72, null, 60, null, 64, null, 65, null, 67, null, 65, 64, null, 65, 67, null, 70, null],
         },
         {
           wave: 'triangle',
-          gain: 0.08,
+          gain: 0.13,
           duration: 0.3,
           notes: [38, null, null, 38, null, 45, null, null, 38, null, null, 38, null, 45, null, null, 36, null, null, 36, null, 43, null, null, 38, null, null, 38, null, 45, null, null],
         },
@@ -301,13 +301,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.09,
+          gain: 0.16,
           duration: 0.18,
           notes: [67, null, 71, 74, null, 76, 74, null, 67, null, 71, 74, null, 79, 76, null, 65, null, 69, 72, null, 74, 72, null, 67, null, 71, 74, null, 76, null, null],
         },
         {
           wave: 'triangle',
-          gain: 0.08,
+          gain: 0.13,
           duration: 0.26,
           notes: [43, null, 50, null, 43, null, 50, null, 43, null, 50, null, 43, null, 50, null, 41, null, 48, null, 41, null, 48, null, 43, null, 50, null, 43, null, 50, null],
         },
@@ -329,13 +329,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.095,
+          gain: 0.16,
           duration: 0.36,
           notes: [61, null, null, 64, null, null, 68, null, 66, null, null, 64, null, null, 61, null, 59, null, null, 63, null, null, 66, null, 64, null, null, 63, null, 66, null, null],
         },
         {
           wave: 'triangle',
-          gain: 0.08,
+          gain: 0.12,
           duration: 0.48,
           notes: [37, null, null, null, 44, null, null, null, 37, null, null, null, 44, null, null, null, 35, null, null, null, 42, null, null, null, 37, null, null, null, 44, null, null, null],
         },
@@ -357,13 +357,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'triangle',
-          gain: 0.095,
+          gain: 0.16,
           duration: 0.2,
           notes: [60, null, 64, null, 67, 72, null, 71, null, 67, null, 64, null, 67, 72, null, 62, null, 65, null, 69, 74, null, 72, null, 69, null, 65, null, 69, 74, null],
         },
         {
           wave: 'triangle',
-          gain: 0.08,
+          gain: 0.13,
           duration: 0.3,
           notes: [48, null, null, 48, null, 55, null, null, 48, null, null, 48, null, 55, null, null, 50, null, null, 50, null, 57, null, null, 48, null, null, 48, null, 55, null, null],
         },
@@ -385,13 +385,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.095,
+          gain: 0.16,
           duration: 0.24,
           notes: [64, null, 68, null, 71, null, 74, null, 71, 68, null, 71, 74, null, 76, null, 62, null, 66, null, 69, null, 72, null, 69, 66, null, 69, 72, null, 74, null],
         },
         {
           wave: 'triangle',
-          gain: 0.08,
+          gain: 0.13,
           duration: 0.32,
           notes: [40, null, null, 40, null, null, 47, null, 40, null, null, 40, null, null, 47, null, 38, null, null, 38, null, null, 45, null, 40, null, null, 40, null, null, 47, null],
         },
@@ -413,13 +413,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.09,
+          gain: 0.16,
           duration: 0.26,
           notes: [73, null, 71, null, 69, null, 66, null, 64, null, 66, null, 69, null, 71, null, 74, null, 73, null, 71, null, 68, null, 66, null, 68, null, 71, null, null, null],
         },
         {
           wave: 'triangle',
-          gain: 0.08,
+          gain: 0.13,
           duration: 0.36,
           notes: [42, null, null, 42, null, null, 49, null, 42, null, null, 42, null, null, 49, null, 40, null, null, 40, null, null, 47, null, 42, null, null, 42, null, 49, null, null],
         },
@@ -441,13 +441,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'triangle',
-          gain: 0.09,
+          gain: 0.16,
           duration: 0.2,
           notes: [60, null, 63, null, 67, null, 63, null, 60, null, 63, null, 70, null, 67, null, 58, null, 62, null, 65, null, 62, null, 60, null, 63, null, 67, null, null, null],
         },
         {
           wave: 'triangle',
-          gain: 0.085,
+          gain: 0.14,
           duration: 0.3,
           notes: [48, null, 48, null, 48, null, 48, null, 48, null, 48, null, 48, null, 48, null, 46, null, 46, null, 46, null, 46, null, 48, null, 48, null, 48, null, 48, null],
         },
@@ -469,13 +469,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'triangle',
-          gain: 0.095,
+          gain: 0.16,
           duration: 0.22,
           notes: [62, null, 66, null, 69, 71, null, 74, null, 71, null, 69, null, 66, 69, null, 64, null, 67, null, 71, 73, null, 76, null, 73, null, 71, null, 67, 71, null],
         },
         {
           wave: 'triangle',
-          gain: 0.08,
+          gain: 0.13,
           duration: 0.34,
           notes: [50, null, null, null, 57, null, null, null, 50, null, null, null, 57, null, null, null, 47, null, null, null, 54, null, null, null, 50, null, null, null, 57, null, null, null],
         },
@@ -497,14 +497,14 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.1,
-          duration: 0.38,
+          gain: 0.18,
+          duration: 0.45,
           notes: [69, null, null, 72, null, null, 76, null, 74, null, null, 72, null, null, 69, null, 67, null, null, 71, null, null, 74, null, 72, null, null, 71, null, null, null, null],
         },
         {
           wave: 'triangle',
-          gain: 0.075,
-          duration: 0.46,
+          gain: 0.12,
+          duration: 0.55,
           notes: [45, null, null, null, 52, null, null, null, 45, null, null, null, 52, null, null, null, 43, null, null, null, 50, null, null, null, 45, null, null, null, 52, null, null, null],
         },
       ],
@@ -525,13 +525,13 @@ export const extendedProfiles = {
       voices: [
         {
           wave: 'sine',
-          gain: 0.1,
-          duration: 0.3,
+          gain: 0.17,
+          duration: 0.32,
           notes: [63, null, 67, null, 70, null, 75, null, 74, null, 70, null, 67, null, 65, null, 62, null, 65, null, 68, null, 72, null, 70, null, 67, null, 65, null, null, null],
         },
         {
           wave: 'triangle',
-          gain: 0.08,
+          gain: 0.13,
           duration: 0.42,
           notes: [39, null, null, null, 46, null, null, null, 43, null, null, null, 46, null, null, null, 41, null, null, null, 48, null, null, null, 39, null, null, null, 46, null, null, null],
         },

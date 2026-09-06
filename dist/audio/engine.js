@@ -1,11 +1,13 @@
-const STORAGE_KEY = 'sidequest.audio.v1';
-const defaults = {muted:false, effects:true, music:true, effectsVolume:.65, musicVolume:.4};
+const STORAGE_KEY = 'sidequest.audio.v2';
+const defaults = {muted:false, effects:true, music:true, effectsVolume:.65, musicVolume:.55};
 const volume = (value, fallback) => typeof value === 'number' && Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : fallback;
 export function readPreferences(storage) {
   try {
-    const saved = JSON.parse(storage?.getItem(STORAGE_KEY) || '{}');
-    return Object.fromEntries(Object.entries(defaults).map(([key, value]) => [key,
+    const saved = JSON.parse(storage?.getItem(STORAGE_KEY) || storage?.getItem('sidequest.audio.v1') || '{}');
+    const prefs = Object.fromEntries(Object.entries(defaults).map(([key, value]) => [key,
       typeof value === 'boolean' ? (typeof saved?.[key] === 'boolean' ? saved[key] : value) : volume(saved?.[key], value)]));
+    if (prefs.musicVolume === .4 && !storage?.getItem(STORAGE_KEY)) prefs.musicVolume = defaults.musicVolume;
+    return prefs;
   } catch { return {...defaults}; }
 }
 const frequency = note => 440 * 2 ** ((note - 69) / 12);

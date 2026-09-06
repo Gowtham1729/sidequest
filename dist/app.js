@@ -92,7 +92,7 @@ function updateDrag(g){
 }
 arcade.addEventListener('pointerdown',event=>{
  if(modalOpen()||event.target.closest('.accessible-controls, [data-audio-control]')||event.button>0)return;
- void audio.unlock();event.preventDefault();arcade.setPointerCapture(event.pointerId);
+ void audio.unlock();event.preventDefault();try{arcade.setPointerCapture(event.pointerId);}catch{}
  pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
  if(pointers.size>1){clearHold();game.cancel?.();const c=centroid([...pointers.values()]);if(gesture){Object.assign(gesture,{mode:'feed',multi:true,startX:c.x,startY:c.y,dx:0,dy:0,moved:true});}return;}
  clearTimeout(tapTimer);

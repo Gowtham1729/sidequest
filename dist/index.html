@@ -9,7 +9,7 @@
   <meta name="description" content="Five games. An endless full-screen arcade. Tap to play, swipe to discover your next Sidequest." />
   <title>Sidequest — swipe into a game</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="./style.css?v=3" />
 </head>
 <body>
   <main id="arcade" class="arcade" data-phase="ready" aria-label="Sidequest game feed">
@@ -81,12 +81,12 @@
     <p id="audio-description" class="audio-description">A soundtrack for every sidequest.</p>
     <label class="audio-switch"><span>Mute all</span><input id="audio-muted" type="checkbox" role="switch"></label>
     <div class="audio-channel"><label class="audio-switch"><span>Sound effects</span><input id="audio-effects" type="checkbox" role="switch"></label><div class="audio-volume"><label for="audio-effects-volume">Effects volume</label><output id="audio-effects-value" for="audio-effects-volume">65%</output><input id="audio-effects-volume" type="range" min="0" max="100" step="1" value="65"></div></div>
-    <div class="audio-channel"><label class="audio-switch"><span>Music</span><input id="audio-music" type="checkbox" role="switch"></label><div class="audio-volume"><label for="audio-music-volume">Music volume</label><output id="audio-music-value" for="audio-music-volume">40%</output><input id="audio-music-volume" type="range" min="0" max="100" step="1" value="40"></div></div>
+    <div class="audio-channel"><label class="audio-switch"><span>Music</span><input id="audio-music" type="checkbox" role="switch"></label><div class="audio-volume"><label for="audio-music-volume">Music volume</label><output id="audio-music-value" for="audio-music-volume">55%</output><input id="audio-music-volume" type="range" min="0" max="100" step="1" value="55"></div></div>
     <div class="audio-actions"><button id="audio-preview" type="button">Try a sound</button><button class="dialog-close" type="button">Done</button></div>
     <p class="sheet-hint">Music follows your game. Your preferences stay on this device.<br>Swipe down to return · M to mute</p>
   </dialog>
   <div class="sr-only" id="announcement" role="status" aria-live="polite"></div>
   <noscript><p class="noscript">Enable JavaScript to play Sidequest.</p></noscript>
-  <script type="module" src="/app.js"></script>
+  <script type="module" src="./app.js?v=3"></script>
 </body>
 </html>
