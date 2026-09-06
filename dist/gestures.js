@@ -10,3 +10,11 @@ export function navigationIntent(dx,dy,{allowHorizontal=true,threshold=62}={}){
 }
 export function isTap(dx,dy,duration){return Math.hypot(dx,dy)<12&&duration<500;}
 export function centroid(points){let x=0,y=0;for(const p of points){x+=p.x;y+=p.y}return {x:x/points.length,y:y/points.length};}
+// Per-game pointer policy declared by registry entries and consumed by the shell.
+// 'press'  – a timing action is judged once, on pointer-down; the matching
+//            release never repeats it.
+// 'drag'   – the game owns the pointer from press to release (aim, steer,
+//            trace, swipe), so the global hold-to-pause must stay out of it.
+// omitted  – default: the action is judged on release and hold-to-pause applies.
+export function pressTiming(policy){return policy==='press';}
+export function holdPauses(policy){return policy!=='drag';}

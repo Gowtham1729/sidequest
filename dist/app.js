@@ -3,7 +3,7 @@ import {bindAudioControls} from './audio/controls.js';
 import {games} from './registry.js';
 import {GameFeed} from './feed.js';
 import {point} from './games/shared.js';
-import {gestureOwner,navigationIntent,isTap,centroid} from './gestures.js';
+import {gestureOwner,navigationIntent,isTap,centroid,pressTiming,holdPauses} from './gestures.js';
 const $=id=>document.getElementById(id),arcade=$('arcade'),scene=$('scene'),arena=$('arena'),mount=$('game-mount');
 const audio=new GameAudio();
 const feed=new GameFeed(games.length),bests=new Map(),pointers=new Map();
@@ -19,17 +19,19 @@ function setState(){
  audio.setPlaying(phase==='playing'&&!modalOpen());
  arcade.dataset.phase=phase;mount.inert=phase!=='playing';
  const meta=current(),ready=phase==='ready';
- $('gesture-hint').innerHTML=phase==='playing'?'Hold to pause <span>·</span> Edge swipe to switch':phase==='paused'?'Double-tap to restart <span>·</span> Swipe right for all games':phase==='countdown'?'Tap to skip <span>·</span> Edge swipe to switch':'Swipe up to explore <span>·</span> Swipe right for all games';
+ // Hold-to-pause exists only where the game does not own the pointer (see gestures.js policies).
+ const playingHint=holdPauses(meta.input)?'Hold to pause <span>·</span> Edge swipe to switch':'Edge swipe to switch <span>·</span> Two-finger swipe to browse';
+ $('gesture-hint').innerHTML=phase==='playing'?playingHint:phase==='paused'?'Double-tap to restart <span>·</span> Swipe right for all games':phase==='countdown'?'Tap to skip <span>·</span> Edge swipe to switch':'Swipe up to explore <span>·</span> Swipe right for all games';
  $('overlay-eyebrow').textContent=ready?meta.eyebrow:phase==='paused'?'TAKE YOUR TIME':'ONE MORE ROUND?';
  title(ready?meta.title:phase==='paused'?'Catch your breath':result?.title||meta.title);
  $('overlay-subtitle').textContent=ready?meta.intro:phase==='paused'?'Your game is right here.':result?.subtitle||'';
  $('tap-label').textContent=ready?'Tap anywhere to play':phase==='paused'?'Tap to resume':'Tap anywhere to play again';
  $('browse-hint').textContent=phase==='paused'?'Double-tap to restart · Swipe up for next':'Swipe up for the next game';
- arena.setAttribute('aria-label',`${meta.title}. ${meta.instructions} ${phase==='playing'?'Hold to pause. Swipe at the right edge to change games.':'Press Space to play. Swipe up for next game.'}`);
+ arena.setAttribute('aria-label',`${meta.title}. ${meta.instructions} ${phase==='playing'?(holdPauses(meta.input)?'Hold to pause. Swipe at the right edge to change games.':'Swipe at the right edge or with two fingers to change games.'):'Press Space to play. Swipe up for next game.'}`);
  $('accessible-previous').disabled=feed.cursor===0;
  $('accessible-pause').disabled=phase!=='playing';
 }
-function finish(message,subtitle,finalScore,cue='finish'){if(phase!=='playing')return;if(current().lowerIsBetter&&finalScore)bests.set(current().id,Math.min(finalScore,bests.get(current().id)||Infinity));result={title:message,subtitle};phase='finished';clearTimeout(holdTimer);$('hold-feedback').classList.remove('visible');showScore(score);setState();audio.play(cue);announce(`${message} ${subtitle}`);}
+function finish(message,subtitle,finalScore,cue='finish'){if(phase!=='playing')return;if(current().lowerIsBetter&&finalScore)bests.set(current().id,Math.min(finalScore,bests.get(current().id)||Infinity));result={title:message,subtitle};phase='finished';clearHold();showScore(score);setState();audio.play(cue);announce(`${message} ${subtitle}`);}
 function cancelCountdown(){if(countdownTimer){clearTimeout(countdownTimer);countdownTimer=null;}}
 function launchGame(){cancelCountdown();phase='playing';setState();game.start();audio.play('start');arena.focus({preventScroll:true});lastFrame=performance.now();announce(`${current().title} started.`);}
 function stepCountdown(step){
@@ -47,10 +49,10 @@ function stepCountdown(step){
 function startCountdown(){cancelCountdown();clearTimeout(tapTimer);phase='countdown';setState();stepCountdown(3);}
 function skipCountdown(){if(phase!=='countdown')return;cancelCountdown();launchGame();}
 function start(){void audio.unlock();if(phase==='paused'){resume();return;}if(phase==='playing')return;if(phase==='countdown'){skipCountdown();return;}startCountdown();}
-function pause(){if(phase==='countdown'){cancelCountdown();phase='ready';setState();return;}if(phase!=='playing')return;game.pause?.();game.cancel?.();phase='paused';setState();announce('Paused. Tap to resume, double-tap to restart, or swipe to browse.');}
+function pause(){clearHold();if(phase==='countdown'){cancelCountdown();phase='ready';setState();return;}if(phase!=='playing')return;game.pause?.();game.cancel?.();phase='paused';setState();announce('Paused. Tap to resume, double-tap to restart, or swipe to browse.');}
 function resume(){if(phase!=='paused')return;void audio.unlock();phase='playing';setState();lastFrame=performance.now();arena.focus({preventScroll:true});announce('Game resumed.');}
 function renderGame(direction='next'){
- clearTimeout(tapTimer);cancelCountdown();lastTap=0;game?.destroy();mount.replaceChildren();phase='ready';result=null;score=0;
+ clearTimeout(tapTimer);clearHold();cancelCountdown();lastTap=0;game?.destroy();mount.replaceChildren();phase='ready';result=null;score=0;
  const meta=current();arcade.style.setProperty('--accent',meta.accent);arcade.style.setProperty('--bg',meta.bg);arcade.style.setProperty('--glow',meta.glow);document.querySelector('meta[name="theme-color"]').content=meta.bg;
  $('game-title').textContent=meta.title;$('category').textContent=meta.category.toUpperCase();$('game-instruction').textContent=meta.hint;$('score-label').textContent=meta.scoreLabel;
  $('feed-count').textContent=`${String(feed.current+1).padStart(2,'0')} / ${String(games.length).padStart(2,'0')}`;
@@ -98,8 +100,12 @@ arcade.addEventListener('pointerdown',event=>{
  clearTimeout(tapTimer);
  const mode=gestureOwner({phase,x:event.clientX,width:arcade.clientWidth,zone:!!event.target.closest('[data-feed-zone]')});
  gesture={mode,startX:event.clientX,startY:event.clientY,dx:0,dy:0,time:performance.now(),phase,target:event.target,held:false,multi:false,moved:false};
- if(mode==='game')game.pointerDown?.(point(event,arena));
- if(phase==='playing'){
+ if(mode==='game'){
+   game.pointerDown?.(point(event,arena));
+   // Press-timing games judge their action once, here; the release below must not repeat it.
+   if(phase==='playing'&&pressTiming(current().input)){gesture.pressed=true;game.tap?.(point(event,arena),event.target);}
+ }
+ if(phase==='playing'&&holdPauses(current().input)){
    const tracked=gesture;const feedback=$('hold-feedback');feedback.style.left=`${event.clientX}px`;feedback.style.top=`${event.clientY}px`;feedback.classList.add('visible');
    holdTimer=setTimeout(()=>{if(gesture===tracked&&pointers.size===1&&!tracked.moved){tracked.held=true;clearHold();pause();}},550);
  }
@@ -121,7 +127,7 @@ arcade.addEventListener('pointerup',event=>{
    const intent=navigationIntent(g.dx,g.dy,{allowHorizontal:!g.multi});
    if(intent==='next'||intent==='prev')navigate(intent);else if(intent==='lineup')openSheet('lineup-dialog');else if(intent==='help')openSheet('help-dialog');else if(!g.multi&&g.phase!=='playing'&&isTap(g.dx,g.dy,performance.now()-g.time))tap();
  }else if(g.phase==='playing'&&phase==='playing'){
-   game.pointerUp?.(point(event,arena));if(isTap(g.dx,g.dy,performance.now()-g.time))game.tap?.(point(event,arena),g.target);
+   game.pointerUp?.(point(event,arena));if(!g.pressed&&isTap(g.dx,g.dy,performance.now()-g.time))game.tap?.(point(event,arena),g.target);
  }
 });
 arcade.addEventListener('pointercancel',cancelGesture);

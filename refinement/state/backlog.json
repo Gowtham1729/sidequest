@@ -62,8 +62,8 @@
       "title": "Give game input explicit ownership and reliable timing",
       "stage": "foundation",
       "kind": "implementation",
-      "status": "queued",
-      "owner": null,
+      "status": "implemented",
+      "owner": "R01 session (single sequential writer; handoff in refinement/evidence/r01-handoff.md)",
       "write_paths": [
         "dist/app.js",
         "dist/gestures.js",
@@ -86,16 +86,23 @@
       ],
       "gates": {
         "code": {
-          "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "status": "pass",
+          "evidence": [
+            "refinement/evidence/r01-checkpoint-final/summary.json",
+            "refinement/evidence/r01-checkpoint-final/tests.log",
+            "refinement/evidence/r01-review.md",
+            "refinement/evidence/r01-browser/browser-record.md"
+          ],
+          "reviewer": "fresh subagent session (ses_f881dc39dffeIOKvjbM2SNxel8); independent source trace, re-run checks (62/62), discrimination check against base revision",
+          "source_fingerprint": "78a3170e4f81230d06a1c9bb70d62799013b33a30348ec440be6151167f813b4"
         },
         "visual": {
-          "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "status": "not_applicable",
+          "evidence": [
+            "refinement/evidence/r01-review.md"
+          ],
+          "reviewer": "R01 independent review: no rendering/layout/motion change; only policy-scoped hint/aria copy (DOM-verified); visual quality is R02 scope",
+          "source_fingerprint": "78a3170e4f81230d06a1c9bb70d62799013b33a30348ec440be6151167f813b4"
         },
         "device": {
           "status": "unverified",
@@ -104,14 +111,28 @@
           "source_fingerprint": null
         },
         "player": {
-          "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "status": "not_applicable",
+          "evidence": [
+            "refinement/evidence/r01-review.md"
+          ],
+          "reviewer": "R01 independent review: foundation input-semantics ticket; no player evidence claimed; pilots owe player gates later",
+          "source_fingerprint": "78a3170e4f81230d06a1c9bb70d62799013b33a30348ec440be6151167f813b4"
         }
       },
-      "evidence": [],
-      "notes": []
+      "evidence": [
+        "refinement/evidence/r01-handoff.md",
+        "refinement/evidence/r01-review.md",
+        "refinement/evidence/r01-browser/browser-record.md",
+        "refinement/evidence/r01-checkpoint-final/summary.json"
+      ],
+      "notes": [
+        "Implemented 6 September 2026: per-game input policy in the registry (press = stack/orbit/rhythm; drag = 19 pointer-owning games; 12 default), press-time tap dispatch with release suppression, policy-scoped hold-to-pause, hold-state cleanup in pause/renderGame/finish. No gameplay rules changed.",
+        "Real-browser verification obtained through the user-approved Chrome DevTools route (previously blocked in a different harness): Chrome 152, emulated touch 390x844 and 320x568, all four acceptance scenarios plus console clean. Emulated viewports are not device evidence; the device gate remains unverified pending physical-phone runs (script ready in the browser record).",
+        "Accepted tradeoff owned by R02: drag-policy games have no discoverable touch pause until R02 ships the visible compact pause control (touch pause is reachable but undiscoverable: keyboard, focus-revealed accessible button, or the sound chip's sheet). R02 must also fix the help-dialog 'Hold still' line in index.html.",
+        "Pre-existing finding for R02: input dispatched during the ~300ms .scene.enter-next animation after a game switch maps through the animated transform (observed ~122px shift at 320x568); point() reads the live arena rect.",
+        "One unreproduced browser one-off recorded in the browser record (aim press within the entry-animation window did not start a drag once); not reproduced in 5+ subsequent runs including an instrumented identical-input rerun; treated as unverified, not closed.",
+        "Reviewer F2 (non-blocking): tests/input-lifecycle.test.mjs Stack schedule is coupled to Stack's frozen speed curve; update when R04 retunes Stack."
+      ]
     },
     {
       "id": "R02",
