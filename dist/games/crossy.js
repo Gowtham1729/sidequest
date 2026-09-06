@@ -150,7 +150,6 @@ export function createCrossy(mount, api) {
 
     idleTime = 0; // reset idle
     facing = dir;
-    api.audio?.play('hop');
 
     if (dir === 'up') {
       playerGridY++;
@@ -159,11 +158,16 @@ export function createCrossy(mount, api) {
         score = maxRowReached;
         api.score(score);
         api.audio?.play('lane',{pitch:Math.min(8,Math.floor(score/4))});
+      } else {
+        api.audio?.play('hop');
       }
-    } else if (dir === 'left') {
-      if (playerGridX > 0) playerGridX--;
-    } else if (dir === 'right') {
-      if (playerGridX < cols - 1) playerGridX++;
+    } else {
+      api.audio?.play('hop');
+      if (dir === 'left') {
+        if (playerGridX > 0) playerGridX--;
+      } else if (dir === 'right') {
+        if (playerGridX < cols - 1) playerGridX++;
+      }
     }
 
     targetPx = startX + playerGridX * GRID_SIZE + GRID_SIZE / 2;

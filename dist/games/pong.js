@@ -135,7 +135,7 @@ export function createPong(mount,api){
       if(vy<0&&prevY-7>=aiY&&y-7<=aiY&&Math.abs(x-aiX)<=pw/2+7){
         y=aiY+8;
         rally++;
-        api.audio?.play('hit',{pitch:-2});
+        api.audio?.play('hit',{pitch:-5});
         const speed=Math.min(620,240+rally*18);
         const hitOffset=(x-aiX)/(pw/2+7);
         vx=Math.sin(hitOffset*1.1)*speed;
@@ -157,7 +157,6 @@ export function createPong(mount,api){
       if(y<f.y-10){
         playerScore++;
         api.score(playerScore);
-        api.audio?.play('score');
         if(playerScore>=WIN_SCORE){
           running=false;
           api.finish('You win!',`Victory ${playerScore} to ${aiScore} against CPU!`,playerScore,'win');

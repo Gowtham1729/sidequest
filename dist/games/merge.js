@@ -23,7 +23,7 @@ export function createMerge(mount,api){
     for(let r=0;r<4;r++)for(let c=0;c<4;c++){const v=board[r][c],x=f.x+c*(cw+gap),y=f.y+r*(ch+gap);rect(ctx,x,y,cw,ch,colors[v]||(v?'#f0ffb0':'#293a30'),12);if(v)text(ctx,v,x+cw/2,y+ch/2,Math.min(cw*.43,ch*.4,v>=1024?33:48),'#293c27',700)}
     if(flash>0){ctx.strokeStyle='#c9f86a70';ctx.lineWidth=2;ctx.strokeRect(f.x-3,f.y-3,f.w+6,f.h+6);}
   }
-  function move(d){if(!running)return;const result=moveBoard(board,d);if(!result.changed){api.audio?.play('blocked');return;}api.audio?.play(result.gained?'merge':'slide',{pitch:result.gained?Math.min(7,Math.max(0,Math.log2(result.gained)-2)):0});board=result.board;score+=result.gained;api.score(score);flash=.15;spawn();draw();
+  function move(d){if(!running)return;const result=moveBoard(board,d);if(!result.changed){api.audio?.play('blocked');return;}api.audio?.play(result.gained?'merge':'slide',{pitch:result.gained?Math.min(7,Math.max(0,Math.round(Math.log2(result.gained)-2))):0});board=result.board;score+=result.gained;api.score(score);flash=.15;spawn();draw();
     if(board.some(row=>row.includes(2048))){running=false;api.finish('2048. You made it.',`${score.toLocaleString()} points. A very satisfying merge.`,undefined,'win')}
     else if(!hasMoves(board)){running=false;api.finish('Out of room.',`${score.toLocaleString()} points. A fresh board awaits.`)}
   }

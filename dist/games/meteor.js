@@ -222,6 +222,7 @@ export function createMeteor(mount,api){
           meteors.splice(i,1);
           score++;
           api.score(score);
+          api.audio?.play('pass');
         }
       }
 

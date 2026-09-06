@@ -174,7 +174,6 @@ export function createChroma(mount, api) {
         maxLife: 0.5
       });
     }
-    api.finish('Color Mismatch!', `Passed ${score} obstacles. Tap to hop again!`, score);
   }
 
   function checkCollision() {

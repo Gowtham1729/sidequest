@@ -169,6 +169,7 @@ export function createDrop(mount, api) {
         // Check if ball is outside gap
         const inGap = (bx - BALL_R * 0.6 >= p.gapX && bx + BALL_R * 0.6 <= p.gapX + p.gapW);
         if (!inGap) {
+          if (bvy > 60) api.audio?.play('land');
           nextY = pTop - BALL_R;
           bvy = -riseSpeed; // Ride with platform
           onFloor = true;
