@@ -169,3 +169,15 @@ test('delayed music timer skips missed beats and pausing stops every scheduled v
   audio.setPlaying(false);assert.equal(clock.active.size,0);assert.equal(audio.voices.size,0);
   for(const source of context.oscillators)assert.ok(source.stopped.at(-1)<=context.currentTime+.04);
 });
+
+test('all registered games receive a profile and new games get rate-limited score cues',async()=>{
+  const {games}=await import('../dist/registry.js');
+  assert.ok(games.length>=19);
+  for(const game of games)assert.ok(game.audio.music&&game.audio.sounds.start&&game.audio.sounds.finish,game.id);
+  const profile=games.find(game=>game.id==='pong').audio;
+  assert.equal(profile.autoScore,true);
+  const context=new FakeContext(),audio=new GameAudio({createContext:()=>context,storage:new Storage()});
+  await audio.unlock();audio.activate(profile);audio.play('score');audio.play('score');
+  assert.equal(context.oscillators.length,1);
+  context.currentTime+=.2;audio.play('score');assert.equal(context.oscillators.length,2);
+});

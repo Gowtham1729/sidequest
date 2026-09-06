@@ -14,7 +14,7 @@ const directions={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'do
 const current=()=>games[feed.current],modalOpen=()=>!!document.querySelector('dialog[open]');
 const announce=value=>{$('announcement').textContent=value;};
 function title(value){const dot=document.createElement('span');dot.textContent='.';$('overlay-title').replaceChildren(document.createTextNode(value.replace(/\.$/,'')),dot);}
-function showScore(value){score=value;$('score').textContent=value.toLocaleString(undefined,{minimumIntegerDigits:2});if(!current().lowerIsBetter&&value>0)bests.set(current().id,Math.max(value,bests.get(current().id)||0));$('best').textContent=bests.has(current().id)?bests.get(current().id).toLocaleString():'—';}
+function showScore(value){if(phase==='playing'&&current().audio?.autoScore&&value>score&&!current().lowerIsBetter)audio.play('score');score=value;$('score').textContent=value.toLocaleString(undefined,{minimumIntegerDigits:2});if(!current().lowerIsBetter&&value>0)bests.set(current().id,Math.max(value,bests.get(current().id)||0));$('best').textContent=bests.has(current().id)?bests.get(current().id).toLocaleString():'—';}
 function setState(){
  audio.setPlaying(phase==='playing'&&!modalOpen());
  arcade.dataset.phase=phase;mount.inert=phase!=='playing';
@@ -40,13 +40,24 @@ function renderGame(direction='next'){
  $('feed-count').textContent=`${String(feed.current+1).padStart(2,'0')} / ${String(games.length).padStart(2,'0')}`;
  $('feed-dots').replaceChildren(...games.map((_,i)=>{const dot=document.createElement('span');dot.classList.toggle('active',i===feed.current);return dot;}));
  const gameAudio=audio.activate(meta.audio);
- game=meta.create(mount,{score:showScore,finish,audio:gameAudio});showScore(0);setState();
+ game=meta.create(mount,{score:showScore,finish,audio:gameAudio});showScore(0);setState();updateHelpSheet();
  document.querySelectorAll('[data-game]').forEach(button=>{const active=Number(button.dataset.game)===feed.current;button.classList.toggle('active',active);if(active)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current');});
  scene.classList.remove('enter-next','enter-prev','settle');scene.style.transform='';scene.style.opacity='';void scene.offsetWidth;scene.classList.add(direction==='prev'?'enter-prev':'enter-next');
  announce(`${meta.title}. ${meta.hint} Tap to start.`);
 }
 function navigate(direction){if(modalOpen())return;clearTimeout(tapTimer);lastNav=performance.now();if(direction==='prev'){if(feed.cursor===0)return;feed.previous();}else feed.next();renderGame(direction);}
-function openSheet(id){cancelGesture();pause();audio.setPlaying(false);$(id).showModal();}
+function updateHelpSheet(){
+  const meta=current();if(!meta)return;
+  $('help-glyph').textContent=meta.glyph;
+  $('help-glyph').style.setProperty('--tile-bg',meta.tint);
+  $('help-glyph').style.setProperty('--tile-ink',meta.ink);
+  $('help-game-title').textContent=meta.title;
+  $('help-game-category').textContent=meta.category.toUpperCase();
+  $('help-game-desc').textContent=meta.description;
+  $('help-game-instructions').textContent=meta.instructions;
+  $('help-game-chips').replaceChildren(...(meta.chips||[]).map(c=>{const s=document.createElement('span');s.className='help-chip';s.textContent=c;return s;}));
+ }
+function openSheet(id){cancelGesture();pause();audio.setPlaying(false);if(id==='help-dialog')updateHelpSheet();$(id).showModal();}
 function restart(){renderGame();start();}
 function tap(){if(phase==='paused'){const now=performance.now();if(now-lastTap<280){clearTimeout(tapTimer);lastTap=0;restart();}else{lastTap=now;tapTimer=setTimeout(()=>{if(phase==='paused'&&!gesture&&!modalOpen())resume();},280);}}else start();}
 function clearHold(){clearTimeout(holdTimer);$('hold-feedback').classList.remove('visible');}

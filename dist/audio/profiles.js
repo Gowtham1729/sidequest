@@ -150,3 +150,17 @@ export const audioProfiles = {
 };
 
 export default audioProfiles;
+
+// New games are audible immediately; give them a keyed profile when ready.
+// autoScore emits on score increases only, with a shared rate limit.
+const arcadeProfile = {
+  autoScore: true,
+  music: audioProfiles.rally.music,
+  sounds: {
+    start: audioProfiles.stack.sounds.start,
+    finish: audioProfiles.stack.sounds.finish,
+    win: audioProfiles.stack.sounds.win,
+    score: [{note: 72, duration: .09, gain: .12, wave: 'sine'}]
+  }
+};
+export function getAudioProfile(gameId) { return audioProfiles[gameId] || arcadeProfile; }

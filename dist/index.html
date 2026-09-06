@@ -44,12 +44,32 @@
     <div class="sheet-grip" data-sheet-drag><span></span></div>
     <p class="eyebrow">FIND YOUR NEXT SIDEQUEST</p><h2 id="lineup-title">Pick a game<span>.</span></h2>
     <nav id="game-list" class="game-list" aria-label="Choose a game"></nav>
-    <p class="sheet-hint">Swipe down on the handle to return</p><button class="sr-only focusable dialog-close">Close game picker</button>
+    <p class="sheet-hint">Swipe down on the handle to return</p><button class="sr-only dialog-close">Close game picker</button>
   </dialog>
   <dialog id="help-dialog" class="sheet" aria-labelledby="help-title">
-    <div class="sheet-grip" data-sheet-drag><span></span></div><p class="eyebrow">A FEW SIMPLE GESTURES</p><h2 id="help-title">Go with the flow<span>.</span></h2>
-    <dl class="gesture-guide"><div><dt>Sound &amp; music</dt><dd>Tap the sound label below Sidequest to adjust music and effects separately.</dd></div><div><dt>Tap</dt><dd>Start, play again, or resume.</dd></div><div><dt>Hold still</dt><dd>Pause your game. Double-tap the paused screen to restart.</dd></div><div><dt>Swipe up / down</dt><dd>Next / previous game between rounds.</dd></div><div><dt>Swipe at the right edge</dt><dd>Switch games during play. You can also swipe with two fingers anywhere.</dd></div><div><dt>Swipe right</dt><dd>Open all games between rounds, or on the bottom title area during play.</dd></div></dl>
-    <p class="sheet-hint">Keyboard: Space to play · P to pause · N / B to browse<br>R to restart · G for games · M to mute · ? for help<br>Swipe down on the handle to return</p><button class="sr-only focusable dialog-close">Close gesture help</button>
+    <div class="sheet-grip" data-sheet-drag><span></span></div>
+    <div class="help-section">
+      <p class="eyebrow">HOW TO PLAY</p>
+      <div class="game-guide-card">
+        <div class="guide-header">
+          <div class="game-glyph" id="help-glyph">▱</div>
+          <div class="guide-header-text">
+            <div class="title-line"><h2 id="help-game-title">Stack</h2><span id="help-game-category">TIMING</span></div>
+            <p id="help-game-desc" class="guide-desc">One tap. One block. How high can you go?</p>
+          </div>
+        </div>
+        <p id="help-game-instructions" class="guide-instructions">Tap to drop the moving block. Line it up with the one below. Miss the edge and your tower gets smaller.</p>
+        <div class="guide-chips" id="help-game-chips">
+          <span class="help-chip">Tap to drop</span><span class="help-chip">Space</span>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-divider"></div>
+    <div class="help-section">
+      <p class="eyebrow">FEED GESTURES</p><h2 id="help-title">Go with the flow<span>.</span></h2>
+      <dl class="gesture-guide"><div><dt>Sound &amp; music</dt><dd>Tap the sound label below Sidequest to adjust music and effects separately.</dd></div><div><dt>Tap</dt><dd>Start, play again, or resume.</dd></div><div><dt>Hold still</dt><dd>Pause your game. Double-tap the paused screen to restart.</dd></div><div><dt>Swipe up / down</dt><dd>Next / previous game between rounds.</dd></div><div><dt>Swipe at the right edge</dt><dd>Switch games during play. You can also swipe with two fingers anywhere.</dd></div><div><dt>Swipe right</dt><dd>Open all games between rounds, or on the bottom title area during play.</dd></div></dl>
+    </div>
+    <p class="sheet-hint">Keyboard: Space to play · P to pause · N / B to browse<br>R to restart · G for games · M to mute · ? for help<br>Swipe down on the handle to return</p><button class="sr-only dialog-close">Close gesture help</button>
   </dialog>
   <dialog id="audio-dialog" class="sheet audio-sheet" aria-labelledby="audio-title">
     <div class="sheet-grip" data-sheet-drag><span></span></div>

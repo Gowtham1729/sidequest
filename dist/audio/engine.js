@@ -87,7 +87,7 @@ export class GameAudio {
     if (!this.canPlay('effects')) return;
     const sound=this.profile.sounds?.[event]; if (!sound) return;
     const now=this.context.currentTime;
-    if (now-(this.cooldowns.get(event)??-Infinity)<.045) return;
+    if (now-(this.cooldowns.get(event)??-Infinity)<(event==='score'?.18:.045)) return;
     this.cooldowns.set(event, now);
     if (sound.src) {
       const generation=this.generation, epoch=this.effectEpoch;

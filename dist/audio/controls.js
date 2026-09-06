@@ -2,7 +2,7 @@ export function bindAudioControls(audio, {open, current}) {
   const $=id=>document.getElementById(id);
   $('audio-open').addEventListener('click', () => {
     void audio.unlock();
-    $('audio-description').textContent=`${current().title} has its own soundtrack. Set the mix you like.`;
+    $('audio-description').textContent=`Set the music and effects mix for ${current().title}.`;
     open();
   });
   for (const key of ['muted','effects','music']) {

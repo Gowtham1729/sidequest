@@ -1,6 +1,6 @@
 # Sidequest
 
-Sidequest is a full-screen, mobile-first pocket arcade: swipe into a game, play immediately, and keep exploring. The current lineup is Stack, Snake, 2048, Rally, and Memory Match.
+Sidequest is a full-screen, mobile-first pocket arcade: swipe into a game, play immediately, and keep exploring. The lineup includes Stack, Snake, 2048, Rally, Memory Match, and 14 additional arcade games.
 
 ## Run it locally
 
@@ -41,7 +41,7 @@ The repository is prepared for the existing ChatGPT Site identified by `.openai/
 
 Tap **Sound on/off** below the Sidequest name to open the audio sheet. Music and effects have independent switches and volume sliders; **Mute all** silences both. `M` toggles mute outside dialogs. Preferences are saved only on the current device. Audio unlocks after a touch/click/key interaction; a browser that cannot play audio still runs the games normally.
 
-Each game has an original synthesized loop and event sounds. Music plays only during an active round, stops for pause, feed gestures, dialogs, and backgrounding, and starts a fresh phrase on resume. Switching games stops the previous game's voices. Results have short ending cues without continuing the music. No sound files, downloads, libraries, or third-party music services are required for the included games.
+The original five games have tailored synthesized loops and event sounds. The 14 newer games use a shared arcade loop with start, score, and finish cues until their own profiles are added. Music plays only during an active round, stops for pause, feed gestures, dialogs, and backgrounding, and starts a fresh phrase on resume. Switching games stops the previous game's voices. Results have short ending cues without continuing the music. No sound files, downloads, libraries, or third-party music services are required for the included games.
 
 - `dist/audio/engine.js`: one lazy Web Audio context, separate music/effects gains, output limiter, short look-ahead music scheduler, bounded voices, device preferences, and lifecycle cleanup.
 - `dist/audio/profiles.js`: declarative sound palettes and original music for all five games.
@@ -50,7 +50,7 @@ Each game has an original synthesized loop and event sounds. Music plays only du
 
 ### Add sounds to a game
 
-1. Add an entry keyed by the game's ID to `audioProfiles` in `dist/audio/profiles.js`. The registry attaches that profile automatically. A missing profile/event is safely silent.
+1. Add an entry keyed by the game's ID to `audioProfiles` in `dist/audio/profiles.js`. The registry attaches that profile automatically. A missing profile receives the shared arcade baseline, including automatic score cues. A missing event is safely silent. Set `autoScore: true` on a custom profile if you want score-increase cues from the shell; omit it when the game emits its own reward events.
 2. Emit a named event at the actual gameplay outcome, for example `api.audio?.play('collect')`. Use optional `{pitch: 3}` to transpose a synthesized cue up three semitones (clamped to ±12).
 3. The shell handles `start` and the default `finish` cue. For a different ending, use `api.finish(title, subtitle, finalScore, 'win')` (or `'miss'`, `'crash'`, etc.). Do not also emit that ending in the game: the shell stops gameplay voices before playing the ending cue.
 4. Let the shell own volume, unlocking, timing, and cleanup. Do not create an AudioContext or music timer in a game. Old game handles become silent automatically after switching games.
