@@ -19,7 +19,9 @@ export class GameAudio {
     });
     try { this.storage = storage === undefined ? globalThis.localStorage : storage; } catch {}
     this.preferences = readPreferences(this.storage);
-    this.setTimer=setTimer; this.clearTimer=clearTimer; this.fetchFile=fetchFile;
+    this.setTimer = (fn, ms) => setTimer(fn, ms);
+    this.clearTimer = id => clearTimer(id);
+    this.fetchFile = (...args) => fetchFile(...args);
     this.context=null; this.profile={}; this.generation=0; this.effectEpoch=0; this.musicEpoch=0;
     this.playing=false; this.foreground=true; this.timer=null; this.musicActive=false;
     this.voices=new Set(); this.buffers=new Map(); this.cooldowns=new Map(); this.listeners=new Set();
