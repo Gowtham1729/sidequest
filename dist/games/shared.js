@@ -20,7 +20,9 @@ export function surface(mount){
 export function point(event,arena){const r=arena.getBoundingClientRect();const scale=Math.min(r.width/400,r.height/720);return {x:(event.clientX-r.left)/scale,y:(event.clientY-r.top)/scale};}
 export function clear(ctx){ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);}
 export function rect(ctx,x,y,w,h,fill,radius=0){ctx.fillStyle=fill;ctx.beginPath();ctx.roundRect(x,y,w,h,radius);ctx.fill();}
-export function text(ctx,value,x,y,size,fill,weight=500){ctx.fillStyle=fill;ctx.font=`${weight} ${size}px Arial, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(value,x,y);}
+export function text(ctx,value,x,y,size,fill,weight=500,align='center'){ctx.fillStyle=fill;ctx.font=`${weight} ${size}px Arial, sans-serif`;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(value,x,y);}
+export function circle(ctx,x,y,r,fill){ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,Math.max(0,r),0,Math.PI*2);ctx.fill();}
+export function createCanvas(mount){return surface(mount);}
 export function grid(ctx,view,step=28){ctx.fillStyle='#c9f86a0a';for(let x=14;x<view.width;x+=step)for(let y=14;y<view.height;y+=step){ctx.beginPath();ctx.arc(x,y,.8,0,Math.PI*2);ctx.fill();}}
 export function shuffled(items,random=Math.random){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 export const DIRECTIONS={up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}};
