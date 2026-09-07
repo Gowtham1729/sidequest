@@ -14,7 +14,8 @@ export function viewport(width,height,safeTop=0,safeBottom=0,topInset=null,botto
 }
 export function surface(mount,{maxFieldWidth=Infinity,layout='scene'}={}){
   const canvas=document.createElement('canvas');canvas.setAttribute('aria-hidden','true');mount.replaceChildren(canvas);
-  const ctx=canvas.getContext('2d'),view={layout};
+  const ctx=canvas.getContext('2d'),preference=window.matchMedia?.('(prefers-reduced-motion: reduce)')||{matches:false};
+  const view={layout,get reducedMotion(){return preference.matches;}};
   function resize(){
     const width=mount.clientWidth||window.innerWidth,height=mount.clientHeight||window.innerHeight;
     const style=getComputedStyle(mount);

@@ -3,13 +3,15 @@ import {bindAudioControls} from './audio/controls.js';
 import {games} from './registry.js';
 import {GameFeed} from './feed.js';
 import {point} from './games/shared.js';
+import {endingDuration} from './games/motion.js';
 import {gestureOwner,navigationIntent,isTap,centroid,pressTiming,holdPauses} from './gestures.js';
 const $=id=>document.getElementById(id),arcade=$('arcade'),scene=$('scene'),arena=$('arena'),mount=$('game-mount');
 const audio=new GameAudio();
+const motionPreference=window.matchMedia?.('(prefers-reduced-motion: reduce)')||{matches:false};
 const feed=new GameFeed(games.length),bests=new Map(),pointers=new Map();
 const hudObserver=new ResizeObserver(()=>{arcade.style.setProperty('--field-top',`${$('top-hud').offsetHeight+8}px`);arcade.style.setProperty('--field-bottom',`${$('bottom-hud').offsetHeight+8}px`);});
 hudObserver.observe($('top-hud'));hudObserver.observe($('bottom-hud'));
-let game,phase='ready',score=0,lastFrame=0,gesture=null,holdTimer=null,tapTimer=null,countdownTimer=null,lastTap=0,lastNav=0,result=null;
+let game,phase='ready',score=0,lastFrame=0,gesture=null,holdTimer=null,tapTimer=null,countdownTimer=null,lastTap=0,lastNav=0,result=null,ending=null,pausedPhase='playing',generation=0;
 const directions={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down',a:'left',d:'right',w:'up',s:'down'};
 const current=()=>games[feed.current],modalOpen=()=>!!document.querySelector('dialog[open]');
 const announce=value=>{$('announcement').textContent=value;};
@@ -17,11 +19,11 @@ function title(value){const dot=document.createElement('span');dot.textContent='
 function showScore(value){if(phase==='playing'&&current().audio?.autoScore&&value>score&&!current().lowerIsBetter)audio.play('score');score=value;$('score').textContent=value.toLocaleString(undefined,{minimumIntegerDigits:2});if(!current().lowerIsBetter&&value>0)bests.set(current().id,Math.max(value,bests.get(current().id)||0));$('best').textContent=bests.has(current().id)?bests.get(current().id).toLocaleString():'—';}
 function setState(){
  audio.setPlaying(phase==='playing'&&!modalOpen());
- arcade.dataset.phase=phase;mount.inert=phase!=='playing';
+ arcade.dataset.phase=phase; $('game-overlay').hidden=phase==='finishing';mount.inert=phase!=='playing';
  const meta=current(),ready=phase==='ready';
  // The top feed zone offers pause without taking a gesture away from any game.
  const playingHint='Tap top to pause <span>·</span> Swipe edge to switch';
- $('gesture-hint').innerHTML=phase==='playing'?playingHint:phase==='paused'?'Tap to resume <span>·</span> Double-tap to restart':phase==='countdown'?'Tap to skip <span>·</span> Edge swipe to switch':'Swipe up for next <span>·</span> Swipe right to browse';
+ $('gesture-hint').innerHTML=phase==='playing'?playingHint:phase==='paused'?'Tap to resume <span>·</span> Double-tap to restart':phase==='finishing'?'Tap to retry <span>·</span> Swipe for next':phase==='countdown'?'Tap to skip <span>·</span> Edge swipe to switch':'Swipe up for next <span>·</span> Swipe right to browse';
  $('overlay-eyebrow').textContent=ready?meta.eyebrow:phase==='paused'?'TAKE YOUR TIME':'ONE MORE ROUND?';
  title(ready?meta.title:phase==='paused'?'Catch your breath':result?.title||meta.title);
  $('overlay-subtitle').textContent=ready?meta.intro:phase==='paused'?'Your game is right here.':result?.subtitle||'';
@@ -29,10 +31,30 @@ function setState(){
  $('browse-hint').textContent=phase==='paused'?'Double-tap to restart · Swipe up for next':'Swipe up for the next game';
  arena.setAttribute('aria-label',`${meta.title}. ${meta.instructions} ${phase==='playing'?'Tap the top HUD or press P to pause. Swipe at the right edge or with two fingers to change games.':'Press Space to play. Swipe up for next game.'}`);
  $('accessible-previous').disabled=feed.cursor===0;
- $('accessible-pause').disabled=phase!=='playing';
+ $('accessible-pause').disabled=phase!=='playing'&&phase!=='finishing';
 
 }
-function finish(message,subtitle,finalScore,cue='finish'){if(phase!=='playing')return;if(current().lowerIsBetter&&finalScore)bests.set(current().id,Math.min(finalScore,bests.get(current().id)||Infinity));result={title:message,subtitle};phase='finished';clearHold();showScore(score);setState();audio.play(cue);announce(`${message} ${subtitle}`);}
+// Opt in with finish(title, subtitle, score, cue, {duration: seconds}) and
+// present(dt, progress). Only present runs after the terminal event; tick stops.
+function cancelPresentation(reason){
+ if(!ending)return;
+ ending=null;game?.cancelPresentation?.(reason);
+}
+function revealResult(){
+ ending.done=true;phase='finished';setState();
+ announce(`${result.title} ${result.subtitle}`);
+}
+function finish(message,subtitle,finalScore,cue='finish',options={}){
+ if(phase!=='playing')return;
+ if(current().lowerIsBetter&&finalScore)bests.set(current().id,Math.min(finalScore,bests.get(current().id)||Infinity));
+ result={title:message,subtitle};
+ const duration=typeof game?.present==='function'?endingDuration(options?.duration):0;
+ phase=duration?'finishing':'finished';clearHold();showScore(score);setState();
+ // Commit the outcome/cue once, at the terminal event, never on skip/resume.
+ audio.play(cue);
+ if(duration){ending={duration,elapsed:0};game.present(0,motionPreference.matches?1:0);}
+ else announce(`${message} ${subtitle}`);
+}
 function cancelCountdown(){if(countdownTimer){clearTimeout(countdownTimer);countdownTimer=null;}}
 function launchGame(){cancelCountdown();phase='playing';setState();game.start();audio.play('start');arena.focus({preventScroll:true});lastFrame=performance.now();announce(`${current().title} started.`);}
 function stepCountdown(step){
@@ -49,17 +71,23 @@ function stepCountdown(step){
 }
 function startCountdown(){cancelCountdown();clearTimeout(tapTimer);phase='countdown';setState();stepCountdown(3);}
 function skipCountdown(){if(phase!=='countdown')return;cancelCountdown();launchGame();}
-function start(){void audio.unlock();if(phase==='paused'){resume();return;}if(phase==='playing')return;if(phase==='countdown'){skipCountdown();return;}startCountdown();}
-function pause(){clearHold();if(phase==='countdown'){cancelCountdown();phase='ready';setState();return;}if(phase!=='playing')return;game.pause?.();game.cancel?.();phase='paused';setState();announce('Paused. Tap to resume, double-tap to restart, or swipe to browse.');}
-function resume(){if(phase!=='paused')return;void audio.unlock();phase='playing';setState();lastFrame=performance.now();arena.focus({preventScroll:true});announce('Game resumed.');}
+function start(){void audio.unlock();if(phase==='finishing'||(phase==='finished'&&typeof game?.present==='function')){restart();return;}if(phase==='paused'){resume();return;}if(phase==='playing')return;if(phase==='countdown'){skipCountdown();return;}startCountdown();}
+function pause(){clearHold();if(phase==='countdown'){cancelCountdown();phase='ready';setState();return;}if(phase!=='playing'&&phase!=='finishing')return;pausedPhase=phase;if(ending)audio.stopVoices('effects');game.pause?.();game.cancel?.();phase='paused';setState();announce('Paused. Tap to resume, double-tap to restart, or swipe to browse.');}
+function resume(){if(phase!=='paused')return;void audio.unlock();phase=pausedPhase;setState();lastFrame=performance.now();arena.focus({preventScroll:true});announce('Game resumed.');}
 function renderGame(direction='next'){
- clearTimeout(tapTimer);clearHold();cancelCountdown();lastTap=0;game?.destroy();mount.replaceChildren();phase='ready';result=null;score=0;
+ clearTimeout(tapTimer);clearHold();cancelCountdown();lastTap=0;generation++;cancelPresentation('replace');game?.destroy();mount.replaceChildren();phase='ready';result=null;score=0;
  const meta=current();arcade.style.setProperty('--accent',meta.accent);arcade.style.setProperty('--bg',meta.bg);arcade.style.setProperty('--glow',meta.glow);document.querySelector('meta[name="theme-color"]').content=meta.bg;
  $('game-title').textContent=meta.title;$('category').textContent=meta.category.toUpperCase();$('game-instruction').textContent=meta.hint;$('score-label').textContent=meta.scoreLabel;
  $('feed-count').textContent=`${String(feed.current+1).padStart(2,'0')} / ${String(games.length).padStart(2,'0')}`;
 
  const gameAudio=audio.activate(meta.audio);
- game=meta.create(mount,{score:showScore,finish,audio:gameAudio});showScore(0);setState();updateHelpSheet();
+ const token=generation;
+ game=meta.create(mount,{
+  score:value=>{if(token===generation&&phase==='playing')showScore(value);},
+  finish:(...args)=>{if(token===generation)finish(...args);},
+  audio:gameAudio,
+  get reducedMotion(){return motionPreference.matches;}
+ });showScore(0);setState();updateHelpSheet();
  document.querySelectorAll('[data-game]').forEach(button=>{const active=Number(button.dataset.game)===feed.current;button.classList.toggle('active',active);if(active)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current');});
  scene.classList.remove('enter-next','enter-prev','settle');scene.style.transform='';scene.style.opacity='';void scene.offsetWidth;scene.classList.add(direction==='prev'?'enter-prev':'enter-next');
  announce(`${meta.title}. ${meta.hint} Tap to start.`);
@@ -126,7 +154,7 @@ arcade.addEventListener('pointerup',event=>{
  if(g.held)return;
  if(g.mode==='feed'){
    const intent=navigationIntent(g.dx,g.dy,{allowHorizontal:!g.multi});
-   if(intent==='next'||intent==='prev')navigate(intent);else if(intent==='lineup')openSheet('lineup-dialog');else if(intent==='help')openSheet('help-dialog');else if(!g.multi&&isTap(g.dx,g.dy,performance.now()-g.time)){if(g.phase==='playing'&&g.pauseZone)pause();else if(g.phase!=='playing')tap();}
+   if(intent==='next'||intent==='prev')navigate(intent);else if(intent==='lineup')openSheet('lineup-dialog');else if(intent==='help')openSheet('help-dialog');else if(!g.multi&&isTap(g.dx,g.dy,performance.now()-g.time)){if((g.phase==='playing'||g.phase==='finishing')&&g.pauseZone)pause();else if(g.phase!=='playing')tap();}
  }else if(g.phase==='playing'&&phase==='playing'){
    game.pointerUp?.(point(event,arena));if(!g.pressed&&isTap(g.dx,g.dy,performance.now()-g.time))game.tap?.(point(event,arena),g.target);
  }
@@ -170,7 +198,23 @@ function backgroundPause(){audio.setForeground(false);cancelGesture();cancelCoun
 document.addEventListener('visibilitychange',()=>{if(document.hidden)backgroundPause();else audio.setForeground(document.hasFocus());});window.addEventListener('blur',backgroundPause);window.addEventListener('focus',()=>audio.setForeground(!document.hidden));window.addEventListener('pagehide',backgroundPause);
 let viewportWidth=window.innerWidth;
 window.addEventListener('resize',()=>{if(gesture)cancelGesture();if(Math.abs(window.innerWidth-viewportWidth)>80)pause();viewportWidth=window.innerWidth;});
-function frame(now){const dt=lastFrame?Math.min((now-lastFrame)/1000,.035):0;lastFrame=now;audio.setPlaying(phase==='playing'&&!modalOpen()&&gesture?.mode!=='feed');if(!document.hidden)game?.tick(((phase==='playing'&&!modalOpen()&&gesture?.mode!=='feed')||phase==='ready'||phase==='countdown')?dt:0);requestAnimationFrame(frame);}
+function frame(now){
+ const dt=lastFrame?Math.max(0,Math.min((now-lastFrame)/1000,.035)):0;lastFrame=now;
+ const available=!document.hidden&&!modalOpen()&&gesture?.mode!=='feed';
+ audio.setPlaying(phase==='playing'&&available);
+ if(!document.hidden){
+  if(ending){
+   const active=!ending.done&&phase==='finishing'&&available;
+   const duration=motionPreference.matches?Math.min(.08,ending.duration):ending.duration;
+   const step=active?Math.min(dt,Math.max(0,duration-ending.elapsed)):0;
+   ending.elapsed+=step;
+   const progress=ending.done||motionPreference.matches?1:Math.min(1,ending.elapsed/duration);
+   game.present(step,progress);
+   if(active&&ending&&ending.elapsed>=duration)revealResult();
+  }else game?.tick(((phase==='playing'&&available)||phase==='ready'||phase==='countdown')?dt:0);
+ }
+ requestAnimationFrame(frame);
+}
 bindAudioControls(audio,{open:()=>openSheet('audio-dialog'),current:()=>current()});
 audio.setForeground(!document.hidden);
 renderGame();requestAnimationFrame(frame);

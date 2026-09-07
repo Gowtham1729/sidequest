@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Script ran on page and returned:\n```json\n{\"preferenceSource\":\"test-injected matchMedia result, not OS setting\",\"first\":{\"viewport\":[320,568],\"phase\":\"finishing\",\"simulation\":0.00010000002384185791,\"presentation\":0,\"progress\":1,\"score\":\"07\",\"overlayHidden\":true,\"cues\":[\"win\"],\"cancelled\":[],\"reducedMotion\":true},\"last\":{\"viewport\":[320,568],\"phase\":\"finished\",\"simulation\":0.00010000002384185791,\"presentation\":0.08,\"progress\":1,\"score\":\"07\",\"overlayHidden\":false,\"cues\":[\"win\"],\"cancelled\":[],\"reducedMotion\":true}}\n```"
+    }
+  ]
+}

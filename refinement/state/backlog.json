@@ -214,7 +214,8 @@
         "Two disclosed out-of-path touches, both reviewer-accepted: dist/gestures.js gained an optional rail=28 default param (R01 behavior preserved); tests/input-lifecycle.test.mjs gained the description-meta harness stub. R02 write_paths left literal; this handoff carries the exception.",
         "Per-game HUD height variation deliberately preserved (content-driven, session-stable); cross-game normalization is optional future work.",
         "Device/player gates unverified (out of R02's required gates); carried as programme-level follow-ups. Real-browser evidence via the approved Chrome DevTools route at 5 emulated viewports; >1440px desktop, real-device touch, listening, and player passes remain open.",
-        "2026-09-07: reopened after owner rejected presentation. Removed score-flanking pause/browse icons, replaced pause with top-HUD tap and browse with footer Games label; kept accessible controls, R01 input ownership and phase-stable geometry. Removed dot grid, kept game instruction visible, reduced landscape padding, fixed aborted countdown swipe. Await owner presentation review; previous accepted state is historical."
+        "2026-09-07: reopened after owner rejected presentation. Removed score-flanking pause/browse icons, replaced pause with top-HUD tap and browse with footer Games label; kept accessible controls, R01 input ownership and phase-stable geometry. Removed dot grid, kept game instruction visible, reduced landscape padding, fixed aborted countdown swipe. Await owner presentation review; previous accepted state is historical.",
+        "2026-09-07: owner requested commit and continuation to R03. R02 revision committed as 4563cf1. Outstanding evidence remains labeled; no new physical-device/visual pass inferred."
       ]
     },
     {
@@ -222,8 +223,8 @@
       "title": "Add only the motion and finishing support needed by the pilots",
       "stage": "foundation",
       "kind": "implementation",
-      "status": "queued",
-      "owner": null,
+      "status": "implemented",
+      "owner": "R03 coordinator; implementation finished, shared paths released",
       "write_paths": [
         "dist/app.js",
         "dist/games/shared.js",
@@ -248,16 +249,23 @@
       ],
       "gates": {
         "code": {
-          "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "status": "pass",
+          "evidence": [
+            "refinement/evidence/r03-checkpoint-final/summary.json",
+            "refinement/evidence/r03-handoff.md"
+          ],
+          "reviewer": "independent read-only /root/r03_review: pass after terminal tick repair; final initial reduced-motion snap verified by implementer test/browser check",
+          "source_fingerprint": "71a0462e9fa8fde7f268c3ea320205ee636604ffd58976785edbee5bbf855606"
         },
         "visual": {
           "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "evidence": [
+            "refinement/evidence/r03-browser/native-frame-trace.json",
+            "refinement/evidence/r03-browser/reduced-motion-trace.json",
+            "refinement/evidence/r03-handoff.md"
+          ],
+          "reviewer": "implementer inspected selected real-browser fixture frames; full visual review pending",
+          "source_fingerprint": "71a0462e9fa8fde7f268c3ea320205ee636604ffd58976785edbee5bbf855606"
         },
         "device": {
           "status": "unverified",
@@ -272,8 +280,13 @@
           "source_fingerprint": null
         }
       },
-      "evidence": [],
-      "notes": []
+      "evidence": [
+        "refinement/evidence/r03-handoff.md",
+        "refinement/evidence/r03-checkpoint-final/summary.json"
+      ],
+      "notes": [
+        "Opt-in finishing phase stops tick and score while present advances up to 0.6 seconds. Once-only outcome cue, retired-instance guards, pause/resume/retry/switch cleanup, live canvas reduced-motion getters, bounded scalar motion helper, cabinet presentation-only path. No production games migrated. 81 tests pass. Code reviewed independently; full visual, hardware and listening evidence pending."
+      ]
     },
     {
       "id": "R04",
