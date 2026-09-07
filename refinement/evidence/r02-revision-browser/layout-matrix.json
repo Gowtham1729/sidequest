@@ -1,0 +1,42 @@
+[
+  {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"viewport\":[320,568],\"tested\":34,\"failures\":[],\"pilots\":[{\"id\":\"stack\",\"states\":[{\"phase\":\"ready\",\"top\":91,\"bottom\":97},{\"phase\":\"countdown\",\"top\":91,\"bottom\":97},{\"phase\":\"playing\",\"top\":91,\"bottom\":97},{\"phase\":\"paused\",\"top\":91,\"bottom\":97}],\"overflow\":false},{\"id\":\"golf\",\"states\":[{\"phase\":\"ready\",\"top\":91,\"bottom\":117},{\"phase\":\"countdown\",\"top\":91,\"bottom\":117},{\"phase\":\"playing\",\"top\":91,\"bottom\":117},{\"phase\":\"paused\",\"top\":91,\"bottom\":117}],\"overflow\":false}]}\n```"
+      }
+    ]
+  },
+  {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"viewport\":[390,844],\"tested\":34,\"failures\":[],\"pilots\":[{\"id\":\"stack\",\"states\":[{\"phase\":\"ready\",\"top\":93,\"bottom\":97},{\"phase\":\"countdown\",\"top\":93,\"bottom\":97},{\"phase\":\"playing\",\"top\":93,\"bottom\":97},{\"phase\":\"paused\",\"top\":93,\"bottom\":97}],\"overflow\":false},{\"id\":\"golf\",\"states\":[{\"phase\":\"ready\",\"top\":93,\"bottom\":97},{\"phase\":\"countdown\",\"top\":93,\"bottom\":97},{\"phase\":\"playing\",\"top\":93,\"bottom\":97},{\"phase\":\"paused\",\"top\":93,\"bottom\":97}],\"overflow\":false}]}\n```"
+      }
+    ]
+  },
+  {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"viewport\":[430,932],\"tested\":34,\"failures\":[],\"pilots\":[{\"id\":\"stack\",\"states\":[{\"phase\":\"ready\",\"top\":93,\"bottom\":97},{\"phase\":\"countdown\",\"top\":93,\"bottom\":97},{\"phase\":\"playing\",\"top\":93,\"bottom\":97},{\"phase\":\"paused\",\"top\":93,\"bottom\":97}],\"overflow\":false},{\"id\":\"golf\",\"states\":[{\"phase\":\"ready\",\"top\":93,\"bottom\":97},{\"phase\":\"countdown\",\"top\":93,\"bottom\":97},{\"phase\":\"playing\",\"top\":93,\"bottom\":97},{\"phase\":\"paused\",\"top\":93,\"bottom\":97}],\"overflow\":false}]}\n```"
+      }
+    ]
+  },
+  {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"viewport\":[844,390],\"tested\":34,\"failures\":[],\"pilots\":[{\"id\":\"stack\",\"states\":[{\"phase\":\"ready\",\"top\":123,\"bottom\":101},{\"phase\":\"countdown\",\"top\":123,\"bottom\":101},{\"phase\":\"playing\",\"top\":123,\"bottom\":101},{\"phase\":\"paused\",\"top\":123,\"bottom\":101}],\"overflow\":false},{\"id\":\"golf\",\"states\":[{\"phase\":\"ready\",\"top\":123,\"bottom\":101},{\"phase\":\"countdown\",\"top\":123,\"bottom\":101},{\"phase\":\"playing\",\"top\":123,\"bottom\":101},{\"phase\":\"paused\",\"top\":123,\"bottom\":101}],\"overflow\":false}]}\n```"
+      }
+    ]
+  },
+  {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"viewport\":[1440,900],\"tested\":34,\"failures\":[],\"pilots\":[{\"id\":\"stack\",\"states\":[{\"phase\":\"ready\",\"top\":136,\"bottom\":148},{\"phase\":\"countdown\",\"top\":136,\"bottom\":148},{\"phase\":\"playing\",\"top\":136,\"bottom\":148},{\"phase\":\"paused\",\"top\":136,\"bottom\":148}],\"overflow\":false},{\"id\":\"golf\",\"states\":[{\"phase\":\"ready\",\"top\":136,\"bottom\":148},{\"phase\":\"countdown\",\"top\":136,\"bottom\":148},{\"phase\":\"playing\",\"top\":136,\"bottom\":148},{\"phase\":\"paused\",\"top\":136,\"bottom\":148}],\"overflow\":false}]}\n```"
+      }
+    ]
+  }
+]

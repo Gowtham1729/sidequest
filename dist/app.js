@@ -19,21 +19,18 @@ function setState(){
  audio.setPlaying(phase==='playing'&&!modalOpen());
  arcade.dataset.phase=phase;mount.inert=phase!=='playing';
  const meta=current(),ready=phase==='ready';
- // Hold-to-pause exists only where the game does not own the pointer (see gestures.js policies).
- const playingHint=holdPauses(meta.input)?'Hold to pause <span>·</span> Edge swipe to switch':'Edge swipe to switch <span>·</span> Two-finger swipe to browse';
- $('gesture-hint').innerHTML=phase==='playing'?playingHint:phase==='paused'?'Double-tap to restart <span>·</span> Swipe right for all games':phase==='countdown'?'Tap to skip <span>·</span> Edge swipe to switch':'Swipe up to explore <span>·</span> Swipe right for all games';
+ // The top feed zone offers pause without taking a gesture away from any game.
+ const playingHint='Tap top to pause <span>·</span> Swipe edge to switch';
+ $('gesture-hint').innerHTML=phase==='playing'?playingHint:phase==='paused'?'Tap to resume <span>·</span> Double-tap to restart':phase==='countdown'?'Tap to skip <span>·</span> Edge swipe to switch':'Swipe up for next <span>·</span> Swipe right to browse';
  $('overlay-eyebrow').textContent=ready?meta.eyebrow:phase==='paused'?'TAKE YOUR TIME':'ONE MORE ROUND?';
  title(ready?meta.title:phase==='paused'?'Catch your breath':result?.title||meta.title);
  $('overlay-subtitle').textContent=ready?meta.intro:phase==='paused'?'Your game is right here.':result?.subtitle||'';
  $('tap-label').textContent=ready?'Tap anywhere to play':phase==='paused'?'Tap to resume':'Tap anywhere to play again';
  $('browse-hint').textContent=phase==='paused'?'Double-tap to restart · Swipe up for next':'Swipe up for the next game';
- arena.setAttribute('aria-label',`${meta.title}. ${meta.instructions} ${phase==='playing'?(holdPauses(meta.input)?'Pause with the pause button, P, or hold. Swipe at the right edge to change games.':'Pause with the pause button or P. Swipe at the right edge or with two fingers to change games.'):'Press Space to play. Swipe up for next game.'}`);
+ arena.setAttribute('aria-label',`${meta.title}. ${meta.instructions} ${phase==='playing'?'Tap the top HUD or press P to pause. Swipe at the right edge or with two fingers to change games.':'Press Space to play. Swipe up for next game.'}`);
  $('accessible-previous').disabled=feed.cursor===0;
  $('accessible-pause').disabled=phase!=='playing';
- const paused_=phase==='paused';
- $('hud-pause').disabled=phase!=='playing'&&!paused_;
- $('hud-pause').textContent=paused_?'▶':'⏸';
- $('hud-pause').setAttribute('aria-label',paused_?'Resume game':'Pause game');
+
 }
 function finish(message,subtitle,finalScore,cue='finish'){if(phase!=='playing')return;if(current().lowerIsBetter&&finalScore)bests.set(current().id,Math.min(finalScore,bests.get(current().id)||Infinity));result={title:message,subtitle};phase='finished';clearHold();showScore(score);setState();audio.play(cue);announce(`${message} ${subtitle}`);}
 function cancelCountdown(){if(countdownTimer){clearTimeout(countdownTimer);countdownTimer=null;}}
@@ -60,7 +57,7 @@ function renderGame(direction='next'){
  const meta=current();arcade.style.setProperty('--accent',meta.accent);arcade.style.setProperty('--bg',meta.bg);arcade.style.setProperty('--glow',meta.glow);document.querySelector('meta[name="theme-color"]').content=meta.bg;
  $('game-title').textContent=meta.title;$('category').textContent=meta.category.toUpperCase();$('game-instruction').textContent=meta.hint;$('score-label').textContent=meta.scoreLabel;
  $('feed-count').textContent=`${String(feed.current+1).padStart(2,'0')} / ${String(games.length).padStart(2,'0')}`;
- $('feed-dots').replaceChildren(...games.map((_,i)=>{const dot=document.createElement('span');dot.classList.toggle('active',i===feed.current);return dot;}));
+
  const gameAudio=audio.activate(meta.audio);
  game=meta.create(mount,{score:showScore,finish,audio:gameAudio});showScore(0);setState();updateHelpSheet();
  document.querySelectorAll('[data-game]').forEach(button=>{const active=Number(button.dataset.game)===feed.current;button.classList.toggle('active',active);if(active)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current');});
@@ -87,7 +84,7 @@ function resetDrag(){arcade.classList.remove('dragging');$('nav-feedback').class
 function cancelGesture(){clearHold();game?.cancel?.();gesture=null;pointers.clear();resetDrag();}
 function updateDrag(g){
  if(g.mode!=='feed'||Math.hypot(g.dx,g.dy)<12)return;
- cancelCountdown();
+ if(phase==='countdown'){cancelCountdown();phase='ready';setState();}
  const vertical=Math.abs(g.dy)>Math.abs(g.dx),intent=navigationIntent(g.dx,g.dy);
  arcade.classList.add('dragging');scene.classList.remove('enter-next','enter-prev','settle');
  scene.style.transform=vertical?`translateY(${Math.max(-180,Math.min(180,g.dy*.63))}px)`:`translateX(${Math.max(-90,Math.min(90,g.dx*.3))}px)`;
@@ -103,7 +100,7 @@ arcade.addEventListener('pointerdown',event=>{
  if(pointers.size>1){clearHold();game.cancel?.();const c=centroid([...pointers.values()]);if(gesture){Object.assign(gesture,{mode:'feed',multi:true,startX:c.x,startY:c.y,dx:0,dy:0,moved:true});}return;}
  clearTimeout(tapTimer);
  const mode=gestureOwner({phase,x:event.clientX,width:arcade.clientWidth,zone:!!event.target.closest('[data-feed-zone]'),rail:$('edge-rail').offsetWidth||undefined});
- gesture={mode,startX:event.clientX,startY:event.clientY,dx:0,dy:0,time:performance.now(),phase,target:event.target,held:false,multi:false,moved:false};
+ gesture={mode,startX:event.clientX,startY:event.clientY,dx:0,dy:0,time:performance.now(),phase,target:event.target,pauseZone:!!event.target.closest('#top-hud'),held:false,multi:false,moved:false};
  if(mode==='game'){
    game.pointerDown?.(point(event,arena));
    // Press-timing games judge their action once, here; the release below must not repeat it.
@@ -129,7 +126,7 @@ arcade.addEventListener('pointerup',event=>{
  if(g.held)return;
  if(g.mode==='feed'){
    const intent=navigationIntent(g.dx,g.dy,{allowHorizontal:!g.multi});
-   if(intent==='next'||intent==='prev')navigate(intent);else if(intent==='lineup')openSheet('lineup-dialog');else if(intent==='help')openSheet('help-dialog');else if(!g.multi&&g.phase!=='playing'&&isTap(g.dx,g.dy,performance.now()-g.time))tap();
+   if(intent==='next'||intent==='prev')navigate(intent);else if(intent==='lineup')openSheet('lineup-dialog');else if(intent==='help')openSheet('help-dialog');else if(!g.multi&&isTap(g.dx,g.dy,performance.now()-g.time)){if(g.phase==='playing'&&g.pauseZone)pause();else if(g.phase!=='playing')tap();}
  }else if(g.phase==='playing'&&phase==='playing'){
    game.pointerUp?.(point(event,arena));if(!g.pressed&&isTap(g.dx,g.dy,performance.now()-g.time))game.tap?.(point(event,arena),g.target);
  }
@@ -143,7 +140,6 @@ arcade.addEventListener('wheel',event=>{
  if(Math.abs(wheelSum)>65){navigate(wheelSum>0?'next':'prev');wheelSum=0;}
 },{passive:false});
 for(const [id,action] of Object.entries({'accessible-play':start,'accessible-pause':pause,'accessible-restart':restart,'accessible-next':()=>navigate('next'),'accessible-previous':()=>navigate('prev'),'accessible-lineup':()=>openSheet('lineup-dialog'),'accessible-help':()=>openSheet('help-dialog')}))$(id).addEventListener('click',action);
-$('hud-pause').addEventListener('click',()=>{if(phase==='paused')resume();else pause();});
 $('hud-games').addEventListener('click',()=>openSheet('lineup-dialog'));
 // The catalogue count is derived from the authoritative registry, not hardcoded prose.
 document.querySelector('meta[name="description"]').content=`${games.length} games. An endless full-screen arcade. Tap to play, swipe to discover your next Sidequest.`;

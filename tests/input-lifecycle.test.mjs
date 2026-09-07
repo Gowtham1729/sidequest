@@ -147,7 +147,7 @@ function freshGolfAim(){
 
 test('default-policy games keep release taps and hold-to-pause (Four in a Row)',async()=>{
   await openGame('Four in a Row');
-  assert.match(byId('gesture-hint').innerHTML,/Hold to pause/);
+  assert.match(byId('gesture-hint').innerHTML,/Tap top to pause/);
   down(1,195,400);
   frames(2);
   assert.ok(recentText(/YOUR TURN/),'a press must not place a disc for a default-policy game');
@@ -167,7 +167,7 @@ test('default-policy games keep release taps and hold-to-pause (Four in a Row)',
 test('a held Pocket Golf aim neither pauses nor fires for one second',async()=>{
   await openGame('Pocket Golf');
   assert.doesNotMatch(byId('gesture-hint').innerHTML,/Hold to pause/);
-  assert.match(byId('gesture-hint').innerHTML,/Two-finger swipe to browse/);
+  assert.match(byId('gesture-hint').innerHTML,/Tap top to pause/);
   down(1,195,400); // the aim starts on press
   for(let i=0;i<60;i++){await sleep(16);frame(16);} // ~1s hold with live frames
   assert.equal(phase(),'playing','a held golf aim must not invoke pause');
@@ -185,7 +185,7 @@ test('a held Pocket Golf aim neither pauses nor fires for one second',async()=>{
 
 test('press-timing games judge the action once, at press (Stack)',async()=>{
   await openGame('Stack');
-  assert.match(byId('gesture-hint').innerHTML,/Hold to pause/);
+  assert.match(byId('gesture-hint').innerHTML,/Tap top to pause/);
   assert.equal(byId('score').textContent,'00');
   // Stack slides the block at 105+height*7 px/s with a ±6px perfect window around x=70.
   // This schedule walks the block into that window before every press so each drop

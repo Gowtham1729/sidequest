@@ -9,7 +9,7 @@
       "title": "Establish actual browser baseline and comparable reference observations",
       "stage": "foundation",
       "kind": "review",
-      "status": "blocked",
+      "status": "queued",
       "owner": null,
       "write_paths": [],
       "depends_on": [],
@@ -34,7 +34,7 @@
           "source_fingerprint": "daf4fac93220f072d6c81516b78ca7c04b4592e33b551676cc8d6cee5e1248c9"
         },
         "visual": {
-          "status": "blocked",
+          "status": "unverified",
           "evidence": [],
           "reviewer": null,
           "source_fingerprint": null
@@ -54,7 +54,8 @@
       },
       "evidence": [],
       "notes": [
-        "Chrome and in-app browser policy verification unavailable on 2026-09-06; offline baseline completed separately. Independent source preparation may continue."
+        "Chrome and in-app browser policy verification unavailable on 2026-09-06; offline baseline completed separately. Independent source preparation may continue.",
+        "2026-09-07: user confirms R00 is unblocked; Chrome DevTools works in this session. Baseline/reference capture task remains to be recorded, not marked passed by this R02 revision."
       ]
     },
     {
@@ -143,8 +144,8 @@
       "title": "Define compact HUD and stable layout families",
       "stage": "foundation",
       "kind": "implementation",
-      "status": "accepted",
-      "owner": "R02 session (single sequential writer; handoff in refinement/evidence/r02-handoff.md)",
+      "status": "implemented",
+      "owner": "R02 revision session; single writer, paths released at handoff",
       "write_paths": [
         "dist/style.css",
         "dist/index.html",
@@ -173,21 +174,20 @@
         "code": {
           "status": "pass",
           "evidence": [
-            "refinement/evidence/r02-checkpoint-final/summary.json",
-            "refinement/evidence/r02-checkpoint-final/tests.log",
-            "refinement/evidence/r02-review.md"
+            "refinement/evidence/r02-revision-checkpoint/summary.json",
+            "refinement/evidence/r02-revision-handoff.md"
           ],
-          "reviewer": "two fresh subagent sessions; second (operative) pass re-verified repairs, re-ran checks (70/70), audited all phase-dependent CSS and the evidence package",
-          "source_fingerprint": "46aac3fa26cf45abff00b4bb0aedba60d2c296e004f092a1a748a25bd77f7ae2"
+          "reviewer": "implementer; no independent review claimed",
+          "source_fingerprint": "a6a52ecd77e8a05057ad75919ece90e9022ca2e9e86e51b6d66692da0e377df7"
         },
         "visual": {
-          "status": "pass",
+          "status": "unverified",
           "evidence": [
-            "refinement/evidence/r02-browser/browser-record.md",
-            "refinement/evidence/r02-review.md"
+            "refinement/evidence/r02-revision-browser/layout-matrix.json",
+            "refinement/evidence/r02-revision-handoff.md"
           ],
-          "reviewer": "operative follow-up review: full phase-rule CSS audit, 5-viewport Δ=0 measurement table, 11 dimensionally correct artifacts; pixel inspection by the implementing session (no independent pixel reviewer available — stated limitation)",
-          "source_fingerprint": "46aac3fa26cf45abff00b4bb0aedba60d2c296e004f092a1a748a25bd77f7ae2"
+          "reviewer": "implementer inspected selected real-browser screenshots; complete visual acceptance remains pending",
+          "source_fingerprint": "a6a52ecd77e8a05057ad75919ece90e9022ca2e9e86e51b6d66692da0e377df7"
         },
         "device": {
           "status": "unverified",
@@ -206,13 +206,15 @@
         "refinement/evidence/r02-handoff.md",
         "refinement/evidence/r02-review.md",
         "refinement/evidence/r02-browser/browser-record.md",
-        "refinement/evidence/r02-checkpoint-final/summary.json"
+        "refinement/evidence/r02-checkpoint-final/summary.json",
+        "refinement/evidence/r02-revision-handoff.md"
       ],
       "notes": [
         "Implemented 7 September 2026: one phase-stable compact HUD (unified paddings, visibility-reserved prose hiding), visible 44px pause/browse buttons in the score block, rail-following feed ownership (38px desktop rail), settled-geometry pointer mapping, explicit layout-family tags with unchanged defaults, registry-derived catalogue description, corrected help copy. No gameplay rules changed.",
         "Two disclosed out-of-path touches, both reviewer-accepted: dist/gestures.js gained an optional rail=28 default param (R01 behavior preserved); tests/input-lifecycle.test.mjs gained the description-meta harness stub. R02 write_paths left literal; this handoff carries the exception.",
         "Per-game HUD height variation deliberately preserved (content-driven, session-stable); cross-game normalization is optional future work.",
-        "Device/player gates unverified (out of R02's required gates); carried as programme-level follow-ups. Real-browser evidence via the approved Chrome DevTools route at 5 emulated viewports; >1440px desktop, real-device touch, listening, and player passes remain open."
+        "Device/player gates unverified (out of R02's required gates); carried as programme-level follow-ups. Real-browser evidence via the approved Chrome DevTools route at 5 emulated viewports; >1440px desktop, real-device touch, listening, and player passes remain open.",
+        "2026-09-07: reopened after owner rejected presentation. Removed score-flanking pause/browse icons, replaced pause with top-HUD tap and browse with footer Games label; kept accessible controls, R01 input ownership and phase-stable geometry. Removed dot grid, kept game instruction visible, reduced landscape padding, fixed aborted countdown swipe. Await owner presentation review; previous accepted state is historical."
       ]
     },
     {

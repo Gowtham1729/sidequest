@@ -1,37 +1,27 @@
 # Programme progress
 
-Updated 6 September 2026 (after R01 implementation). Coordinator owns this file and backlog.json.
+Updated 7 September 2026 after the owner-requested R02 revision.
 
-## Established
+## Current state
 
-- Direction: refine the current arcade; Stack, 2048, and Pocket Golf establish the flagship standard. No collection-wide 3D migration.
-- Local source baseline at kit preparation: `6777c90a8e860f3882106620cf5cde141658b107` (not present in this checkout's history; kit note about the unpushed music-volume change applies). This session started from `f03bddc9403d115f3062e27e707bd94a5c7b93a7`.
-- Registry has 34 entries. Complete catalogue mapping is in `refinement/sidequest-refinement/references/catalogue.csv`.
-- **R01 is accepted** (commit `df98c09`, pushed to `origin/main`; final checkpoint fingerprint `78a3170e4f81230d06a1c9bb70d62799013b33a30348ec440be6151167f813b4`, 62/62 tests). Per-game input policy: press = stack/orbit/rhythm (tap judged once on press), drag = 19 pointer-owning games (no hold-to-pause), 12 defaults unchanged. No gameplay rules changed. Code gate passed independent fresh-session review (`refinement/evidence/r01-review.md`); **device gate passed** via a human test by the project owner on a Pixel 8a (Android 17, Chrome) covering all four acceptance scenarios (`refinement/evidence/r01-device.md`). No separate listening note; pilots still owe player gates. Full handoff: `refinement/evidence/r01-handoff.md`.
-- **Browser control is now available** through the user-approved Chrome DevTools integration (the earlier block was in a different harness). Real-browser verification of R01 was obtained this session (Chrome 152, macOS, emulated touch 390×844 and 320×568): `refinement/evidence/r01-browser/browser-record.md` + 5 screenshots. This route can serve R00's browser baseline and R02's visual gate; emulated viewports still do not satisfy the device gate.
-- Source audit, standard, three implementation briefs, QA protocol, prompts, role/ownership rules, and 19-task backlog prepared.
-- **R02 is accepted** (uncommitted working tree; final checkpoint fingerprint `46aac3fa26cf45abff00b4bb0aedba60d2c296e004f092a1a748a25bd77f7ae2`, 70/70 tests). One phase-stable compact HUD (Δ=0 within-session at 5 viewports), visible 44px ⏸/⊞ buttons, rail-following feed ownership, settled-geometry pointer mapping, explicit layout-family tags with unchanged defaults, registry-derived catalogue description. No gameplay rules changed. Code gate passed twice-in reviewed; visual gate passed on follow-up review (CSS audit + measurement table + 11 artifacts; pixel inspection by the implementing session, independence limitation stated). Device/player unverified, out of required gates. Handoff: `refinement/evidence/r02-handoff.md`.
+- R00 is unblocked, as confirmed by the owner. Chrome DevTools is available. The backlog is queued for its actual baseline/reference evidence; no R00 pass is fabricated.
+- R01 is accepted and committed at `df98c09`. Its Pixel 8a device evidence remains valid historical evidence; do not repeat the stale claim that its device gate is missing.
+- Original R02 is committed at `a89640a`. Its old handoff references an uncommitted tree and describes the previous presentation only.
+- R02 revision is implemented locally, uncommitted, following the owner's dissatisfaction. See `refinement/evidence/r02-revision-handoff.md`. Source fingerprint: `a6a52ecd77e8a05057ad75919ece90e9022ca2e9e86e51b6d66692da0e377df7`. Code checkpoint: 71/71 tests; 47 JavaScript files pass syntax checks.
+- The score now stands alone. Tap the top HUD to pause; tap Games in the footer to browse. Keyboard and assistive controls remain. Gameplay input, audio ownership, feed rail, settled pointer mapping and registry IDs are preserved.
+- All 34 games were measured across the five QA viewport sizes with zero within-game HUD height changes across phases. The final landscape-only adjustment was rechecked across all 34 games and recovered 53px of playfield height. Measurements are browser geometry evidence, not complete visual or touch QA.
 
-## Blocked / unverified
+## Evidence still needed
 
-- R01 device gate: no physical phone was available this session. The four acceptance scenarios are scripted and ready to run on hardware (see browser record); flip the gate when recorded.
-- R00 remains `blocked` from kit preparation, but its browser-dependence is now resolvable: the coordinator should re-run R00's baseline captures through the approved Chrome DevTools route. Note the original baseline revision is not in this checkout; capture against the current revision and label it as such, or isolate the intended revision where authorized.
-- Live deployment/source parity is still unknown. Do not label local audits as live-site audits.
-- Real-device, audio listening, performance, and human-play gates are not yet passed anywhere in the programme.
-- Known accepted gap (R02 must close): the 19 drag-policy games have no discoverable touch pause; also the help-dialog "Hold still" line in `index.html` is now inaccurate for those games.
-- Pre-existing finding for R02: input during the ~300 ms scene entry animation after a game switch maps through the animated transform (observed ~122 px shift at 320×568).
+- Owner review of the revised presentation. R02 is implemented, not accepted on the owner's behalf.
+- Complete independent visual review, real-device touch/safe-area checks and listening review of this revision. Selected screenshots were inspected in this session; browser artifact saving was rejected by the connector's workspace-root policy, so screenshot pixels are retained only in the conversation.
+- Source/deployed parity remains unknown; this revision has not been published.
+- R00 baseline/reference observations and the later pilot-specific work remain outstanding. 2048's rectangular cells and pilot composition issues are outside this shell revision and remain R04–R06 work.
 
 ## Exact next action
 
-R02 is accepted (code + visual gates pass; device/player unverified but out of its
-required gates). R02's write paths are released. Next: start R03 ("Add only the motion
-and finishing support needed by the pilots"; dependency gate on R02 `implemented` is
-met — R02 is accepted). Read `refinement/evidence/r02-handoff.md` first.
-
-In parallel when hardware is available: run R01's four acceptance scenarios on a real phone per the QA-protocol device format and update R01's device gate; it is the only missing input to R01 acceptance.
-
-Then R03 under its dependency gate, then the pilots. Do not mark R07 accepted or roll out speculative visuals across the catalogue while visual/device/player evidence is missing. If source-only pilot preparation is complete and browser access is again unavailable, leave a precise pending-evidence handoff rather than inventing approval.
+Review this revised shell with the owner on a phone, especially top-HUD pause discoverability and footer Games access. Then independently review R02 and proceed to R03 under the existing dependency gate. Do not propagate catalogue visuals or mark the flagship gate passed early.
 
 ## Ownership
 
-R01's writer has finished and released its write paths (`dist/app.js`, `dist/gestures.js`, `dist/registry.js`, `dist/games/expansion.js`, `tests/gestures.test.mjs`, `tests/input-lifecycle.test.mjs`); all R01 changes are uncommitted in the working tree — the next coordinator decides commit strategy before R02 edits shared files. No implementation worker is currently assigned. The next coordinator assigns owners and evidence directories before edits. Preserve unrelated work if the checkout changed after this note.
+Single writer completed the R02 revision and released the shared paths. No other agent was delegated work. Preserve the local changes; no commit, push or deployment was performed.

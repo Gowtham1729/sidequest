@@ -112,22 +112,35 @@ test('all 34 game IDs are preserved and unique',()=>{
 test('the catalogue description is derived from the authoritative registry',()=>{
   assert.match(metaDescription.content,/^34 games\./);
 });
-test('compact pause and browse controls track the game phase',async()=>{
+test('top HUD tap pauses drag games while gameplay and browse stay separate',async()=>{
+  const golf=createdElements.find(el=>Number(el.dataset.game)===games.findIndex(g=>g.id==='golf'));
+  golf.dispatch('click');
   await startPlaying();
-  const pause=byId('hud-pause'),browse=byId('hud-games');
-  assert.equal(pause.disabled,false,'pause should be enabled while playing');
-  assert.equal(pause.textContent,'⏸');
-  assert.equal(browse.disabled,false,'browse should always be available');
-  pause.dispatch('click');
-  assert.equal(phase(),'paused','the HUD pause button must pause without firing game input');
-  assert.equal(pause.textContent,'▶');
-  assert.equal(pause.attributes['aria-label'],'Resume game');
-  pause.dispatch('click');
-  assert.equal(phase(),'playing','the HUD pause button must resume from pause');
-  browse.dispatch('click');
-  assert.ok(documentStub.querySelector('dialog[open]'),'the HUD browse button must open the lineup');
+  const header=element();header.closest=s=>s==='#top-hud'||s==='[data-feed-zone]'?header:null;
+  arcade.dispatch('pointerdown',{pointerId:1,clientX:195,clientY:40,button:0,target:header});
+  arcade.dispatch('pointerup',{pointerId:1,clientX:195,clientY:40,button:0,target:header});
+  assert.equal(phase(),'paused','top HUD must pause a drag-policy game');
+  byId('accessible-play').dispatch('click');
+  assert.equal(phase(),'playing');
+  // A footer tap must not pause; it remains a feed zone for swipes.
+  const footer=element();footer.closest=s=>s==='[data-feed-zone]'?footer:null;
+  arcade.dispatch('pointerdown',{pointerId:1,clientX:195,clientY:780,button:0,target:footer});
+  arcade.dispatch('pointerup',{pointerId:1,clientX:195,clientY:780,button:0,target:footer});
+  assert.equal(phase(),'playing');
+  byId('hud-games').dispatch('click');
+  assert.ok(documentStub.querySelector('dialog[open]'));
   assert.equal(phase(),'paused','opening the lineup must pause the game');
   documentStub.querySelector('dialog[open]').close();
+});
+test('aborted countdown swipe returns to a startable ready screen',()=>{
+  byId('accessible-restart').dispatch('click');
+  assert.equal(phase(),'countdown');
+  arcade.dispatch('pointerdown',{pointerId:1,clientX:195,clientY:400,button:0,target:arena});
+  arcade.dispatch('pointermove',{pointerId:1,clientX:195,clientY:420,target:arena});
+  arcade.dispatch('pointerup',{pointerId:1,clientX:195,clientY:420,target:arena});
+  assert.equal(phase(),'ready','small feed drag must not strand a cancelled countdown');
+  tapAt();tapAt();
+  assert.equal(phase(),'playing');
 });
 test('feed ownership follows the rendered rail width',()=>{
   assert.equal(gestureOwner({phase:'playing',x:362,width:390}),'feed','default 28px rail keeps the edge');

@@ -1,0 +1,93 @@
+dist/app.js: PASS
+
+dist/audio/controls.js: PASS
+
+dist/audio/engine.js: PASS
+
+dist/audio/expansion-profiles.js: PASS
+
+dist/audio/profiles.js: PASS
+
+dist/audio/recorded.js: PASS
+
+dist/feed.js: PASS
+
+dist/games/art.js: PASS
+
+dist/games/blocks.js: PASS
+
+dist/games/breaker.js: PASS
+
+dist/games/bubbles.js: PASS
+
+dist/games/cabinet.js: PASS
+
+dist/games/chop.js: PASS
+
+dist/games/chroma.js: PASS
+
+dist/games/crossy.js: PASS
+
+dist/games/drop.js: PASS
+
+dist/games/echo.js: PASS
+
+dist/games/expansion.js: PASS
+
+dist/games/flap.js: PASS
+
+dist/games/four.js: PASS
+
+dist/games/golf.js: PASS
+
+dist/games/hoops.js: PASS
+
+dist/games/hop.js: PASS
+
+dist/games/invaders.js: PASS
+
+dist/games/lights.js: PASS
+
+dist/games/maze.js: PASS
+
+dist/games/memory.js: PASS
+
+dist/games/merge.js: PASS
+
+dist/games/meteor.js: PASS
+
+dist/games/mines.js: PASS
+
+dist/games/orbit.js: PASS
+
+dist/games/pin.js: PASS
+
+dist/games/pong.js: PASS
+
+dist/games/pop.js: PASS
+
+dist/games/rally.js: PASS
+
+dist/games/reversi.js: PASS
+
+dist/games/rhythm.js: PASS
+
+dist/games/shared.js: PASS
+
+dist/games/slice.js: PASS
+
+dist/games/slide.js: PASS
+
+dist/games/snake.js: PASS
+
+dist/games/sprint.js: PASS
+
+dist/games/stack.js: PASS
+
+dist/games/target.js: PASS
+
+dist/games/zigzag.js: PASS
+
+dist/gestures.js: PASS
+
+dist/registry.js: PASS
