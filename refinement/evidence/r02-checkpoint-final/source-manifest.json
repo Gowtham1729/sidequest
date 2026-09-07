@@ -1,0 +1,452 @@
+[
+  {
+    "path": ".openai/hosting.json",
+    "bytes": 106,
+    "sha256": "7eb87a64a96828c3042b64882828bf53f3ba81ee6b5c42e2ac06f9ab29b303e2"
+  },
+  {
+    "path": "dist/app.js",
+    "bytes": 18185,
+    "sha256": "4105be4ea283fa371568bae819426f6b126a08cced0a8208e242f6df2a501f3b"
+  },
+  {
+    "path": "dist/audio/assets/2048-loop.mp3",
+    "bytes": 321035,
+    "sha256": "b9cd3e167bec916a839461286755b655b81c4aa33173100353375ff3aa0a9d28"
+  },
+  {
+    "path": "dist/audio/assets/blocks-loop.mp3",
+    "bytes": 530851,
+    "sha256": "011e08daa1eb2e0d3a7b29e9aa9cbde087365e6d78d838df25946c69312d0a94"
+  },
+  {
+    "path": "dist/audio/assets/breaker-loop.mp3",
+    "bytes": 496578,
+    "sha256": "7268e7957b0eeaaf6bc7a4abe0a711e8c1b0405119d2902bde889a7ce31d3246"
+  },
+  {
+    "path": "dist/audio/assets/bubbles-loop.mp3",
+    "bytes": 549659,
+    "sha256": "621b0f0a14feefb93e786937fa6485007df79eb7fa95c3899293958d3b06778c"
+  },
+  {
+    "path": "dist/audio/assets/chop-loop.mp3",
+    "bytes": 699706,
+    "sha256": "ad220d639619d2612db27ea98f1ce39ce6039e74e3b25226c30ae5e486743153"
+  },
+  {
+    "path": "dist/audio/assets/chroma-loop.mp3",
+    "bytes": 512878,
+    "sha256": "b471b4b5c485b8709d8bd7b81c3e9b914b7611c111e6a064611c910b916fd349"
+  },
+  {
+    "path": "dist/audio/assets/crossy-loop.mp3",
+    "bytes": 530851,
+    "sha256": "e4fd49cfe39a66c79cc57ddea57e27c76f3292c656f25df438c48f712ed4ff78"
+  },
+  {
+    "path": "dist/audio/assets/drop-loop.mp3",
+    "bytes": 540046,
+    "sha256": "d4387f014f25b7ef953cc7668d461e968c9149566fca48f01435e06eed33b85a"
+  },
+  {
+    "path": "dist/audio/assets/flap-loop.mp3",
+    "bytes": 530851,
+    "sha256": "34dc1105abcff20a13d5176ce7c35e7acc70a88813cfc3293d5e7c611f599f09"
+  },
+  {
+    "path": "dist/audio/assets/four-loop.mp3",
+    "bytes": 308078,
+    "sha256": "02e68d5c650986ec3df3615ed604cef60fda25b11cde1808e7e481cd8177404a"
+  },
+  {
+    "path": "dist/audio/assets/golf-loop.mp3",
+    "bytes": 375788,
+    "sha256": "f75ad89f85c3e9d43fcb22993cfb2009b520760e0d60b8e4e1614c3cc22ce43d"
+  },
+  {
+    "path": "dist/audio/assets/hoops-loop.mp3",
+    "bytes": 285509,
+    "sha256": "bce2dd4338de948c31bf47eadb263658bf976bf8c6502ee019491923e95c9ad3"
+  },
+  {
+    "path": "dist/audio/assets/hop-loop.mp3",
+    "bytes": 504519,
+    "sha256": "d9c4ed09e10418049108e84d15cf5ed6bdd46985751c26136409ad4d5e010de8"
+  },
+  {
+    "path": "dist/audio/assets/invaders-loop.mp3",
+    "bytes": 549659,
+    "sha256": "620b453d045a166fb7573fda14b107c41f4e63ab60ca48de5438186ebdb38b2a"
+  },
+  {
+    "path": "dist/audio/assets/lights-loop.mp3",
+    "bytes": 327723,
+    "sha256": "8b2aeef02eb17ebc9dc26629ae973f73540d8a4458ecdf8b76fa299efa233fcd"
+  },
+  {
+    "path": "dist/audio/assets/maze-loop.mp3",
+    "bytes": 321035,
+    "sha256": "18dda771b78835a5044d2ecae8c8e35e94d82006aaeca25cc77a613f5fd63279"
+  },
+  {
+    "path": "dist/audio/assets/memory-loop.mp3",
+    "bytes": 296376,
+    "sha256": "3d0268d9eb98f348d6a6ec75f8ef88144a0397e23e382e81fc8c04c6fa281905"
+  },
+  {
+    "path": "dist/audio/assets/meteor-loop.mp3",
+    "bytes": 280493,
+    "sha256": "6f02d189f1a3f4ff963f183e882d4ad75a6c851ad60834afe3e29a8163070a6e"
+  },
+  {
+    "path": "dist/audio/assets/mines-loop.mp3",
+    "bytes": 358234,
+    "sha256": "887456d50cee37e350f6954c9ca3d6bdc9d9d4f9b91a4fd26f9c5fea2707ccc4"
+  },
+  {
+    "path": "dist/audio/assets/orbit-loop.mp3",
+    "bytes": 296376,
+    "sha256": "e7d56130cbb302a351cfaa606a01603093ac0a101055619a6f68ea0760da0f42"
+  },
+  {
+    "path": "dist/audio/assets/pin-loop.mp3",
+    "bytes": 285509,
+    "sha256": "46a0d059922e85c9d4c5eeedf1cf9b5b0ac23b86462b6ed495da4c0690d77a42"
+  },
+  {
+    "path": "dist/audio/assets/pong-loop.mp3",
+    "bytes": 521656,
+    "sha256": "ec38900b00155f6924d8e08b7329676b327c224d9705ab81d72181ff7a84db93"
+  },
+  {
+    "path": "dist/audio/assets/pop-loop.mp3",
+    "bytes": 308078,
+    "sha256": "b868d22bdcdd039ab2266e130f70aafd867ced359227bf1e2d69c8c1e7c41cd2"
+  },
+  {
+    "path": "dist/audio/assets/rally-loop.mp3",
+    "bytes": 512878,
+    "sha256": "a321fd7a71126c538d44a46d0c2623f2e7db822125db7b6b658c0de1f3de9c43"
+  },
+  {
+    "path": "dist/audio/assets/reversi-loop.mp3",
+    "bytes": 342351,
+    "sha256": "6cd0869a61b81b0262a7d87b0c19dd9f5c94b129f2bdc4802af774cdc6d98dbf"
+  },
+  {
+    "path": "dist/audio/assets/slice-loop.mp3",
+    "bytes": 252908,
+    "sha256": "03eec404e3fb0503315d137ca54f4e1c02a4970379fa19876e4ee0d2dacc75f2"
+  },
+  {
+    "path": "dist/audio/assets/slide-loop.mp3",
+    "bytes": 350292,
+    "sha256": "b0119835873926134be91cbf5a37f7abc0dce1fdae0c70ecc0feb29c997df07a"
+  },
+  {
+    "path": "dist/audio/assets/snake-loop.mp3",
+    "bytes": 244967,
+    "sha256": "efc41707d97d214337eb30dcb29ea0aa193a0fe24b531a0cfc70e54c5dd4a684"
+  },
+  {
+    "path": "dist/audio/assets/sprint-loop.mp3",
+    "bytes": 481114,
+    "sha256": "070870a21cc7998b08f3f8d8b0768dbf7c574b26b5ff3f531f6404690b27e1a8"
+  },
+  {
+    "path": "dist/audio/assets/stack-loop.mp3",
+    "bytes": 413195,
+    "sha256": "0a6cb08dc1a27d4a4630b08781b11af9e3a33def2e7b4d34d232becdd311cb13"
+  },
+  {
+    "path": "dist/audio/assets/target-loop.mp3",
+    "bytes": 334828,
+    "sha256": "caef50042dae4e112991d9648650493443173a24385957d87c97451191806903"
+  },
+  {
+    "path": "dist/audio/assets/zigzag-loop.mp3",
+    "bytes": 481114,
+    "sha256": "727a4f49357f558448cfe1db93bdef0c559e02f97c92c14d94d55da0e4e02c2d"
+  },
+  {
+    "path": "dist/audio/controls.js",
+    "bytes": 1794,
+    "sha256": "83ce6fc44482fbcfbc502e47930bcbd0d8dd560c3bbe77e67c084af3ed06bfc7"
+  },
+  {
+    "path": "dist/audio/engine.js",
+    "bytes": 10399,
+    "sha256": "5d156168d497c79b19d6cba8d3fdc076a1c4ab7bdc7b0bc6b8bc02f7a750a70f"
+  },
+  {
+    "path": "dist/audio/expansion-profiles.js",
+    "bytes": 3723,
+    "sha256": "9bc8542799d6648487b0a945856af2927278ec10ffa8afb85702b081bf65496c"
+  },
+  {
+    "path": "dist/audio/profiles.js",
+    "bytes": 31657,
+    "sha256": "35874a43afabf42fbcca3b52337ece1935095b261725c609d1319f56442ca703"
+  },
+  {
+    "path": "dist/audio/recorded.js",
+    "bytes": 2458,
+    "sha256": "4b844de17fb443195db17b83c2ae9d2a7863e66effeb0874bcefaae7811213db"
+  },
+  {
+    "path": "dist/favicon.svg",
+    "bytes": 226,
+    "sha256": "afb2f3f830ec7e1ee3890b44ef33f54d8f723401665e65ce46f1d699e14120b5"
+  },
+  {
+    "path": "dist/feed.js",
+    "bytes": 904,
+    "sha256": "52da9946e01a22715c597038d30257554752454183831bc41a222aa769175e48"
+  },
+  {
+    "path": "dist/games/art.js",
+    "bytes": 3567,
+    "sha256": "152a33fcfcb18e67f26e990d099613fb9a9c48de50d70b1694de3cad56d3ba7f"
+  },
+  {
+    "path": "dist/games/blocks.js",
+    "bytes": 3817,
+    "sha256": "c830e7aae58f013d47641910ad2dff26b602179abe89d87b35fa913cd6cfc624"
+  },
+  {
+    "path": "dist/games/breaker.js",
+    "bytes": 6472,
+    "sha256": "482c14768e35a8fdef07919649c720af3a05f43bd5aa617508db1d8e5d22e3d6"
+  },
+  {
+    "path": "dist/games/bubbles.js",
+    "bytes": 4975,
+    "sha256": "913bbc963db6a414f9f57f9a0acf2fb8c321fa1c24e111282bac21a79acecc26"
+  },
+  {
+    "path": "dist/games/cabinet.js",
+    "bytes": 3996,
+    "sha256": "ca943573c23a0ea0f5fe5642a9092bef6c3bd950f5c9f2222e0fa9db4f600335"
+  },
+  {
+    "path": "dist/games/chop.js",
+    "bytes": 6764,
+    "sha256": "1614a235494984354579d8e437d6b088ee0b6c8cfd142b331628759907ec5a11"
+  },
+  {
+    "path": "dist/games/chroma.js",
+    "bytes": 3310,
+    "sha256": "c586a4ca59af3d45c7fce6742d390e55230880372f6f255209affac8a6c50fb9"
+  },
+  {
+    "path": "dist/games/crossy.js",
+    "bytes": 5199,
+    "sha256": "7a511fff087fbd578993777785638691f8a01e5ff3bc13eb433fb2b7e7950b7e"
+  },
+  {
+    "path": "dist/games/drop.js",
+    "bytes": 10970,
+    "sha256": "b3b6b87e1dee797cb627f59ec97b57e3541ca8ecdaa2dfd27a684340bb0eea17"
+  },
+  {
+    "path": "dist/games/echo.js",
+    "bytes": 1893,
+    "sha256": "278bd29906f91743206f7b1abd98ee0550483008766e973e109699c368e33a86"
+  },
+  {
+    "path": "dist/games/expansion.js",
+    "bytes": 10430,
+    "sha256": "7ecfb7e8ed1b7df60fdb7dfb626cf44444d141e4c03cf53f2f2194169424f529"
+  },
+  {
+    "path": "dist/games/flap.js",
+    "bytes": 5878,
+    "sha256": "91f33d606f4c8a23eac5bb95168c6c04592959ee60111ce5c69a5d87881f928b"
+  },
+  {
+    "path": "dist/games/four.js",
+    "bytes": 3413,
+    "sha256": "ea189b8cf413f4868d2b4c0eefaa8cef9b0867d8bbc8e800b8a1b1db531d8e3f"
+  },
+  {
+    "path": "dist/games/golf.js",
+    "bytes": 3928,
+    "sha256": "dbbed8b8d193068b5ad5c2e1098b68585a3d14e04b41823cbb5cad2114d1822d"
+  },
+  {
+    "path": "dist/games/hoops.js",
+    "bytes": 3106,
+    "sha256": "55cfdfa72d88dac74c074a351516a52fae407b7932c39d49832cb271d00b71c7"
+  },
+  {
+    "path": "dist/games/hop.js",
+    "bytes": 11651,
+    "sha256": "3807246c169ae74b615a0e9bb42665aa972daea99f0b5cde9733b3450679eb31"
+  },
+  {
+    "path": "dist/games/invaders.js",
+    "bytes": 14024,
+    "sha256": "c2bf77d29b4742b8b6ea853760689fe5c7fcc95dcbe6cbc02b101a1a2477f952"
+  },
+  {
+    "path": "dist/games/lights.js",
+    "bytes": 1819,
+    "sha256": "56ff02ae45ab2c0a69905d3f869aecd39847147d99b6efaa1f2b9394d73f6c83"
+  },
+  {
+    "path": "dist/games/maze.js",
+    "bytes": 3644,
+    "sha256": "f5ce7a425fdee7742d9b613a10915ca2fdbb4dc38265854be4aa41109311c4ac"
+  },
+  {
+    "path": "dist/games/memory.js",
+    "bytes": 2061,
+    "sha256": "2be3af005c46b297b535c0729d6f9e41849ca6ac5260106e0a6716b699b79de1"
+  },
+  {
+    "path": "dist/games/merge.js",
+    "bytes": 3086,
+    "sha256": "c10e848fb6ee7d5e5b2ebaa07b13f3fd07f6ba6bb9d09c0fb66e24934e7594bb"
+  },
+  {
+    "path": "dist/games/meteor.js",
+    "bytes": 7086,
+    "sha256": "4c59beb69df7011e7ba781b9a57e782bd2aa4de0c09ba8b9681e772b8b92fd53"
+  },
+  {
+    "path": "dist/games/mines.js",
+    "bytes": 2818,
+    "sha256": "e892d1f3062d9e480ae561f6ba9b3204013897e27f20a160fbc6c02c7e30d384"
+  },
+  {
+    "path": "dist/games/orbit.js",
+    "bytes": 2108,
+    "sha256": "4ff56dbb5429b9c0c27799522d226ed733f4821b41b0015e778c57de8a5bcf44"
+  },
+  {
+    "path": "dist/games/pin.js",
+    "bytes": 6975,
+    "sha256": "d980ae540649bcfc80fae07805be83d69455e7700191ab8ff6d00439aae1e698"
+  },
+  {
+    "path": "dist/games/pong.js",
+    "bytes": 6129,
+    "sha256": "c05fb50a7c5c1a16825476f4839f0f55d3b1db5b3b8d323b8ebc2e1977a100bc"
+  },
+  {
+    "path": "dist/games/pop.js",
+    "bytes": 5383,
+    "sha256": "560bef77b6e394a7a2dfba96f7fb49fcfbfb247031284de513deb9a85fa228e9"
+  },
+  {
+    "path": "dist/games/rally.js",
+    "bytes": 2822,
+    "sha256": "43596d87b46c736bbe9922a8f7d539406488f791e5a613d1bd521e8fa35d7abc"
+  },
+  {
+    "path": "dist/games/reversi.js",
+    "bytes": 3120,
+    "sha256": "084488957eb54e3a4b2000eb72162371aad16d9a9ebae2e40af06f2774d06f42"
+  },
+  {
+    "path": "dist/games/rhythm.js",
+    "bytes": 2681,
+    "sha256": "b9da35a2f6b3ae5fca1241c49bfc33d0231c10a46ca9080318498115ef940799"
+  },
+  {
+    "path": "dist/games/shared.js",
+    "bytes": 4837,
+    "sha256": "6ceb68a3217eb737b3aaa206cd4b269557393bc8c02a3796d0654d79b81ad385"
+  },
+  {
+    "path": "dist/games/slice.js",
+    "bytes": 3267,
+    "sha256": "1646f5e88f83166319b2b748f01708946a70defe752c69a57ecbf8a15b49799a"
+  },
+  {
+    "path": "dist/games/slide.js",
+    "bytes": 1844,
+    "sha256": "c44ea5559f7ba850be131c88c778d651d2340a9e65c2827ba3709e54b877fbf4"
+  },
+  {
+    "path": "dist/games/snake.js",
+    "bytes": 3068,
+    "sha256": "80de490b3330802375f9145296f86aa9c86b3ea5629a3e69f10e241d9a006eb9"
+  },
+  {
+    "path": "dist/games/sprint.js",
+    "bytes": 2972,
+    "sha256": "67b982b0ca53c3d070915c94c2506bd3a0fd92f13e9a6d8c303380cd45e12cbf"
+  },
+  {
+    "path": "dist/games/stack.js",
+    "bytes": 2746,
+    "sha256": "c6e10192d0303c6b0d01cc1427de7203c98b434681b90e611ab8098a71a1dbf2"
+  },
+  {
+    "path": "dist/games/target.js",
+    "bytes": 12032,
+    "sha256": "a4d3aa8cd68464b2de28744ac1f48a378cc9bd32b2a8fcd4011d8290db96cc80"
+  },
+  {
+    "path": "dist/games/zigzag.js",
+    "bytes": 7664,
+    "sha256": "1e8599d3411f7c9406bc3f3a197d2bd8853008e97da2dd9ba3eedb4206d00ba1"
+  },
+  {
+    "path": "dist/gestures.js",
+    "bytes": 1536,
+    "sha256": "6e6656c9c9fc565110ccee816a6624db1934d65418f5e1155adea37694da0b9a"
+  },
+  {
+    "path": "dist/index.html",
+    "bytes": 8197,
+    "sha256": "61b810ec9edffc5f6d9486dc31a87fcc6e4ad74d404692d3edab83e08ae38633"
+  },
+  {
+    "path": "dist/registry.js",
+    "bytes": 11792,
+    "sha256": "3e8c2218cb4f9630caf442cfe725dedae77335760e6440994710ac7d80f6e94c"
+  },
+  {
+    "path": "dist/style.css",
+    "bytes": 15706,
+    "sha256": "f7af8746739e341d3a4859aff99a2dce5d3a3e7cd1983e8ef383b4a45e421f63"
+  },
+  {
+    "path": "tests/audio.test.mjs",
+    "bytes": 13255,
+    "sha256": "3861eac3fa290b27a99c962df2636cc8ad93fd16d6b8e11c4753fd5ff968e867"
+  },
+  {
+    "path": "tests/expansion.test.mjs",
+    "bytes": 13500,
+    "sha256": "fad85d6b7da1a106421dcd267c65c9a50301ef8929374b638a657ca467c76160"
+  },
+  {
+    "path": "tests/game-harness.mjs",
+    "bytes": 2099,
+    "sha256": "8501ea4c6ed29592e9907faa21603ad7e36611fd27fa54f5b1f24577242fc146"
+  },
+  {
+    "path": "tests/games.test.mjs",
+    "bytes": 4067,
+    "sha256": "b4ed57bca87365381986721ae16473c5ccaf168512180d127de8175a32fb0445"
+  },
+  {
+    "path": "tests/gestures.test.mjs",
+    "bytes": 2394,
+    "sha256": "cdcbc48f76bcab8e7fa021a8fb93d698dd029de7ac1a5919772d278eb4d9e9d4"
+  },
+  {
+    "path": "tests/input-lifecycle.test.mjs",
+    "bytes": 15869,
+    "sha256": "f579e8153fe8d22c24b92844a4dfe778c631980fc4c6cfdad7e9de88f8476345"
+  },
+  {
+    "path": "tests/layout.test.mjs",
+    "bytes": 11064,
+    "sha256": "72f09b5f606233a3cc926cd7755a085cf5e39c052f7ca5f5223d0fdbf5b03407"
+  }
+]

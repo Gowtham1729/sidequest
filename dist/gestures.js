@@ -1,7 +1,9 @@
 // Feed ownership is decided before sending gameplay input. It never depends on
 // how far a gameplay swipe travels, so a long Snake/2048 swipe cannot skip games.
-export function gestureOwner({phase,x,width,zone=false,touches=1}){
-  return phase!=='playing'||zone||x>=width-28||touches>1?'feed':'game';
+// The rail width defaults to the 28px mobile rail; the shell passes the measured
+// rail element width so wider desktop rails own their full visual width.
+export function gestureOwner({phase,x,width,zone=false,touches=1,rail=28}){
+  return phase!=='playing'||zone||x>=width-rail||touches>1?'feed':'game';
 }
 export function navigationIntent(dx,dy,{allowHorizontal=true,threshold=62}={}){
   if(Math.abs(dy)>=threshold&&Math.abs(dy)>Math.abs(dx)*1.25)return dy<0?'next':'prev';

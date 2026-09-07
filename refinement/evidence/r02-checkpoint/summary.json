@@ -1,0 +1,295 @@
+{
+  "created_utc": "2026-09-06T18:56:33.152644+00:00",
+  "scope": "Offline source, syntax, inventory and automated tests only",
+  "browser": {
+    "status": "unverified",
+    "note": "This offline tool performs no browser checks."
+  },
+  "visual": {
+    "status": "unverified"
+  },
+  "device": {
+    "status": "unverified"
+  },
+  "player": {
+    "status": "unverified"
+  },
+  "git": {
+    "head": "df98c09e5a42551fddf7a4a0230336c26ed197bd",
+    "status": "M dist/app.js\n M dist/games/art.js\n M dist/games/cabinet.js\n M dist/games/shared.js\n M dist/gestures.js\n M dist/index.html\n M dist/style.css\n M refinement/state/backlog.json\n M refinement/state/progress.md\n M tests/input-lifecycle.test.mjs\n?? refinement/evidence/r01-device.md\n?? refinement/evidence/r02-browser/\n?? tests/layout.test.mjs"
+  },
+  "node_version": "v22.23.1",
+  "hosting": {
+    "project_id": "appgprj_6a9c4f1e72bc8191af5d46304c8d4e15",
+    "static": {
+      "directory": "dist"
+    }
+  },
+  "source_fingerprint_sha256": "b4bb66c86541f69ce7cb9d7c6283043f9d6fbf2efcc2d2dd7a0fbc5f7e685687",
+  "payload_on_disk": {
+    "dist_bytes": 13443312,
+    "audio_asset_bytes": 13145135,
+    "note": "File bytes, not compressed transfer size or first-play network cost"
+  },
+  "syntax": {
+    "status": "pass",
+    "files_checked": 47,
+    "failed_files": []
+  },
+  "inventory": {
+    "status": "pass",
+    "registered_games": 34,
+    "games": [
+      {
+        "id": "stack",
+        "title": "Stack",
+        "category": "Timing",
+        "scoreLabel": "HEIGHT",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "snake",
+        "title": "Snake",
+        "category": "Classic",
+        "scoreLabel": "SNACKS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "2048",
+        "title": "2048",
+        "category": "Puzzle",
+        "scoreLabel": "SCORE",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "rally",
+        "title": "Rally",
+        "category": "Reflex",
+        "scoreLabel": "RETURNS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "memory",
+        "title": "Memory Match",
+        "category": "Memory",
+        "scoreLabel": "MOVES",
+        "lowerIsBetter": true
+      },
+      {
+        "id": "pong",
+        "title": "Pong",
+        "category": "Arcade",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "breaker",
+        "title": "Breaker",
+        "category": "Classic",
+        "scoreLabel": "SCORE",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "flap",
+        "title": "Flap",
+        "category": "Gravity",
+        "scoreLabel": "PIPES",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "pin",
+        "title": "Pin",
+        "category": "Precision",
+        "scoreLabel": "PINS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "zigzag",
+        "title": "ZigZag",
+        "category": "Rhythm",
+        "scoreLabel": "DISTANCE",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "chop",
+        "title": "Chop",
+        "category": "Reflex",
+        "scoreLabel": "CHOPS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "meteor",
+        "title": "Meteor",
+        "category": "Avoidance",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "hop",
+        "title": "Hop",
+        "category": "Climber",
+        "scoreLabel": "HEIGHT",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "chroma",
+        "title": "Chroma",
+        "category": "Color Match",
+        "scoreLabel": "RINGS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "drop",
+        "title": "Drop",
+        "category": "Survival",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "invaders",
+        "title": "Invaders",
+        "category": "Shooter",
+        "scoreLabel": "SCORE",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "crossy",
+        "title": "Crossy",
+        "category": "Timing",
+        "scoreLabel": "LANES",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "target",
+        "title": "Target",
+        "category": "Precision",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "pop",
+        "title": "Pop",
+        "category": "Puzzle",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "blocks",
+        "title": "Pocket Blocks",
+        "category": "Classic",
+        "scoreLabel": "SCORE",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "mines",
+        "title": "Minesweeper",
+        "category": "Puzzle",
+        "scoreLabel": "SAFE",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "slide",
+        "title": "Slide Nine",
+        "category": "Puzzle",
+        "scoreLabel": "MOVES",
+        "lowerIsBetter": true
+      },
+      {
+        "id": "lights",
+        "title": "Lights Out",
+        "category": "Puzzle",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "echo",
+        "title": "Echo",
+        "category": "Memory",
+        "scoreLabel": "ROUNDS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "four",
+        "title": "Four in a Row",
+        "category": "Strategy",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "reversi",
+        "title": "Reversi",
+        "category": "Strategy",
+        "scoreLabel": "DISCS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "bubbles",
+        "title": "Bubble Sky",
+        "category": "Classic",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "golf",
+        "title": "Pocket Golf",
+        "category": "Precision",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "hoops",
+        "title": "Swish",
+        "category": "Sport",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "sprint",
+        "title": "Lane Rush",
+        "category": "Racer",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "slice",
+        "title": "Prism Slice",
+        "category": "Reflex",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "orbit",
+        "title": "Orbit",
+        "category": "Timing",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "maze",
+        "title": "Maze Escape",
+        "category": "Explorer",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      },
+      {
+        "id": "rhythm",
+        "title": "Beat Drop",
+        "category": "Rhythm",
+        "scoreLabel": "POINTS",
+        "lowerIsBetter": false
+      }
+    ]
+  },
+  "tests": {
+    "status": "pass",
+    "exit_code": 0,
+    "tests": 69,
+    "pass": 69,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "code_checkpoint": "pass",
+  "release_ready": false,
+  "release_note": "This tool cannot certify visual quality, real devices, player experience, or publication."
+}

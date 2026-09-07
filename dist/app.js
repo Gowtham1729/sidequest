@@ -27,9 +27,13 @@ function setState(){
  $('overlay-subtitle').textContent=ready?meta.intro:phase==='paused'?'Your game is right here.':result?.subtitle||'';
  $('tap-label').textContent=ready?'Tap anywhere to play':phase==='paused'?'Tap to resume':'Tap anywhere to play again';
  $('browse-hint').textContent=phase==='paused'?'Double-tap to restart · Swipe up for next':'Swipe up for the next game';
- arena.setAttribute('aria-label',`${meta.title}. ${meta.instructions} ${phase==='playing'?(holdPauses(meta.input)?'Hold to pause. Swipe at the right edge to change games.':'Swipe at the right edge or with two fingers to change games.'):'Press Space to play. Swipe up for next game.'}`);
+ arena.setAttribute('aria-label',`${meta.title}. ${meta.instructions} ${phase==='playing'?(holdPauses(meta.input)?'Pause with the pause button, P, or hold. Swipe at the right edge to change games.':'Pause with the pause button or P. Swipe at the right edge or with two fingers to change games.'):'Press Space to play. Swipe up for next game.'}`);
  $('accessible-previous').disabled=feed.cursor===0;
  $('accessible-pause').disabled=phase!=='playing';
+ const paused_=phase==='paused';
+ $('hud-pause').disabled=phase!=='playing'&&!paused_;
+ $('hud-pause').textContent=paused_?'▶':'⏸';
+ $('hud-pause').setAttribute('aria-label',paused_?'Resume game':'Pause game');
 }
 function finish(message,subtitle,finalScore,cue='finish'){if(phase!=='playing')return;if(current().lowerIsBetter&&finalScore)bests.set(current().id,Math.min(finalScore,bests.get(current().id)||Infinity));result={title:message,subtitle};phase='finished';clearHold();showScore(score);setState();audio.play(cue);announce(`${message} ${subtitle}`);}
 function cancelCountdown(){if(countdownTimer){clearTimeout(countdownTimer);countdownTimer=null;}}
@@ -93,12 +97,12 @@ function updateDrag(g){
  $('nav-arrow').textContent=g.dy<0?'↑':'↓';$('nav-title').textContent=next?.title||'You’re at the beginning';$('nav-detail').textContent=next?(intent?'Release to play':'Keep swiping'):'';
 }
 arcade.addEventListener('pointerdown',event=>{
- if(modalOpen()||event.target.closest('.accessible-controls, [data-audio-control]')||event.button>0)return;
+ if(modalOpen()||event.target.closest('.accessible-controls, [data-audio-control], [data-hud-control]')||event.button>0)return;
  void audio.unlock();event.preventDefault();try{arcade.setPointerCapture(event.pointerId);}catch{}
  pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
  if(pointers.size>1){clearHold();game.cancel?.();const c=centroid([...pointers.values()]);if(gesture){Object.assign(gesture,{mode:'feed',multi:true,startX:c.x,startY:c.y,dx:0,dy:0,moved:true});}return;}
  clearTimeout(tapTimer);
- const mode=gestureOwner({phase,x:event.clientX,width:arcade.clientWidth,zone:!!event.target.closest('[data-feed-zone]')});
+ const mode=gestureOwner({phase,x:event.clientX,width:arcade.clientWidth,zone:!!event.target.closest('[data-feed-zone]'),rail:$('edge-rail').offsetWidth||undefined});
  gesture={mode,startX:event.clientX,startY:event.clientY,dx:0,dy:0,time:performance.now(),phase,target:event.target,held:false,multi:false,moved:false};
  if(mode==='game'){
    game.pointerDown?.(point(event,arena));
@@ -139,6 +143,10 @@ arcade.addEventListener('wheel',event=>{
  if(Math.abs(wheelSum)>65){navigate(wheelSum>0?'next':'prev');wheelSum=0;}
 },{passive:false});
 for(const [id,action] of Object.entries({'accessible-play':start,'accessible-pause':pause,'accessible-restart':restart,'accessible-next':()=>navigate('next'),'accessible-previous':()=>navigate('prev'),'accessible-lineup':()=>openSheet('lineup-dialog'),'accessible-help':()=>openSheet('help-dialog')}))$(id).addEventListener('click',action);
+$('hud-pause').addEventListener('click',()=>{if(phase==='paused')resume();else pause();});
+$('hud-games').addEventListener('click',()=>openSheet('lineup-dialog'));
+// The catalogue count is derived from the authoritative registry, not hardcoded prose.
+document.querySelector('meta[name="description"]').content=`${games.length} games. An endless full-screen arcade. Tap to play, swipe to discover your next Sidequest.`;
 for(const [index,meta] of games.entries()){
  const button=document.createElement('button');button.className='game-link';button.dataset.game=index;const glyph=document.createElement('span');glyph.className='game-glyph';glyph.textContent=meta.glyph;glyph.style.setProperty('--tile-bg',meta.tint);glyph.style.setProperty('--tile-ink',meta.ink);glyph.setAttribute('aria-hidden','true');const copy=document.createElement('span');copy.className='game-link-copy';const label=document.createElement('strong');label.textContent=meta.title;const hint=document.createElement('span');hint.textContent=meta.category;copy.append(label,hint);button.append(glyph,copy);button.addEventListener('click',()=>{$('lineup-dialog').close();if(index!==feed.current){feed.select(index);renderGame();}else if(phase==='paused')resume();});$('game-list').append(button);
 }
@@ -153,12 +161,12 @@ for(const dialog of document.querySelectorAll('dialog')){
 }
 document.addEventListener('keydown',event=>{
  if(modalOpen()||event.ctrlKey||event.metaKey||event.altKey)return;const key=event.key.length===1?event.key.toLowerCase():event.key;
- if(event.target.closest('input,select,textarea,[contenteditable=true]'))return;
+ if(event.target.closest?.('input,select,textarea,[contenteditable=true]'))return;
  void audio.unlock();
  const commands={m:()=>audio.update({muted:!audio.preferences.muted}),n:()=>navigate('next'),b:()=>navigate('prev'),p:()=>phase==='paused'?resume():pause(),Escape:()=>phase==='paused'?resume():pause(),r:restart,g:()=>openSheet('lineup-dialog'),'?':()=>openSheet('help-dialog')};
  if(commands[key]){if(!event.repeat){event.preventDefault();cancelGesture();commands[key]();}return;}
  if(directions[key]&&phase==='playing'&&(game.keyDown||game.direction)){event.preventDefault();if(game.keyDown)game.keyDown(directions[key]);else game.direction(directions[key]);return;}
- if(event.target.closest('button'))return;
+ if(event.target.closest?.('button'))return;
  if(key===' '){event.preventDefault();if(event.repeat)return;if(phase==='playing')game.action?.();else if(phase==='countdown')skipCountdown();else start();}
 });
 document.addEventListener('keyup',event=>{const d=directions[event.key.length===1?event.key.toLowerCase():event.key];if(d)game?.keyUp?.(d);});

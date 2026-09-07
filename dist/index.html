@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#101c16" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Nineteen games. An endless full-screen arcade. Tap to play, swipe to discover your next Sidequest." />
+  <meta name="description" content="34 games. An endless full-screen arcade. Tap to play, swipe to discover your next Sidequest." />
   <title>Sidequest — swipe into a game</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./style.css?v=6" />
@@ -17,7 +17,7 @@
       <div id="arena" class="arena" tabindex="0" role="group" aria-label="Tap anywhere or press Space to start the game"><div id="game-mount"></div></div>
       <header id="top-hud" class="top-hud" data-feed-zone>
         <div class="brand-group"><div class="brand">sidequest<span>.</span></div><button id="audio-open" class="audio-chip" data-audio-control aria-label="Sound settings" aria-haspopup="dialog"><span aria-hidden="true">♪</span><span id="audio-chip-label">Sound on</span></button></div>
-        <div class="score-block"><span id="score-label">HEIGHT</span><strong id="score">00</strong></div>
+        <div class="score-block"><button id="hud-pause" class="hud-btn" data-hud-control aria-label="Pause game" disabled>⏸</button><div class="score-text"><span id="score-label">HEIGHT</span><strong id="score">00</strong></div><button id="hud-games" class="hud-btn" data-hud-control aria-label="Choose a game" aria-haspopup="dialog">⊞</button></div>
         <div class="best-block"><span>VISIT BEST</span><strong id="best">—</strong></div>
       </header>
       <div id="game-overlay" class="game-overlay" aria-hidden="true">
@@ -71,7 +71,7 @@
     <div class="sheet-divider"></div>
     <div class="help-section">
       <p class="eyebrow">FEED GESTURES</p><h2 id="help-title">Go with the flow<span>.</span></h2>
-      <dl class="gesture-guide"><div><dt>Sound &amp; music</dt><dd>Tap the sound label below Sidequest to adjust music and effects separately.</dd></div><div><dt>Tap</dt><dd>Start, play again, or resume.</dd></div><div><dt>Hold still</dt><dd>Pause your game. Double-tap the paused screen to restart.</dd></div><div><dt>Swipe up / down</dt><dd>Next / previous game between rounds.</dd></div><div><dt>Swipe at the right edge</dt><dd>Switch games during play. You can also swipe with two fingers anywhere.</dd></div><div><dt>Swipe right</dt><dd>Open all games between rounds, or on the bottom title area during play.</dd></div></dl>
+      <dl class="gesture-guide"><div><dt>Sound &amp; music</dt><dd>Tap the sound label below Sidequest to adjust music and effects separately.</dd></div><div><dt>Tap</dt><dd>Start, play again, or resume.</dd></div><div><dt>Pause</dt><dd>Tap the pause button by the score or press P. Holding still also pauses, except while aiming or steering. Double-tap the paused screen to restart.</dd></div><div><dt>Swipe up / down</dt><dd>Next / previous game between rounds.</dd></div><div><dt>Swipe at the right edge</dt><dd>Switch games during play. You can also swipe with two fingers anywhere.</dd></div><div><dt>Swipe right</dt><dd>Open all games between rounds, or on the bottom title area during play.</dd></div></dl>
     </div>
     <p class="sheet-hint">Keyboard: Space to play · P to pause · N / B to browse<br>R to restart · G for games · M to mute · ? for help<br>Swipe down on the handle to return</p><button class="sr-only dialog-close">Close gesture help</button>
   </dialog>

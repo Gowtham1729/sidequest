@@ -1,12 +1,14 @@
 // Canvas materials shared by the newer arcade games. All coordinates remain in
 // the feed's logical space, so touch input and safe-area geometry stay aligned.
+// These are the 'scene' layout family: a bounded field with a themed backdrop
+// that may extend behind safe UI (see shared.js families).
 import {surface as baseSurface,rect,text,circle,clear as baseClear} from './shared.js';
 export {rect,text,circle};
 export const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 export const TAU=Math.PI*2;
 const scenes=new WeakMap();
-export function surface(mount,theme='night'){
-  const s=baseSurface(mount,{maxFieldWidth:420});scenes.set(s.ctx,{view:s.view,theme});return s;
+export function surface(mount,theme='night',{layout='scene'}={}){
+  const s=baseSurface(mount,{maxFieldWidth:420,layout});scenes.set(s.ctx,{view:s.view,theme});return s;
 }
 export const createCanvas=surface;
 const palettes={night:['#151d31','#090f1c','#7e9ddf'],court:['#193943','#10242c','#9cebd9'],jewel:['#2a203d','#151523','#e1b5f6'],sky:['#294d60','#112938','#d5e9b6'],wood:['#283c32','#14261f','#e9b778'],space:['#211c3a','#0b1123','#baa1f3'],amber:['#28263b','#121622','#ffc080'],rose:['#321d2c','#181724','#f8b3c5']};

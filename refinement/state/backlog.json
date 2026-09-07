@@ -62,7 +62,7 @@
       "title": "Give game input explicit ownership and reliable timing",
       "stage": "foundation",
       "kind": "implementation",
-      "status": "implemented",
+      "status": "accepted",
       "owner": "R01 session (single sequential writer; handoff in refinement/evidence/r01-handoff.md)",
       "write_paths": [
         "dist/app.js",
@@ -105,10 +105,12 @@
           "source_fingerprint": "78a3170e4f81230d06a1c9bb70d62799013b33a30348ec440be6151167f813b4"
         },
         "device": {
-          "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "status": "pass",
+          "evidence": [
+            "refinement/evidence/r01-device.md"
+          ],
+          "reviewer": "project owner on personal Pixel 8a (human device test of all four acceptance scenarios via LAN-served build)",
+          "source_fingerprint": "78a3170e4f81230d06a1c9bb70d62799013b33a30348ec440be6151167f813b4"
         },
         "player": {
           "status": "not_applicable",
@@ -123,6 +125,7 @@
         "refinement/evidence/r01-handoff.md",
         "refinement/evidence/r01-review.md",
         "refinement/evidence/r01-browser/browser-record.md",
+        "refinement/evidence/r01-device.md",
         "refinement/evidence/r01-checkpoint-final/summary.json"
       ],
       "notes": [
@@ -131,7 +134,8 @@
         "Accepted tradeoff owned by R02: drag-policy games have no discoverable touch pause until R02 ships the visible compact pause control (touch pause is reachable but undiscoverable: keyboard, focus-revealed accessible button, or the sound chip's sheet). R02 must also fix the help-dialog 'Hold still' line in index.html.",
         "Pre-existing finding for R02: input dispatched during the ~300ms .scene.enter-next animation after a game switch maps through the animated transform (observed ~122px shift at 320x568); point() reads the live arena rect.",
         "One unreproduced browser one-off recorded in the browser record (aim press within the entry-animation window did not start a drag once); not reproduced in 5+ subsequent runs including an instrumented identical-input rerun; treated as unverified, not closed.",
-        "Reviewer F2 (non-blocking): tests/input-lifecycle.test.mjs Stack schedule is coupled to Stack's frozen speed curve; update when R04 retunes Stack."
+        "Reviewer F2 (non-blocking): tests/input-lifecycle.test.mjs Stack schedule is coupled to Stack's frozen speed curve; update when R04 retunes Stack.",
+        "R01 accepted 6 September 2026: required code and device gates pass. Device evidence is a human test by the project owner on a Pixel 8a (Android 17, Chrome) covering all four acceptance scenarios (refinement/evidence/r01-device.md). No separate listening note; pilots still owe player gates."
       ]
     },
     {
@@ -139,8 +143,8 @@
       "title": "Define compact HUD and stable layout families",
       "stage": "foundation",
       "kind": "implementation",
-      "status": "queued",
-      "owner": null,
+      "status": "accepted",
+      "owner": "R02 session (single sequential writer; handoff in refinement/evidence/r02-handoff.md)",
       "write_paths": [
         "dist/style.css",
         "dist/index.html",
@@ -167,16 +171,23 @@
       ],
       "gates": {
         "code": {
-          "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "status": "pass",
+          "evidence": [
+            "refinement/evidence/r02-checkpoint-final/summary.json",
+            "refinement/evidence/r02-checkpoint-final/tests.log",
+            "refinement/evidence/r02-review.md"
+          ],
+          "reviewer": "two fresh subagent sessions; second (operative) pass re-verified repairs, re-ran checks (70/70), audited all phase-dependent CSS and the evidence package",
+          "source_fingerprint": "46aac3fa26cf45abff00b4bb0aedba60d2c296e004f092a1a748a25bd77f7ae2"
         },
         "visual": {
-          "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "status": "pass",
+          "evidence": [
+            "refinement/evidence/r02-browser/browser-record.md",
+            "refinement/evidence/r02-review.md"
+          ],
+          "reviewer": "operative follow-up review: full phase-rule CSS audit, 5-viewport Δ=0 measurement table, 11 dimensionally correct artifacts; pixel inspection by the implementing session (no independent pixel reviewer available — stated limitation)",
+          "source_fingerprint": "46aac3fa26cf45abff00b4bb0aedba60d2c296e004f092a1a748a25bd77f7ae2"
         },
         "device": {
           "status": "unverified",
@@ -191,8 +202,18 @@
           "source_fingerprint": null
         }
       },
-      "evidence": [],
-      "notes": []
+      "evidence": [
+        "refinement/evidence/r02-handoff.md",
+        "refinement/evidence/r02-review.md",
+        "refinement/evidence/r02-browser/browser-record.md",
+        "refinement/evidence/r02-checkpoint-final/summary.json"
+      ],
+      "notes": [
+        "Implemented 7 September 2026: one phase-stable compact HUD (unified paddings, visibility-reserved prose hiding), visible 44px pause/browse buttons in the score block, rail-following feed ownership (38px desktop rail), settled-geometry pointer mapping, explicit layout-family tags with unchanged defaults, registry-derived catalogue description, corrected help copy. No gameplay rules changed.",
+        "Two disclosed out-of-path touches, both reviewer-accepted: dist/gestures.js gained an optional rail=28 default param (R01 behavior preserved); tests/input-lifecycle.test.mjs gained the description-meta harness stub. R02 write_paths left literal; this handoff carries the exception.",
+        "Per-game HUD height variation deliberately preserved (content-driven, session-stable); cross-game normalization is optional future work.",
+        "Device/player gates unverified (out of R02's required gates); carried as programme-level follow-ups. Real-browser evidence via the approved Chrome DevTools route at 5 emulated viewports; >1440px desktop, real-device touch, listening, and player passes remain open."
+      ]
     },
     {
       "id": "R03",

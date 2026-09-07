@@ -7,9 +7,10 @@ Updated 6 September 2026 (after R01 implementation). Coordinator owns this file 
 - Direction: refine the current arcade; Stack, 2048, and Pocket Golf establish the flagship standard. No collection-wide 3D migration.
 - Local source baseline at kit preparation: `6777c90a8e860f3882106620cf5cde141658b107` (not present in this checkout's history; kit note about the unpushed music-volume change applies). This session started from `f03bddc9403d115f3062e27e707bd94a5c7b93a7`.
 - Registry has 34 entries. Complete catalogue mapping is in `refinement/sidequest-refinement/references/catalogue.csv`.
-- **R01 is implemented** (uncommitted working tree; final checkpoint fingerprint `78a3170e4f81230d06a1c9bb70d62799013b33a30348ec440be6151167f813b4`, 62/62 tests). Per-game input policy: press = stack/orbit/rhythm (tap judged once on press), drag = 19 pointer-owning games (no hold-to-pause), 12 defaults unchanged. No gameplay rules changed. Code gate passed independent fresh-session review (`refinement/evidence/r01-review.md`); device gate unverified. Full handoff: `refinement/evidence/r01-handoff.md`.
+- **R01 is accepted** (commit `df98c09`, pushed to `origin/main`; final checkpoint fingerprint `78a3170e4f81230d06a1c9bb70d62799013b33a30348ec440be6151167f813b4`, 62/62 tests). Per-game input policy: press = stack/orbit/rhythm (tap judged once on press), drag = 19 pointer-owning games (no hold-to-pause), 12 defaults unchanged. No gameplay rules changed. Code gate passed independent fresh-session review (`refinement/evidence/r01-review.md`); **device gate passed** via a human test by the project owner on a Pixel 8a (Android 17, Chrome) covering all four acceptance scenarios (`refinement/evidence/r01-device.md`). No separate listening note; pilots still owe player gates. Full handoff: `refinement/evidence/r01-handoff.md`.
 - **Browser control is now available** through the user-approved Chrome DevTools integration (the earlier block was in a different harness). Real-browser verification of R01 was obtained this session (Chrome 152, macOS, emulated touch 390×844 and 320×568): `refinement/evidence/r01-browser/browser-record.md` + 5 screenshots. This route can serve R00's browser baseline and R02's visual gate; emulated viewports still do not satisfy the device gate.
 - Source audit, standard, three implementation briefs, QA protocol, prompts, role/ownership rules, and 19-task backlog prepared.
+- **R02 is accepted** (uncommitted working tree; final checkpoint fingerprint `46aac3fa26cf45abff00b4bb0aedba60d2c296e004f092a1a748a25bd77f7ae2`, 70/70 tests). One phase-stable compact HUD (Δ=0 within-session at 5 viewports), visible 44px ⏸/⊞ buttons, rail-following feed ownership, settled-geometry pointer mapping, explicit layout-family tags with unchanged defaults, registry-derived catalogue description. No gameplay rules changed. Code gate passed twice-in reviewed; visual gate passed on follow-up review (CSS audit + measurement table + 11 artifacts; pixel inspection by the implementing session, independence limitation stated). Device/player unverified, out of required gates. Handoff: `refinement/evidence/r02-handoff.md`.
 
 ## Blocked / unverified
 
@@ -22,7 +23,10 @@ Updated 6 September 2026 (after R01 implementation). Coordinator owns this file 
 
 ## Exact next action
 
-Start R02 ("Define compact HUD and stable layout families"; its dependency gate on R01 `implemented` is met), reading `refinement/evidence/r01-handoff.md` first. R02 priorities set by R01's handoff: (1) the visible compact pause control restoring discoverable touch pause for drag-policy games; (2) the help-dialog "Hold still" copy fix in `index.html`; (3) the entry-animation input-geometry finding; (4) the stale nineteen-game meta description already in R02's acceptance. R02's visual gate can now use the approved Chrome DevTools route; cover the remaining QA-matrix viewports (430×932, 844×390, 1440×900).
+R02 is accepted (code + visual gates pass; device/player unverified but out of its
+required gates). R02's write paths are released. Next: start R03 ("Add only the motion
+and finishing support needed by the pilots"; dependency gate on R02 `implemented` is
+met — R02 is accepted). Read `refinement/evidence/r02-handoff.md` first.
 
 In parallel when hardware is available: run R01's four acceptance scenarios on a real phone per the QA-protocol device format and update R01's device gate; it is the only missing input to R01 acceptance.
 

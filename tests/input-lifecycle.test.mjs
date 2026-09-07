@@ -63,6 +63,7 @@ for(const id of ['lineup-dialog','help-dialog','audio-dialog']){
   dialogElements.push(dialog);ids.set(id,dialog);
 }
 const metaTheme=element('meta');
+const metaDescription=element('meta');metaDescription.content='';
 const documentStub={
   hidden:false,
   createElement(tag){return tag==='canvas'?canvasElement():element(tag);},
@@ -71,6 +72,7 @@ const documentStub={
   querySelector(selector){
     if(selector==='dialog[open]')return dialogElements.find(dialog=>'open' in dialog.attributes)||null;
     if(selector==='meta[name="theme-color"]')return metaTheme;
+    if(selector==='meta[name="description"]')return metaDescription;
     return null;
   },
   querySelectorAll(selector){
