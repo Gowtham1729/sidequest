@@ -120,6 +120,7 @@ test('terminal outcome is once-only: simulation/input/score stop while visuals a
   assert.equal(el('score').textContent,'07');assert.deepEqual(cues,['win']);
   frames(30);assert.equal(phase(),'finished');assert.equal(s.progress,1);
   assert.deepEqual(s.cancels,[]);assert.equal(s.ticks,ticks);assert.equal(el('game-overlay').hidden,false);
+  assert.equal(el('tap-label').textContent,'Tap anywhere to retry');
   frames(5);assert.deepEqual(cues,['win']);assert.equal(s.sim,sim);assert.equal(s.ticks,ticks);
 });
 test('pause, sheet, and background freeze ending progress and resume only presentation',()=>{

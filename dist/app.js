@@ -27,7 +27,7 @@ function setState(){
  $('overlay-eyebrow').textContent=ready?meta.eyebrow:phase==='paused'?'TAKE YOUR TIME':'ONE MORE ROUND?';
  title(ready?meta.title:phase==='paused'?'Catch your breath':result?.title||meta.title);
  $('overlay-subtitle').textContent=ready?meta.intro:phase==='paused'?'Your game is right here.':result?.subtitle||'';
- $('tap-label').textContent=ready?'Tap anywhere to play':phase==='paused'?'Tap to resume':'Tap anywhere to play again';
+ $('tap-label').textContent=ready?'Tap anywhere to play':phase==='paused'?'Tap to resume':'Tap anywhere to retry';
  $('browse-hint').textContent=phase==='paused'?'Double-tap to restart · Swipe up for next':'Swipe up for the next game';
  arena.setAttribute('aria-label',`${meta.title}. ${meta.instructions} ${phase==='playing'?'Tap the top HUD or press P to pause. Swipe at the right edge or with two fingers to change games.':'Press Space to play. Swipe up for next game.'}`);
  $('accessible-previous').disabled=feed.cursor===0;

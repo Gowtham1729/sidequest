@@ -1,0 +1,538 @@
+TAP version 13
+# Subtest: constructing the audio service does not create an AudioContext
+ok 1 - constructing the audio service does not create an AudioContext
+  ---
+  duration_ms: 0.94775
+  type: 'test'
+  ...
+# Subtest: unlock failure can be retried on the same lazily-created context
+ok 2 - unlock failure can be retried on the same lazily-created context
+  ---
+  duration_ms: 0.540917
+  type: 'test'
+  ...
+# Subtest: preferences persist and clamp numeric values while preserving invalid values
+ok 3 - preferences persist and clamp numeric values while preserving invalid values
+  ---
+  duration_ms: 0.6535
+  type: 'test'
+  ...
+# Subtest: playing music is idempotent and schedules one loop timer
+ok 4 - playing music is idempotent and schedules one loop timer
+  ---
+  duration_ms: 0.510625
+  type: 'test'
+  ...
+# Subtest: pause, background, and mute stop active voices and clear the loop timer
+ok 5 - pause, background, and mute stop active voices and clear the loop timer
+  ---
+  duration_ms: 0.470958
+  type: 'test'
+  ...
+# Subtest: retired game handles are ignored; current handle works after foreground restore
+ok 6 - retired game handles are ignored; current handle works after foreground restore
+  ---
+  duration_ms: 0.144292
+  type: 'test'
+  ...
+# Subtest: late effect and music sample loads are cancelled after pause or game switch
+ok 7 - late effect and music sample loads are cancelled after pause or game switch
+  ---
+  duration_ms: 8.026834
+  type: 'test'
+  ...
+# Subtest: all five bundled profiles are distinct with valid synthesized or recorded music
+ok 8 - all five bundled profiles are distinct with valid synthesized or recorded music
+  ---
+  duration_ms: 0.486875
+  type: 'test'
+  ...
+# Subtest: late effects are discarded independently on pause, mute, and game switch
+ok 9 - late effects are discarded independently on pause, mute, and game switch
+  ---
+  duration_ms: 2.32575
+  type: 'test'
+  ...
+# Subtest: a decoded current sample plays, then pause stops it
+ok 10 - a decoded current sample plays, then pause stops it
+  ---
+  duration_ms: 1.241834
+  type: 'test'
+  ...
+# Subtest: recorded music starts one looping sample and stays cached
+ok 11 - recorded music starts one looping sample and stays cached
+  ---
+  duration_ms: 0.709958
+  type: 'test'
+  ...
+# Subtest: decoded sample cache stays bounded and refetches evicted entries
+ok 12 - decoded sample cache stays bounded and refetches evicted entries
+  ---
+  duration_ms: 0.404708
+  type: 'test'
+  ...
+# Subtest: recorded loops are valid, override their games, and leave quiet games alone
+ok 13 - recorded loops are valid, override their games, and leave quiet games alone
+  ---
+  duration_ms: 0.418125
+  type: 'test'
+  ...
+# Subtest: delayed music timer skips missed beats and pausing stops every scheduled voice
+ok 14 - delayed music timer skips missed beats and pausing stops every scheduled voice
+  ---
+  duration_ms: 0.315083
+  type: 'test'
+  ...
+# Subtest: all registered games receive a profile and new games get rate-limited score cues
+ok 15 - all registered games receive a profile and new games get rate-limited score cues
+  ---
+  duration_ms: 21.394791
+  type: 'test'
+  ...
+# Subtest: exactly 15 distinct additions bring the complete feed to 34
+ok 16 - exactly 15 distinct additions bring the complete feed to 34
+  ---
+  duration_ms: 1.12625
+  type: 'test'
+  ...
+# Subtest: all new cues and music have valid, bounded synthesis parameters
+ok 17 - all new cues and music have valid, bounded synthesis parameters
+  ---
+  duration_ms: 1.758291
+  type: 'test'
+  ...
+# Subtest: Minesweeper always protects first click and neighbors, at every position
+ok 18 - Minesweeper always protects first click and neighbors, at every position
+  ---
+  duration_ms: 4.13
+  type: 'test'
+  ...
+# Subtest: Minesweeper flags resist flood fill and all safe squares finish the game
+ok 19 - Minesweeper flags resist flood fill and all safe squares finish the game
+  ---
+  duration_ms: 2.851209
+  type: 'test'
+  ...
+# Subtest: sliding boards are nontrivial and solvable; nonadjacent moves do nothing
+ok 20 - sliding boards are nontrivial and solvable; nonadjacent moves do nothing
+  ---
+  duration_ms: 7.034792
+  type: 'test'
+  ...
+# Subtest: all five Lights Out circuits can be completed through actual input
+ok 21 - all five Lights Out circuits can be completed through actual input
+  ---
+  duration_ms: 33.6405
+  type: 'test'
+  ...
+# Subtest: Echo ignores input during playback, accepts a pattern, and rejects a wrong note
+ok 22 - Echo ignores input during playback, accepts a pattern, and rejects a wrong note
+  ---
+  duration_ms: 10.343208
+  type: 'test'
+  ...
+# Subtest: block rotations, boundary collision and simultaneous four-line clears
+ok 23 - block rotations, boundary collision and simultaneous four-line clears
+  ---
+  duration_ms: 1.313208
+  type: 'test'
+  ...
+# Subtest: Pocket Blocks hard drops lock pieces and top-out ends only once
+ok 24 - Pocket Blocks hard drops lock pieces and top-out ends only once
+  ---
+  duration_ms: 1.346584
+  type: 'test'
+  ...
+# Subtest: Four in a Row detects all line directions and CPU wins or blocks
+ok 25 - Four in a Row detects all line directions and CPU wins or blocks
+  ---
+  duration_ms: 37.85725
+  type: 'test'
+  ...
+# Subtest: Reversi flips only bracketed discs and CPU always chooses a legal move
+ok 26 - Reversi flips only bracketed discs and CPU always chooses a legal move
+  ---
+  duration_ms: 2.682333
+  type: 'test'
+  ...
+# Subtest: bubble matches follow hex neighbors and only unanchored clusters fall
+ok 27 - bubble matches follow hex neighbors and only unanchored clusters fall
+  ---
+  duration_ms: 2.072334
+  type: 'test'
+  ...
+# Subtest: golf walls reflect an incoming ball and retain a finite position
+ok 28 - golf walls reflect an incoming ball and retain a finite position
+  ---
+  duration_ms: 0.209334
+  type: 'test'
+  ...
+# Subtest: first golf hole can actually be sunk with a controlled putt
+ok 29 - first golf hole can actually be sunk with a controlled putt
+  ---
+  duration_ms: 9.576041
+  type: 'test'
+  ...
+# Subtest: hoops only awards descending shots through the inside of the rim
+ok 30 - hoops only awards descending shots through the inside of the rim
+  ---
+  duration_ms: 0.207417
+  type: 'test'
+  ...
+# Subtest: Swish default keyboard shot scores once and the tenth attempt ends the round
+ok 31 - Swish default keyboard shot scores once and the tenth attempt ends the round
+  ---
+  duration_ms: 32.492083
+  type: 'test'
+  ...
+# Subtest: Lane Rush can survive all 60 seconds by taking each open lane
+ok 32 - Lane Rush can survive all 60 seconds by taking each open lane
+  ---
+  duration_ms: 50.39475
+  type: 'test'
+  ...
+# Subtest: slicing detects swept intersections, including zero-length taps
+ok 33 - slicing detects swept intersections, including zero-length taps
+  ---
+  duration_ms: 0.175125
+  type: 'test'
+  ...
+# Subtest: Prism Slice rewards a real sweep through a wave and ignores a second cut
+ok 34 - Prism Slice rewards a real sweep through a wave and ignores a second cut
+  ---
+  duration_ms: 2.205
+  type: 'test'
+  ...
+# Subtest: orbit wraps angles correctly and timing hits score while spamming misses ends
+ok 35 - orbit wraps angles correctly and timing hits score while spamming misses ends
+  ---
+  duration_ms: 5.080709
+  type: 'test'
+  ...
+# Subtest: every generated maze is fully connected with reciprocal walls and a path to exit
+ok 36 - every generated maze is fully connected with reciprocal walls and a path to exit
+  ---
+  duration_ms: 10.260542
+  type: 'test'
+  ...
+# Subtest: Beat Drop perfect input can finish all 64 beats; hit spam cannot double score
+ok 37 - Beat Drop perfect input can finish all 64 beats; hit spam cannot double score
+  ---
+  duration_ms: 38.1925
+  type: 'test'
+  ...
+# Subtest: every new game freezes at dt=0, restarts, and becomes inert after destroy
+ok 38 - every new game freezes at dt=0, restarts, and becomes inert after destroy
+  ---
+  duration_ms: 39.926083
+  type: 'test'
+  ...
+# Subtest: Bubble Sky a matching shot clears a connected ceiling and wins once
+ok 39 - Bubble Sky a matching shot clears a connected ceiling and wins once
+  ---
+  duration_ms: 9.168292
+  type: 'test'
+  ...
+# Subtest: all five golf courses have a playable route within the stroke budget
+ok 40 - all five golf courses have a playable route within the stroke budget
+  ---
+  duration_ms: 68.008542
+  type: 'test'
+  ...
+# Subtest: three full Maze Escape rounds can collect all sparks and reach the exit
+ok 41 - three full Maze Escape rounds can collect all sparks and reach the exit
+  ---
+  duration_ms: 8.888625
+  type: 'test'
+  ...
+# Subtest: all 29 canvas arcade games render, play, pause and restart at 390×844
+ok 42 - all 29 canvas arcade games render, play, pause and restart at 390×844
+  ---
+  duration_ms: 458.859
+  type: 'test'
+  ...
+# Subtest: all 29 canvas arcade games render, play, pause and restart at 320×568
+ok 43 - all 29 canvas arcade games render, play, pause and restart at 320×568
+  ---
+  duration_ms: 275.423958
+  type: 'test'
+  ...
+# Subtest: all 29 canvas arcade games render, play, pause and restart at 844×390
+ok 44 - all 29 canvas arcade games render, play, pause and restart at 844×390
+  ---
+  duration_ms: 175.8485
+  type: 'test'
+  ...
+# Subtest: all 29 canvas arcade games render, play, pause and restart at 1440×900
+ok 45 - all 29 canvas arcade games render, play, pause and restart at 1440×900
+  ---
+  duration_ms: 195.044875
+  type: 'test'
+  ...
+# Subtest: ZigZag awards no progress for spamming turn without movement
+ok 46 - ZigZag awards no progress for spamming turn without movement
+  ---
+  duration_ms: 0.411542
+  type: 'test'
+  ...
+# Subtest: Crossy lets a player wait safely on grass for a full minute
+ok 47 - Crossy lets a player wait safely on grass for a full minute
+  ---
+  duration_ms: 54.062834
+  type: 'test'
+  ...
+# Subtest: Chroma starts at a safe checkpoint without an instant fall timer
+ok 48 - Chroma starts at a safe checkpoint without an instant fall timer
+  ---
+  duration_ms: 4.346375
+  type: 'test'
+  ...
+# Subtest: Pop flood fill includes connected matching gems only
+ok 49 - Pop flood fill includes connected matching gems only
+  ---
+  duration_ms: 0.599917
+  type: 'test'
+  ...
+# Subtest: Pop ends exactly once at 60 seconds and restarts cleanly
+ok 50 - Pop ends exactly once at 60 seconds and restarts cleanly
+  ---
+  duration_ms: 150.8965
+  type: 'test'
+  ...
+# Subtest: Target awards an actual bullseye for a centered shot
+ok 51 - Target awards an actual bullseye for a centered shot
+  ---
+  duration_ms: 1.922166
+  type: 'test'
+  ...
+# Subtest: Crossy traffic can hit a stationary player in the center of a road lane
+ok 52 - Crossy traffic can hit a stationary player in the center of a road lane
+  ---
+  duration_ms: 17.28075
+  type: 'test'
+  ...
+# Subtest: gameplay swipes stay with the game; edge and two fingers navigate
+ok 53 - gameplay swipes stay with the game; edge and two fingers navigate
+  ---
+  duration_ms: 0.686417
+  type: 'test'
+  ...
+# Subtest: game outcomes used for audio still distinguish merges and perfect drops
+ok 54 - game outcomes used for audio still distinguish merges and perfect drops
+  ---
+  duration_ms: 0.817208
+  type: 'test'
+  ...
+# Subtest: input policies judge press-timing games once and keep drag games free of hold-to-pause
+ok 55 - input policies judge press-timing games once and keep drag games free of hold-to-pause
+  ---
+  duration_ms: 0.288833
+  type: 'test'
+  ...
+# Subtest: release taps keep their duration and travel semantics for default-policy games
+ok 56 - release taps keep their duration and travel semantics for default-policy games
+  ---
+  duration_ms: 0.083709
+  type: 'test'
+  ...
+# Subtest: default-policy games keep release taps and hold-to-pause (Four in a Row)
+ok 57 - default-policy games keep release taps and hold-to-pause (Four in a Row)
+  ---
+  duration_ms: 708.368209
+  type: 'test'
+  ...
+# Subtest: a held Pocket Golf aim neither pauses nor fires for one second
+ok 58 - a held Pocket Golf aim neither pauses nor fires for one second
+  ---
+  duration_ms: 1021.89875
+  type: 'test'
+  ...
+# Subtest: press-timing games judge the action once, at press (Stack)
+ok 59 - press-timing games judge the action once, at press (Stack)
+  ---
+  duration_ms: 664.789583
+  type: 'test'
+  ...
+# Subtest: press timing judges the intended moment, not the release (Beat Drop)
+ok 60 - press timing judges the intended moment, not the release (Beat Drop)
+  ---
+  duration_ms: 6.079292
+  type: 'test'
+  ...
+# Subtest: cancel, pause, second finger, background and restart leave no stale golf gesture
+ok 61 - cancel, pause, second finger, background and restart leave no stale golf gesture
+  ---
+  duration_ms: 814.183125
+  type: 'test'
+  ...
+# Subtest: centre swipes stay in the game while the right edge navigates
+ok 62 - centre swipes stay in the game while the right edge navigates
+  ---
+  duration_ms: 1.527292
+  type: 'test'
+  ...
+# Subtest: all 34 game IDs are preserved and unique
+ok 63 - all 34 game IDs are preserved and unique
+  ---
+  duration_ms: 0.961292
+  type: 'test'
+  ...
+# Subtest: the catalogue description is derived from the authoritative registry
+ok 64 - the catalogue description is derived from the authoritative registry
+  ---
+  duration_ms: 0.299458
+  type: 'test'
+  ...
+# Subtest: top HUD tap pauses drag games while gameplay and browse stay separate
+ok 65 - top HUD tap pauses drag games while gameplay and browse stay separate
+  ---
+  duration_ms: 6.934458
+  type: 'test'
+  ...
+# Subtest: aborted countdown swipe returns to a startable ready screen
+ok 66 - aborted countdown swipe returns to a startable ready screen
+  ---
+  duration_ms: 1.057459
+  type: 'test'
+  ...
+# Subtest: feed ownership follows the rendered rail width
+ok 67 - feed ownership follows the rendered rail width
+  ---
+  duration_ms: 0.416916
+  type: 'test'
+  ...
+# Subtest: key events without an element target never throw
+ok 68 - key events without an element target never throw
+  ---
+  duration_ms: 0.270125
+  type: 'test'
+  ...
+# Subtest: layout families default to current geometry
+ok 69 - layout families default to current geometry
+  ---
+  duration_ms: 1.069917
+  type: 'test'
+  ...
+# Subtest: cabinet and art surfaces declare their layout families
+ok 70 - cabinet and art surfaces declare their layout families
+  ---
+  duration_ms: 0.427458
+  type: 'test'
+  ...
+# Subtest: pointer mapping ignores the scene entry-animation translation
+ok 71 - pointer mapping ignores the scene entry-animation translation
+  ---
+  duration_ms: 0.836041
+  type: 'test'
+  ...
+# Subtest: terminal outcome is once-only: simulation/input/score stop while visuals advance
+ok 72 - terminal outcome is once-only: simulation/input/score stop while visuals advance
+  ---
+  duration_ms: 4.841
+  type: 'test'
+  ...
+# Subtest: pause, sheet, and background freeze ending progress and resume only presentation
+ok 73 - pause, sheet, and background freeze ending progress and resume only presentation
+  ---
+  duration_ms: 1.787458
+  type: 'test'
+  ...
+# Subtest: retry during ending cancels it and retired API cannot mutate the new round
+ok 74 - retry during ending cancels it and retired API cannot mutate the new round
+  ---
+  duration_ms: 1.030709
+  type: 'test'
+  ...
+# Subtest: completed opt-in round is recreated on replay so old callbacks stay retired
+ok 75 - completed opt-in round is recreated on replay so old callbacks stay retired
+  ---
+  duration_ms: 1.944792
+  type: 'test'
+  ...
+# Subtest: switching games cancels pending visuals and does not deliver old outcomes
+ok 76 - switching games cancels pending visuals and does not deliver old outcomes
+  ---
+  duration_ms: 5.855583
+  type: 'test'
+  ...
+# Subtest: reduced motion resolves endings promptly and exposes the live preference to canvas
+ok 77 - reduced motion resolves endings promptly and exposes the live preference to canvas
+  ---
+  duration_ms: 1.830375
+  type: 'test'
+  ...
+# Subtest: unmigrated calls still finish immediately, with no presentation callback
+ok 78 - unmigrated calls still finish immediately, with no presentation callback
+  ---
+  duration_ms: 0.47875
+  type: 'test'
+  ...
+# Subtest: ending duration is bounded and invalid values do not create stuck phases
+ok 79 - ending duration is bounded and invalid values do not create stuck phases
+  ---
+  duration_ms: 0.428125
+  type: 'test'
+  ...
+# Subtest: named motion freezes at dt=0, settles once under reduced motion, and clears
+ok 80 - named motion freezes at dt=0, settles once under reduced motion, and clears
+  ---
+  duration_ms: 0.7835
+  type: 'test'
+  ...
+# Subtest: cabinet presentation continues after finish without simulation, score or game sounds
+ok 81 - cabinet presentation continues after finish without simulation, score or game sounds
+  ---
+  duration_ms: 0.931667
+  type: 'test'
+  ...
+# Subtest: Stack overlap preserves inclusive six-unit tolerance, partial cuts and misses
+ok 82 - Stack overlap preserves inclusive six-unit tolerance, partial cuts and misses
+  ---
+  duration_ms: 2.708584
+  type: 'test'
+  ...
+# Subtest: Stack commits perfect placements immediately with alternating motion and original speed curve
+ok 83 - Stack commits perfect placements immediately with alternating motion and original speed curve
+  ---
+  duration_ms: 54.159458
+  type: 'test'
+  ...
+# Subtest: Stack partial placement stays responsive during settle and terminal miss occurs once
+ok 84 - Stack partial placement stays responsive during settle and terminal miss occurs once
+  ---
+  duration_ms: 23.014084
+  type: 'test'
+  ...
+# Subtest: Stack pause redraws preserve placement cosmetics without advancing them
+ok 85 - Stack pause redraws preserve placement cosmetics without advancing them
+  ---
+  duration_ms: 26.610208
+  type: 'test'
+  ...
+# Subtest: Stack reduced-motion ending remains settled while presentation time advances
+ok 86 - Stack reduced-motion ending remains settled while presentation time advances
+  ---
+  duration_ms: 13.803958
+  type: 'test'
+  ...
+# Subtest: Stack restart clears the old ending and destroy retires input and rendering
+ok 87 - Stack restart clears the old ending and destroy retires input and rendering
+  ---
+  duration_ms: 14.938833
+  type: 'test'
+  ...
+# Subtest: Stack remains playable beyond retained tower capacity and through resize
+ok 88 - Stack remains playable beyond retained tower capacity and through resize
+  ---
+  duration_ms: 524.421625
+  type: 'test'
+  ...
+1..88
+# tests 88
+# suites 0
+# pass 88
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3340.254

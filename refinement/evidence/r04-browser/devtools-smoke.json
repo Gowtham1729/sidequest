@@ -1,0 +1,20 @@
+{
+  "source": "local dist served at http://localhost:8901/",
+  "browser": "Chrome DevTools, Chrome 152 on macOS",
+  "checks": {
+    "390x844_boot_and_hud": "pass",
+    "390x844_one_tap_scores_once": "pass",
+    "390x844_hold_pauses_at_700ms_without_extra_score": "pass",
+    "390x844_resume": "pass",
+    "390x844_right_edge_switch": "pass",
+    "320x568_no_horizontal_overflow": "pass",
+    "320x568_miss_finishing_phase": "pass",
+    "320x568_result_reveal_after_ending": "pass",
+    "320x568_retry_resets_score": "pass"
+  },
+  "limits": [
+    "Synthetic pointer events are not a physical finger test.",
+    "Audio was not listened to.",
+    "This does not establish physical safe-area behavior or frame pacing."
+  ]
+}

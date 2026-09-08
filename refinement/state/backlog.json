@@ -285,7 +285,8 @@
         "refinement/evidence/r03-checkpoint-final/summary.json"
       ],
       "notes": [
-        "Opt-in finishing phase stops tick and score while present advances up to 0.6 seconds. Once-only outcome cue, retired-instance guards, pause/resume/retry/switch cleanup, live canvas reduced-motion getters, bounded scalar motion helper, cabinet presentation-only path. No production games migrated. 81 tests pass. Code reviewed independently; full visual, hardware and listening evidence pending."
+        "Opt-in finishing phase stops tick and score while present advances up to 0.6 seconds. Once-only outcome cue, retired-instance guards, pause/resume/retry/switch cleanup, live canvas reduced-motion getters, bounded scalar motion helper, cabinet presentation-only path. No production games migrated. 81 tests pass. Code reviewed independently; full visual, hardware and listening evidence pending.",
+        "Committed as 6932caf and pushed to origin/main on owner request; R02 4563cf1 included in the same successful push."
       ]
     },
     {
@@ -293,8 +294,8 @@
       "title": "Refine Stack to the flagship brief",
       "stage": "pilots",
       "kind": "implementation",
-      "status": "queued",
-      "owner": null,
+      "status": "implemented",
+      "owner": "R04 coordinator; game implementation completed, paths released",
       "write_paths": [
         "dist/games/stack.js",
         "tests/stack-refinement.test.mjs"
@@ -318,16 +319,21 @@
       ],
       "gates": {
         "code": {
-          "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "status": "pass",
+          "evidence": [
+            "refinement/evidence/r04-checkpoint/summary.json",
+            "refinement/evidence/r04-handoff.md"
+          ],
+          "reviewer": "read-only source review /root/r03_review; coordinator final 88-test checkpoint",
+          "source_fingerprint": "0fc046faf8586e24f5ca61612b346e1f317c8c3b5ac6c08f813fcd1a7b33fd1f"
         },
         "visual": {
           "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "evidence": [
+            "refinement/evidence/r04-handoff.md"
+          ],
+          "reviewer": "Chrome DevTools implementer pass: exercised boot, HUD geometry, touch dispatch, edge navigation and ending/retry; full visual review pending",
+          "source_fingerprint": "0fc046faf8586e24f5ca61612b346e1f317c8c3b5ac6c08f813fcd1a7b33fd1f"
         },
         "device": {
           "status": "unverified",
@@ -342,16 +348,22 @@
           "source_fingerprint": null
         }
       },
-      "evidence": [],
-      "notes": []
+      "evidence": [
+        "refinement/evidence/r04-handoff.md",
+        "refinement/evidence/r04-checkpoint/summary.json"
+      ],
+      "notes": [
+        "Stack offcut snapshots, 120ms settle, 200ms camera, 0.5s miss presentation, restrained perfect streak and consistent block faces. Rules and speed curve preserved; all 88 tests pass including 100 placements/resize. Chrome DevTools smoke checks pass at 390x844 and 320x568, including explicit retry copy after cache-busting reload; no physical touch/audio/player pass claimed. Local uncommitted changes.",
+        "8 September owner report: Pixel 8a placement increments height to 1, tap-to-retry works, clipping is fine, and behavior works as described. Record as a passed limited phone smoke check; listening, performance and full player acceptance remain unverified. See r04-handoff.md."
+      ]
     },
     {
       "id": "R05",
       "title": "Refine 2048 to the flagship brief",
       "stage": "pilots",
       "kind": "implementation",
-      "status": "queued",
-      "owner": null,
+      "status": "implemented",
+      "owner": "root",
       "write_paths": [
         "dist/games/merge.js",
         "tests/merge-refinement.test.mjs"
@@ -375,14 +387,19 @@
       ],
       "gates": {
         "code": {
-          "status": "unverified",
-          "evidence": [],
-          "reviewer": null,
-          "source_fingerprint": null
+          "status": "pass",
+          "evidence": [
+            "refinement/evidence/r05-checkpoint/summary.json",
+            "refinement/evidence/r05-handoff.md"
+          ],
+          "reviewer": "root and r03_review (independent read-only implementation review)",
+          "source_fingerprint": "9e4776ae3af5fcc4a0b7c000f8af42b9fabc5b25742bf2fb31d6f521154522f4"
         },
         "visual": {
           "status": "unverified",
-          "evidence": [],
+          "evidence": [
+            "refinement/evidence/r05-browser/observations.md"
+          ],
           "reviewer": null,
           "source_fingerprint": null
         },
@@ -399,8 +416,14 @@
           "source_fingerprint": null
         }
       },
-      "evidence": [],
-      "notes": []
+      "evidence": [
+        "refinement/evidence/r05-handoff.md",
+        "refinement/evidence/r05-browser/observations.md",
+        "refinement/evidence/r05-checkpoint/summary.json"
+      ],
+      "notes": [
+        "Square board maximizes the smaller usable dimension; 8px gaps, tile paths, 120ms travel/100ms merge/60ms spawn reveal, one latest-direction buffer, 400ms terminal presentation. Existing merge/scoring/spawn rules retained. 95 tests pass. Browser smoke and controlled terminal frames inspected at 320x568/390x844; full independent visual, device and player gates remain unverified. Local uncommitted changes."
+      ]
     },
     {
       "id": "R06",
@@ -484,7 +507,8 @@
         "All three pilots pass code, visual, and device gates on integrated source.",
         "Collect actual formative player observations for all pilots; no simulated participants.",
         "Record one coherent shared design direction, exceptions, final issues, and source-bound evidence.",
-        "No unresolved input, fairness, legibility or lifecycle blocker."
+        "No unresolved input, fairness, legibility or lifecycle blocker.",
+        "Audit visual size consistency within board, portrait-action and scene families: maximize usable board space, align safe margins and optical centering, fix accidental undersizing, and record intentional exceptions. Cover small/default phone viewports before catalogue propagation."
       ],
       "required_gates": [
         "code",
